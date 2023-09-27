@@ -224,3 +224,27 @@ def load_events():
     #después de las validaciones enviar msje de confirmación
     #pasando contenido
     return jsonify({"eventos":response}), 200
+
+
+#api para nextEvent
+@api.route('/loadallevents', methods=['GET'])
+def load_allevents():
+    #ubicar usuario en la bd, que me traiga todos los resultados
+    lista = Events.query.all()
+    #si no se encontró el evento
+    if lista is None:
+        return jsonify({"message": "Events not found"}), 401
+    response=[]
+    for item in lista:
+    #    response.append({item})
+        response.append({
+        "id": item.id,
+        "nombre_evento": item.nombre_evento,
+        "fecha_ini": item.fecha_ini,
+        "fecha_fin": item.fecha_fin,
+        "ubicacion": item.ubicacion,
+        "fecha_lim": item.fecha_lim,
+        "id_user": item.id_user})
+    #después de las validaciones enviar msje de confirmación
+    #pasando contenido
+    return jsonify({"eventos":response}), 200
