@@ -265,8 +265,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			getAllEvents: async () => {
 				try {
-					const { apiFetchPublic } = getActions()
-					const resp = await apiFetchProtected("/loadallevents")
+					const { apiFetchPublic } = getActions();
+					const resp = await apiFetchPublic("/loadallevents")
 					///////////// extra
 					console.log("PRUEBA_getallEvent", resp)
 					if (resp.code == 200) {

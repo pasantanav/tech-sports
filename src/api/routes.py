@@ -174,7 +174,7 @@ def create_event():
     #    return jsonify({"message": "User not exist"}), 401
     #crear nuevo evento a partir de esta data
     new_event = Events()
-    new_event.nombre_event = nombre_event
+    new_event.nombre_evento = nombre_event
     new_event.descr_corta = descr_corta
     new_event.fecha_ini = fecha_ini
     new_event.fecha_fin = fecha_fin
@@ -248,3 +248,26 @@ def load_allevents():
     #después de las validaciones enviar msje de confirmación
     #pasando contenido
     return jsonify({"eventos":response}), 200
+
+
+    
+@api.route('/loadAllUsers', methods=['GET'])
+#@jwt_required()
+def loadAllUser():
+    #recibir datos del cuerpo de la petición
+   # user = get_jwt_identity()
+    #ubicar usuario en la bd, que me traiga todos los resultados
+    lista = User.query.all()
+    #si no se encontró el evento
+    if lista is None:
+        return jsonify({"message": "Users not found"}), 401
+    response=[]
+    for item in lista:
+    #    response.append({item})
+        response.append({
+        "id": item.id,
+        
+        "name": item.name})
+    #después de las validaciones enviar msje de confirmación
+    #pasando contenido
+    return jsonify({"Users":response}), 200
