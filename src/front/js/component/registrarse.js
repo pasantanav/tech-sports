@@ -1,33 +1,31 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import "../../styles/registrarse.css";
 import basket from "../../img/basket7.jpeg"
 import PayPal from "./paypal";
 
-
-
 const Registrarse = () => {
-    const [contador, setContador,] = useState(0);
-    const [total, setTotal,] = useState(0);
+    const [contador, setContador,] = useState(1);
+    const [total, setTotal,] = useState(75);
 
     //fUNCIONES DEL BOTON SUMAR Y RESTAR
-    const aumentar=()=>{
-        let temContador = contador+1;
+    const aumentar = () => {
+        let temContador = contador + 1;
         setTotal(temContador * 75);
         setContador(temContador)
         console.log(contador)
     }
-    const disminuir=()=>{
-        let temContador = contador-1;
-        if(temContador < 0){
+    const disminuir = () => {
+        let temContador = contador - 1;
+        if (temContador < 0) {
             return;
         }
-        setTotal(temContador*75)
-       
-        setContador(temContador)
-       
-    }   
+        setTotal(temContador * 75)
 
-   
+        setContador(temContador)
+
+    }
+
+
 
     return (
         <div id="registerWrapper" className="card container">
@@ -61,7 +59,7 @@ const Registrarse = () => {
                             <img id="image" src={basket} className="img-fluid" alt="Image" />
                         </div>
                         <div className="row">
-                            <div classsName="col">
+                            <div className="col">
                                 <b><h1>Descripción</h1></b>
                                 <hr style={{ height: "2px", width: "100%", borderWidth: "0", color: "gray", }}></hr>
                                 <p>This event article, used for writing about and listing the events planned for the future on your website.You can edit all of this text from the Pages tab by clicking the edit button.</p>
@@ -95,10 +93,10 @@ const Registrarse = () => {
                                 <div className="col-3">
                                     <p>$75</p>
                                 </div>
-                                <div className="col-3">   
-                                <button  className="button" id="disminuir" onClick={disminuir}>-</button>
-                                 <span ><button id="cantidad"value="0">{contador}</button></span>  
-                                 <button className="button" id="aumentar" onClick={aumentar}>+</button>
+                                <div className="col-3">
+                                    <button className="button" id="disminuir" onClick={disminuir}>-</button>
+                                    <span ><button id="cantidad" value="0">{contador}</button></span>
+                                    <button className="button" id="aumentar" onClick={aumentar}>+</button>
                                 </div>
                                 <div className="col-3">
                                     <p>${total}</p>
@@ -121,14 +119,31 @@ const Registrarse = () => {
                             <div className="col-3"></div>
                             <div className="col-3"></div>
                             <div className="col-3">
-                                <button className="btn btn-primary btn-md ">PAGAR</button>
-                                <PayPal/>
+                                <button type="button" className="btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Pagar
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    
+            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <PayPal />
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div >
     );
 }

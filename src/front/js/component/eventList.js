@@ -52,7 +52,7 @@ const EventList = () => {
         const currentEvent = Object.assign({}, selectedEvent);
         currentEvent[propertyName] = e.target.value;
         setSelectedEvent(currentEvent)
-    }
+    }  
     return (
         <div className="fatherBody">
             <div className="row">
