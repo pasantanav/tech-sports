@@ -12,49 +12,42 @@ api = Blueprint('api', __name__)
 #estandar para toda la inicialización de bcrypt
 app=Flask(__name__)
 bcrypt = Bcrypt(app)
-@api.route('/update-profile-image', methods=['POST'])
+@api.route('/updateimage', methods=['POST'])
 # Middleware para verificar la autenticación
+@jwt_required()
 def update_profile_image():
     # Obtener el ID del usuario autenticado desde el token
     user_id = get_jwt_identity()
 
+    profile_image = request.json.get('newImageUrl')
     # Comprobar si se ha enviado un archivo en la solicitud
-    if 'profile_image' not in request.files:
+    if 'newImageUrl' not in request.json:
         return jsonify({"error": "No se ha enviado un archivo de imagen"}), 400
 
-    profile_image = request.files['profile_image']
-
-    # Verificar que el archivo sea una imagen (puedes agregar más validaciones según tus necesidades)
-    allowed_extensions = {'jpg', 'jpeg', 'png', 'gif'}
-    if not profile_image.filename.lower().endswith(tuple(allowed_extensions)):
-        return jsonify({"error": "Tipo de archivo no permitido"}), 400
-
-    # Guardar la imagen en el sistema de archivos (ajusta la ubicación según tu preferencia)
-    upload_folder = 'profile_images'
-    if not os.path.exists(upload_folder):
-        os.makedirs(upload_folder)
-
+    # Verificar que el archivo sea una imagen 
+    #allowed_extensions = {'jpg', 'jpeg', 'png', 'gif'}
+   # if not profile_image.lower().endswith(tuple(allowed_extensions)):
+      #  return jsonify({"error": "Tipo de archivo no permitido"}), 400
+    
     # Generar un nombre único para la imagen
-    filename = f"user_{user_id}_profile.jpg"  # Puedes cambiar la extensión según el tipo de archivo
+    #filename = f"user_{user_id}_profile.jpg"  # Puedes cambiar la extensión según el tipo de archivo
 
     # Guardar la imagen
-    profile_image.save(os.path.join(upload_folder, filename))
+   # profile_image.save(os.path.join(upload_folder, filename))
 
     # Generar la URL completa de la imagen
-    base_url = 'https://tu-sitio-web.com'  # Reemplaza con la URL de tu sitio web
-    profile_image_url = f'{base_url}/{upload_folder}/{filename}'
+  #  base_url = process.env.BACKEND_URL 
+    #profile_image_url = f'{base_url}/{upload_folder}/{filename}'
 
     # Actualizar la URL de la imagen en la base de datos
     user = User.query.get(user_id)
-    user.profile_image_url = profile_image_url
+    user.url_perfil = profile_image
     db.session.commit()
 
     # Ejemplo de respuesta exitosa:
     return jsonify({"message": "Imagen de perfil actualizada correctamente"}), 200
 
 
-    # Ejemplo de respuesta exitosa:
-    return jsonify({"message": "Imagen de perfil actualizada correctamente"}), 200
 @api.route('/signup', methods=['POST'])
 def create_user():
     #recibir correo y password
@@ -151,30 +144,32 @@ def handle_hello():
     return jsonify(response_body), 200
   
 @api.route('/newevent', methods=['POST'])
+@jwt_required()
 def create_event():
     #recibir datos del evento
-    nombre_event= request.json.get("nombre_event")
-    descr_corta= request.json.get("descr_corta")
-    fecha_ini= request.json.get("fecha_ini")
-    fecha_fin= request.json.get("fecha_fin")
-    ubicacion= request.json.get("ubicacion")
-    logotipo= request.json.get("logotipo")
-    descr_larga= request.json.get("descr_larga")
-    reglas= request.json.get("reglas")
-    fecha_lim= request.json.get("fecha_lim")
-    email_contacto= request.json.get("email_contacto")
-    tel_contacto= request.json.get("tel_contacto")
-    nombre_contacto= request.json.get("nombre_contacto")
-    costo= request.json.get("costo")
-    id_user= request.json.get("id_user")
-    #buscar usuario en la bd, que me traiga el primer resultado
-    #user = User.query.filter_by(id = id_user).first()
-    #si no existe el usuario mostrar error
-    #if user is None:
-    #    return jsonify({"message": "User not exist"}), 401
+    id_user = get_jwt_identity()
+    event = request.json
+    object_context= event["eventData"]
+    nombre_evento= object_context["nombre_evento"]
+    descr_corta= object_context["descr_corta"]
+    fecha_ini= object_context["fecha_ini"]
+    fecha_fin= object_context["fecha_fin"]
+    ubicacion= object_context["ubicacion"]
+    logotipo= object_context["logotipo"]
+    descr_larga= object_context["descr_larga"]
+    reglas= object_context["reglas"]
+    fecha_lim= object_context["fecha_lim"]
+    hora_lim= object_context["hora_lim"]
+    email_contacto= object_context["email_contacto"]
+    tel_contacto= object_context["tel_contacto"]
+    nombre_contacto= object_context["nombre_contacto"]
+    costo= object_context["costo"]
     #crear nuevo evento a partir de esta data
     new_event = Events()
-    new_event.nombre_evento = nombre_event
+
+
+    new_event.nombre_evento = nombre_evento
+
     new_event.descr_corta = descr_corta
     new_event.fecha_ini = fecha_ini
     new_event.fecha_fin = fecha_fin
@@ -183,14 +178,66 @@ def create_event():
     new_event.descr_larga = descr_larga
     new_event.reglas = reglas
     new_event.fecha_lim = fecha_lim
+    new_event.hora_lim = hora_lim
     new_event.email_contacto = email_contacto
     new_event.tel_contacto = tel_contacto
     new_event.nombre_contacto = nombre_contacto
-    new_event.costo = costo
+    new_event.costo = float(costo)
     new_event.id_user = id_user
     db.session.add(new_event)
     db.session.commit()
-    return jsonify({"msg":"Evento registrado"}), 201
+    object_context["id"] = new_event.id
+    return jsonify(object_context), 201
+
+@api.route('/editevent', methods=['POST'])
+@jwt_required()
+def edit_event():
+    #recibir datos del evento
+    event = request.json
+    object_context= event["eventData"]
+    event_id = object_context["id"]
+    nombre_evento= object_context["nombre_evento"]
+    descr_corta= object_context["descr_corta"]
+    fecha_ini= object_context["fecha_ini"]
+    fecha_fin= object_context["fecha_fin"]
+    ubicacion= object_context["ubicacion"]
+    logotipo= object_context["logotipo"]
+    descr_larga= object_context["descr_larga"]
+    reglas= object_context["reglas"]
+    fecha_lim= object_context["fecha_lim"]
+    hora_lim= object_context["hora_lim"]
+    email_contacto= object_context["email_contacto"]
+    tel_contacto= object_context["tel_contacto"]
+    nombre_contacto= object_context["nombre_contacto"]
+    costo= object_context["costo"]
+    #buscar evento
+    event = Events.query.get(event_id)
+    event.nombre_evento = nombre_evento
+    event.descr_corta = descr_corta
+    event.fecha_ini = fecha_ini
+    event.fecha_fin = fecha_fin
+    event.ubicacion = ubicacion
+    event.logotipo = logotipo
+    event.descr_larga = descr_larga
+    event.reglas = reglas
+    event.fecha_lim = fecha_lim
+    event.hora_lim = hora_lim
+    event.email_contacto = email_contacto
+    event.tel_contacto = tel_contacto
+    event.nombre_contacto = nombre_contacto
+    event.costo = int(costo)
+    db.session.commit()
+    return jsonify(object_context), 201
+
+@api.route('/deleteevent', methods=['POST'])
+@jwt_required()
+def delete_event():
+    #recibir datos del evento
+    eventId = request.json.get("eventId")
+    event = Events.query.get(eventId)
+    db.session.delete(event)
+    db.session.commit()
+    return jsonify({"message": "Delete successfull"}), 201
 
 @api.route('/loadevents', methods=['GET'])
 @jwt_required()
@@ -198,7 +245,7 @@ def load_events():
     #recibir datos del cuerpo de la petición
     user = get_jwt_identity()
     #ubicar usuario en la bd, que me traiga todos los resultados
-    lista = Events.query.filter_by(id_user = user).all()
+    lista = Events.query.filter_by(id_user = user).order_by(Events.fecha_ini.desc()).all()
     #si no se encontró el evento
     if lista is None:
         return jsonify({"message": "Events not found"}), 401
@@ -216,6 +263,7 @@ def load_events():
         "descr_larga": item.descr_larga,
         "reglas": item.reglas,
         "fecha_lim": item.fecha_lim,
+        "hora_lim": item.hora_lim,
         "email_contacto": item.email_contacto,
         "tel_contacto": item.tel_contacto,
         "nombre_contacto": item.nombre_contacto,

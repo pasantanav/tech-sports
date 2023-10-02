@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import '../../styles/contacto.css';
+import emailjs from 'emailjs-com'
 
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ function ContactForm() {
     message: "",
     sendCopy: false,
   });
+
+  const [isEmailSent, setIsEmailSent] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -18,26 +21,22 @@ function ContactForm() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
+
+    const serviceID = 'service_wrzgalp'; // Reemplaza con tu Service ID de emailjs
+    const templateID = 'template_r0ko4dy'; // Reemplaza con tu Template ID de emailjs
+    const userID = '0uvEkZ3z_2b2oGDIZ'; // Reemplaza con tu User ID de emailjs
 
     try {
-      const response = await fetch("URL_DEL_BACKEND", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // Indica que estás enviando datos en formato JSON
-        },
-        body: JSON.stringify(formData), // Convierte el objeto formData a JSON
-      });
+      const response = await emailjs.sendForm(serviceID, templateID, e.target, userID);
 
-      if (response.ok) {
-        // El envío fue exitoso, puedes mostrar un mensaje de éxito al usuario
+      if (response.status === 200) {
         console.log("Mensaje enviado con éxito");
+        setIsEmailSent(true);
       } else {
-        // Puedes manejar errores aquí
         console.error("Error al enviar el mensaje");
       }
     } catch (error) {
-      // Puedes manejar errores aquí
       console.error("Error al enviar el mensaje", error);
     }
   };
@@ -59,7 +58,7 @@ function ContactForm() {
         </div>
 
         <div className="form-outline mb-4">
-          <label className="form-label" htmlFor="email">Dirección de correo eléctronico</label>
+          <label className="form-label" htmlFor="email">Dirección de correo electrónico</label>
           <input
             type="email"
             id="email"
@@ -84,24 +83,13 @@ function ContactForm() {
           ></textarea>
         </div>
 
-        <div className="form-check d-flex justify-content-center mb-4">
-          <input
-            className="form-check-input me-2"
-            type="checkbox"
-            id="sendCopy"
-            name="sendCopy"
-            checked={formData.sendCopy}
-            onChange={handleChange}
-          />
-          <label className="form-check-label" htmlFor="sendCopy">
-            Envíame una copia de este mensaje
-          </label>
-        </div>
+        
 
         <button type="submit" className="btn btn-primary btn-block mb-4">
           Enviar
         </button>
       </form>
+      {isEmailSent && <div className="alert alert-success">Mensaje enviado con éxito</div>}
     </div>
   );
 }

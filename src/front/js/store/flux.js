@@ -18,32 +18,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			updateProfileImage: async (newImageUrl) => {
 				try {
-					const { apiFetchProtected } = getActions();
+				  const { apiFetchProtected } = getActions();
+		  
+				  // Hace una solicitud al servidor para actualizar la imagen de perfil
+				  const resp = await apiFetchProtected("/updateimage", "POST", { newImageUrl });
+		  
+				  if (resp.code === 200) {
+					// La imagen de perfil se actualizó con éxito en el servidor
+					// Actualiza el estado global con la nueva URL de la imagen
+					console.log('la respuesta es' + resp)
+					/*setStore((prevStore) => ({
+					  ...prevStore,
+					  userInfo: {
+						...prevStore.userInfo,
+						profileImage: newImageUrl,
+					  },
+					})); */
+				  } else {
 
-					// Hace una solicitud al servidor para actualizar la imagen de perfil
-					const resp = await apiFetchProtected("/updateProfileImage", "POST", { profileImage: newImageUrl });
-
-					if (resp.code === 200) {
-						// La imagen de perfil se actualizó con éxito en el servidor
-						// Actualiza el estado global con la nueva URL de la imagen
-						setStore((prevStore) => ({
-							...prevStore,
-							userInfo: {
-								...prevStore.userInfo,
-								profileImage: newImageUrl,
-							},
-						}));
-					} else {
-						// Maneja el caso en el que la API de actualización de la imagen de perfil devuelva un código de error
-						console.error("Error al actualizar la imagen de perfil:", resp);
-						// Puedes mostrar un mensaje de error o realizar otra acción aquí
-					}
-
-					return resp;
-				} catch (error) {
-					console.error("Error al actualizar la imagen de perfil:", error);
-					// Maneja el caso en el que ocurra un error en la llamada a la API
+					// Maneja el caso en el que la API de actualización de la imagen de perfil devuelva un código de error
+					console.error("Error al actualizar la imagen de perfil:", resp);
 					// Puedes mostrar un mensaje de error o realizar otra acción aquí
+				  }
+				  return resp;
+				} catch (error) {
+				  console.error("Error al actualizar la imagen:", error);
+				  // Maneja el caso en el que ocurra un error en la llamada a la API
+				  // Puedes mostrar un mensaje de error o realizar otra acción aquí
 				}
 			},
 			apiFetchPublic: async (endpoint, method = "GET", body = null) => {
@@ -55,8 +56,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						//objeto params con lo necesario para la petición que no es get
 						const params = {
 							method,
-							headers: {
-								"Content-Type": "application/json"
+							headers:{
+								"Content-Type":"application/json",
+								"Access-Control-Allow-Origin": "*"
 							}
 						}
 						//si hay body lo agregamos a los params
@@ -83,8 +85,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const params = {
 						method,
-						headers: {
-							"Authorization": "Bearer " + accessToken
+						headers:{
+							"Authorization": "Bearer " + accessToken,
+							"Access-Control-Allow-Origin": "*"
 						}
 					}
 					//si hay body lo agregamos a los params
@@ -126,8 +129,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log("borramos el token")
 						localStorage.removeItem("accessToken")
 					}
-					console.log("PRUEBA_login", JSON.stringify(resp))
-
 					return resp
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
@@ -198,16 +199,83 @@ const getState = ({ getStore, getActions, setStore }) => {
 				store.modalmsje.splice(0, 1, dataMsje);
 				setStore(store);
 			},
-			newEvent: async (eventData) => {
-				try {
-					const { apiFetchPublic } = getActions()
+			newEvent:async(eventData)=>{
+				try{
+					const {apiFetchProtected} = getActions()
 					//hacemos la petición
 					//trae de la API el code(resp.status) y data
 					//es decir, lo que regresa la función apiFetchPublic()
-					const resp = await apiFetchPublic("/newevent", "POST", { eventData })
+					console.log("DATOSDELEVENTO: ", {eventData})
+					const resp = await apiFetchProtected("/newevent", "POST", {eventData})
 					console.log("PRUEBA_newEvent", JSON.stringify(resp))
-					return resp
-				} catch (error) {
+					if (resp.code==201){
+						//setStore({userInfo:resp.data})
+						const store = getStore();
+						store.userEvent.push(resp.data);
+						setStore(store);
+						return "Ok"
+					}
+					//si el token expiró
+					//borramos token del almacenamiento local y del store
+					localStorage.removeItem("accessToken")
+					if (resp.code==401){
+						setStore({accessToken:null})
+						alert("Sesión expirada")
+					}
+					return "Sesión expirada"
+					//return resp
+				} catch(error){
+					console.log("Error al crear el evento")
+				}
+			},
+			editEvent:async(eventData, index)=>{
+				try{
+					const {apiFetchProtected} = getActions()
+					console.log("DATOSDELEVENTO: ", {eventData})
+					const resp = await apiFetchProtected("/editevent", "POST", {eventData})
+					console.log("PRUEBA_editEvent", JSON.stringify(resp))
+					if (resp.code==201){
+						//setStore({userInfo:resp.data})
+						const store = getStore();
+						store.userEvent.splice(index, 1, resp.data);
+						setStore(store);
+						return "Ok"
+					}
+					//si el token expiró
+					//borramos token del almacenamiento local y del store
+					localStorage.removeItem("accessToken")
+					if (resp.code==401){
+						setStore({accessToken:null})
+						alert("Sesión expirada")
+					}
+					return "Sesión expirada"
+					//return resp
+				} catch(error){
+					console.log("Error al crear el evento")
+				}
+			},
+			deleteEvent:async(eventId, index)=>{
+				try{
+					const {apiFetchProtected} = getActions()
+					console.log("Id del evento a borrar: ", eventId)
+					const resp = await apiFetchProtected("/deleteevent", "POST", {eventId})
+					console.log("PRUEBA_DeleteEvent", JSON.stringify(resp))
+					//si el token expiró borramos token del almacenamiento local y del store
+					if (resp.code==201){
+						const store = getStore();
+						store.userEvent.splice(index, 1);
+						setStore(store);
+						alert("Evento eliminado exitosamente");
+						return "Ok"
+					}
+					localStorage.removeItem("accessToken")
+					if (resp.code==401){
+						setStore({accessToken:null})
+						return ("Sesión expirada")
+					}
+					return "Sesión expirada"
+					//return resp
+				} catch(error){
 					console.log("Error al crear el evento")
 				}
 			},
@@ -233,7 +301,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
 				}
-			},
+      		},
 			logout: async () => {
 				const { apiFetchProtected } = getActions();
 
