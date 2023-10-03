@@ -166,7 +166,10 @@ def create_event():
     costo= object_context["costo"]
     #crear nuevo evento a partir de esta data
     new_event = Events()
+
+
     new_event.nombre_evento = nombre_evento
+
     new_event.descr_corta = descr_corta
     new_event.fecha_ini = fecha_ini
     new_event.fecha_fin = fecha_fin
@@ -351,3 +354,48 @@ def load_user_teams():
     #después de las validaciones enviar msje de confirmación
     #pasando contenido
     return jsonify({"teams":response}), 200
+
+#api para nextEvent
+@api.route('/loadallevents', methods=['GET'])
+def load_allevents():
+    #ubicar usuario en la bd, que me traiga todos los resultados
+    lista = Events.query.all()
+    #si no se encontró el evento
+    if lista is None:
+        return jsonify({"message": "Events not found"}), 401
+    response=[]
+    for item in lista:
+    #    response.append({item})
+        response.append({
+        "id": item.id,
+        "nombre_evento": item.nombre_evento,
+        "fecha_ini": item.fecha_ini,
+        "fecha_fin": item.fecha_fin,
+        "ubicacion": item.ubicacion,
+        "fecha_lim": item.fecha_lim,
+        "id_user": item.id_user})
+    #después de las validaciones enviar msje de confirmación
+    #pasando contenido
+    return jsonify({"eventos":response}), 200
+
+@api.route('/loadAllUsers', methods=['GET'])
+#@jwt_required()
+def loadAllUser():
+    #recibir datos del cuerpo de la petición
+   # user = get_jwt_identity()
+    #ubicar usuario en la bd, que me traiga todos los resultados
+    lista = User.query.all()
+    #si no se encontró el evento
+    if lista is None:
+        return jsonify({"message": "Users not found"}), 401
+    response=[]
+    for item in lista:
+    #    response.append({item})
+        response.append({
+        "id": item.id,
+        
+        "name": item.name})
+    #después de las validaciones enviar msje de confirmación
+    #pasando contenido
+    return jsonify({"Users":response}), 200
+
