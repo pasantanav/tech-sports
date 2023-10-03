@@ -426,11 +426,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore(store);
 
 						// Redirige al usuario a la página de inicio de sesión
-<<<<<<< HEAD
 						//navigate('/'); 
-=======
-						navigate('/');
->>>>>>> refs/remotes/origin/pedro13
 					} else {
 						// Maneja el caso en el que la API de logout devuelva un código de error
 						console.error("Error al realizar logout:", resp);
