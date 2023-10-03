@@ -105,7 +105,8 @@ function LoginForm() {
           alert("Signup successfull")
         }
         formulario.reset();
-        window.location.reload(false)
+        setActiveTab('login');
+        //window.location.reload(false);
     }
   };
 
@@ -244,6 +245,7 @@ function LoginForm() {
                             maxLength="120"
                             className="form-control white-background-input"
                             onChange={handleRegisterChange}
+                            required
                           />
                         </div>
 

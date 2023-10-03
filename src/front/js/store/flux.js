@@ -4,6 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			accessToken: null,
 			userInfo: null,
 			userEvent: [],
+			userTeam: [],
 			message: null,
 			allEvents: [],
 			modalmsje: [
@@ -302,6 +303,112 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al solicitar los datos", error)
 				}
       		},
+			newTeam:async(teamData)=>{
+				try{
+					const {apiFetchProtected} = getActions()
+					//hacemos la petición
+					//trae de la API el code(resp.status) y data
+					//es decir, lo que regresa la función apiFetchPublic()
+					console.log("DATOS DEL EQUIPO: ", {teamData})
+					const resp = await apiFetchProtected("/newteam", "POST", {teamData})
+					console.log("PRUEBA_newTeam", JSON.stringify(resp))
+					//Si el equipo existe enviar error
+					if (resp.code==402){
+						return resp
+					}
+					if (resp.code==201){
+						//setStore({userInfo:resp.data})
+						const store = getStore();
+						store.userTeam.push(resp.data);
+						setStore(store);
+						return "Ok"
+					}
+					//si el token expiró
+					//borramos token del almacenamiento local y del store
+					localStorage.removeItem("accessToken")
+					if (resp.code==401){
+						setStore({accessToken:null})
+						alert("Sesión expirada")
+					}
+					return "Sesión expirada"
+					//return resp
+				} catch(error){
+					console.log("Error al crear el equipo")
+				}
+			},
+			getUserTeams: async()=>{
+				try{
+					const {apiFetchProtected} = getActions()
+					const resp = await apiFetchProtected("/loaduserteams")
+					///////////// extra
+					console.log("PRUEBA_loaduserTeams", resp)
+					if (resp.code==200){
+						setStore({userTeam:resp.data.teams})
+						return "Ok"
+					}
+					//si el token expiró
+					//borramos token del almacenamiento local y del store
+					localStorage.removeItem("accessToken")
+					if (resp.code==401){
+						setStore({accessToken:null})
+						alert("Sesión expirada")
+					}
+					return "Sesión expirada"
+				}catch(error){
+					console.log("Error al solicitar los datos", error)
+				}
+      		},
+			editTeam:async(teamData, index)=>{
+				try{
+					const {apiFetchProtected} = getActions()
+					console.log("DATOSDELEQUIPO: ", {teamData})
+					const resp = await apiFetchProtected("/editteam", "POST", {teamData})
+					console.log("PRUEBA_editTeam", JSON.stringify(resp))
+					if (resp.code==201){
+						//setStore({userInfo:resp.data})
+						const store = getStore();
+						store.userTeam.splice(index, 1, resp.data);
+						setStore(store);
+						return "Ok"
+					}
+					//si el token expiró
+					//borramos token del almacenamiento local y del store
+					localStorage.removeItem("accessToken")
+					if (resp.code==401){
+						setStore({accessToken:null})
+						alert("Sesión expirada")
+					}
+					return "Sesión expirada"
+					//return resp
+				} catch(error){
+					console.log("Error al crear el equipo")
+				}
+			},
+			deleteTeam:async(teamId, index)=>{
+				try{
+					const {apiFetchProtected} = getActions()
+					console.log("Id del equipo a borrar: ", teamId)
+					const resp = await apiFetchProtected("/deleteteam", "POST", {teamId})
+					console.log("PRUEBA_DeleteTeam", JSON.stringify(resp))
+					//si el token expiró borramos token del almacenamiento local y del store
+					if (resp.code==201){
+						const store = getStore();
+						store.userTeam.splice(index, 1);
+						setStore(store);
+						alert("Equipo eliminado exitosamente");
+						return "Ok"
+					}
+					localStorage.removeItem("accessToken")
+					if (resp.code==401){
+						setStore({accessToken:null})
+						return ("Sesión expirada")
+					}
+					return "Sesión expirada"
+					//return resp
+				} catch(error){
+					console.log("Error al crear el evento")
+				}
+			},
 			logout: async () => {
 				const { apiFetchProtected } = getActions();
 
