@@ -190,7 +190,7 @@ const Perfil = ()=>{
                   <img src={teamlist} className="card-img-top" alt="Equipos"/>
                   <div className="card-body">
                     <p className="card-text">Consulta tus equipos registrados en los eventos.</p>
-                    <Link to="/teams" className="btn btn-primary">Administrar Equipos</Link>
+                    <Link to="/teamlist" className="btn btn-primary">Administrar Equipos</Link>
                   </div>
                 </div>
               </div>

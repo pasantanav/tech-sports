@@ -67,6 +67,10 @@ const ModalEvent = (props) => {
         }
       }, [props.indice]);
 
+      useEffect(()=>{
+        limpiarDataEvento();
+        }, []);
+
     const handleEventChange = (e) => {
       console.log("TARGET", e.target);
       const { name, value } = e.target;
@@ -89,6 +93,27 @@ const ModalEvent = (props) => {
       setEditar(true);
     };
 
+    const limpiarDataEvento = () => {
+      if (props.operacion=="Evento Nuevo"){
+        setEventFormData({
+          nombre_evento: "",
+          descr_corta: "",
+          fecha_ini: "",
+          fecha_fin: "",
+          ubicacion: "",
+          logotipo: "",
+          descr_larga: "",
+          reglas: "",
+          fecha_lim: "",
+          hora_lim: '23:59',
+          email_contacto: "",
+          tel_contacto: "",
+          nombre_contacto: "",
+          costo: 0,
+          id: ""
+        });}
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.target)
@@ -96,7 +121,7 @@ const ModalEvent = (props) => {
         const fecha_ini=data.get("fecha_ini")
         const fecha_fin=data.get("fecha_fin")
         const fecha_lim=data.get("fecha_lim")
-        if (props.operacion=="Editar Evento" && !editar){
+        if (props.operacion=="Editar Evento" && editar==false){
           console.log("no es necesario editar");
           alert("Evento actualizado");
           formulario.reset();
@@ -125,6 +150,7 @@ const ModalEvent = (props) => {
               if (resp=="Ok"){
                 //MODAL
                 alert("Evento " + oper + " exitosamente");
+                limpiarDataEvento();
                 /*if (props.operacion=="Evento Nuevo"){
                   let text = "Registro exitoso\n¿Quieres agregar otro evento?";
                   if (confirm(text) == false) {

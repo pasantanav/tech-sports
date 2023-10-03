@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, TokenBlockedList, Events
+from api.models import db, User, TokenBlockedList, Events, Teams
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
@@ -269,3 +269,85 @@ def load_events():
     #después de las validaciones enviar msje de confirmación
     #pasando contenido
     return jsonify({"eventos":response}), 200
+
+@api.route('/newteam', methods=['POST'])
+@jwt_required()
+def create_team():
+    #recibir datos del evento
+    id_user = get_jwt_identity()
+    team = request.json
+    object_context= team["teamData"]
+    nombre_equipo= object_context["nombre_equipo"]
+    team = Teams.query.filter_by(nombre_equipo = nombre_equipo).first()
+    #si existe el usuario mostrar error
+    if team is not None:
+        return jsonify({"message": "Equipo ya existe"}), 402
+    jugadores= object_context["jugadores"]
+    fecha_registro= object_context["fecha_registro"]
+    logotipo= object_context["logotipo"]
+    #crear nuevo evento a partir de esta data
+    new_team = Teams()
+    new_team.nombre_equipo = nombre_equipo
+    new_team.jugadores = jugadores
+    new_team.fecha_registro = fecha_registro
+    new_team.logotipo = logotipo
+    new_team.id_user = id_user
+    db.session.add(new_team)
+    db.session.commit()
+    object_context["id"] = new_team.id
+    return jsonify(object_context), 201
+
+@api.route('/editteam', methods=['POST'])
+@jwt_required()
+def edit_team():
+    #recibir datos del equipo
+    team = request.json
+    object_context= team["teamData"]
+    team_id = object_context["id"]
+    nombre_equipo= object_context["nombre_equipo"]
+    jugadores= object_context["jugadores"]
+    fecha_registro= object_context["fecha_registro"]
+    logotipo= object_context["logotipo"]
+    id_user= object_context["id_user"]
+    #buscar equipo
+    team = Teams.query.get(team_id)
+    team.nombre_equipo = nombre_equipo
+    team.jugadores = jugadores
+    team.fecha_registro = fecha_registro
+    team.logotipo = logotipo
+    team.id_user = id_user
+    db.session.commit()
+    return jsonify(object_context), 201
+
+@api.route('/deleteteam', methods=['POST'])
+@jwt_required()
+def delete_team():
+    #recibir datos del equipo
+    teamId = request.json.get("teamId")
+    team = Teams.query.get(teamId)
+    db.session.delete(team)
+    db.session.commit()
+    return jsonify({"message": "Delete successfull"}), 201
+
+@api.route('/loaduserteams', methods=['GET'])
+@jwt_required()
+def load_user_teams():
+    #recibir datos del cuerpo de la petición
+    user = get_jwt_identity()
+    #ubicar usuario en la bd, que me traiga todos los resultados
+    lista = Teams.query.filter_by(id_user = user).all()
+    #si no se encontró el evento
+    if lista is None:
+        return jsonify({"message": "Teams not found"}), 401
+    response=[]
+    for item in lista:
+        response.append({
+        "id": item.id,
+        "nombre_equipo": item.nombre_equipo,
+        "jugadores": item.jugadores,
+        "fecha_registro": item.fecha_registro,
+        "logotipo": item.logotipo,
+        "id_user": item.id_user})
+    #después de las validaciones enviar msje de confirmación
+    #pasando contenido
+    return jsonify({"teams":response}), 200

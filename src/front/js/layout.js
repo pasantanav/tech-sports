@@ -23,6 +23,8 @@ import TeamList from "./pages/equiposparticipantes";
 import UserPage from "./pages/perfil";
 import PerfilOrganizador from "./pages/perfilorganizador";
 import EventoLista from "./pages/eventoLista";
+import TeamLista from "./pages/teamlist";
+//import ModalTeams from "./component/modalteams";
 
 //create your first component
 const Layout = () => {
@@ -53,6 +55,8 @@ const Layout = () => {
                         <Route element={<PerfilOrganizador />} path="/perfilorganizador" />
                         <Route element={<Perfil />} path="/perfil" />
                         <Route element={<EventoLista />} path="/eventolista/:id" />
+                        <Route element={<TeamLista />} path="/teamlist" />
+                        {/*<Route element={<ModalTeams />} path="/modalteams" />*/}
                     </Routes>
                     <Footer />
                 </ScrollToTop>
