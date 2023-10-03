@@ -38,19 +38,12 @@ const TeamLista = () => {
         setTeamIdDelete(id);
         setTeamToDelete(nombre);
         setIndice(index);
+        console.log("A borrar, id:", teamIdDelete, " nombre:", nombre, " index:", index);
     }
     const createEquipo = () => {
         setOperation("Equipo Nuevo");
         setIndice("n");
-        setTeamFormData({
-            nombre_equipo: "",
-            jugadores: "",
-            //fecha_registro: fechaActual,
-            fecha_registro: "",
-            logotipo: "",
-            id_user: "",
-            id: ""
-          })
+        limpiarDataEquipo();
     }
     const handleChange = (e, propertyName) => {
         /*const currentTeam = Object.assign({}, selectedTeam);
@@ -120,7 +113,8 @@ const TeamLista = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.target);
-        const nombre_equipo=data.get("nombre_equipo")
+        const nombre_equipo=data.get("nombre_equipo");
+        console.log("ESTA ES LA OPERACION:", operation);
         if (operation=="Editar Equipo" && editar==false){
           console.log("no es necesario editar");
           alert("Equipo actualizado");
@@ -130,6 +124,7 @@ const TeamLista = () => {
           } else {
               let resp ="";
               let oper ="";
+              console.log("Id Equipo:", idEquipo);
               if (operation=="Equipo Nuevo"){
                 const {newTeam} = actions;
                 console.log("Equipo a registrar:", teamFormData);

@@ -32,7 +32,7 @@ const ModalEvent = (props) => {
         let day = fechaAnt.getDate().toString();
         if (day.length==1)
           day = "0"+ day;
-        let year = fechaAnt.getFullYear();
+        let year = fechaAnt.getFullYear().toString();
         let month = fechaAnt.getMonth()+1;
         month = month.toString();
         if (month.length==1)
@@ -41,98 +41,135 @@ const ModalEvent = (props) => {
         return nuevaFecha;
       }
 
+      const limpiarDataEvento = () => {
+        if (props.operacion=="Evento Nuevo"){
+          console.log("limpiando datos");
+          setEventFormData({
+            nombre_evento: "",
+            descr_corta: "",
+            fecha_ini: "",
+            fecha_fin: "",
+            ubicacion: "",
+            logotipo: "",
+            descr_larga: "",
+            reglas: "",
+            fecha_lim: "",
+            hora_lim: '23:59',
+            email_contacto: "",
+            tel_contacto: "",
+            nombre_contacto: "",
+            costo: 0,
+            id: ""
+          });}
+      }
+
       useEffect(()=>{
         if (props.operacion=="Editar Evento"){
           setEventFormData(store.userEvent[props.indice]);
-          console.log(eventFormData.fecha_ini)
           setFechaInicio(store.userEvent[props.indice].fecha_ini);
           setFechaFinal(store.userEvent[props.indice].fecha_fin);
           setFechaLimite(store.userEvent[props.indice].fecha_lim);
         } else {
-          let eventData = {...eventFormData};
+          limpiarDataEvento();
+          let currentDate = new Date();
+          let actual = cambiarFormatoFecha(currentDate);
+          console.log("La fecha actua es:", actual);
+          setFechaActual(actual);
+          setFechaInicio(actual);
+          setFechaFinal(actual);
+          setFechaLimite(actual);
+          /*let eventData = {...eventFormData};
+          let currentDate = new Date();
+          let actual = cambiarFormatoFecha(currentDate);
+          console.log("La fecha actua es:", actual);
+          setFechaActual(actual);
+          setFechaInicio(actual);
+          setFechaFinal(actual);
+          setFechaLimite(actual);
           for (let value in eventData){
             eventData[value] = "";
             if (value=="costo")
               eventData[value] = 0;
             if (value=="hora_lim")
               eventData[value] = "23:59";
+            if (value=="fecha_ini")
+              eventData[value] = fechaInicio;
+            if (value=="fecha_fin")
+              eventData[value] = fechaFinal;
+            if (value=="fecha_lim")
+              eventData[value] = fechaLimite;
           }
-          setEventFormData(eventData);
-          let currentDate = new Date();
-          let actual = cambiarFormatoFecha(currentDate);
-          setFechaActual(actual);
-          setFechaInicio(actual);
-          setFechaFinal(actual);
-          setFechaLimite(actual);
+          setEventFormData(eventData);*/
         }
       }, [props.indice]);
 
       useEffect(()=>{
         limpiarDataEvento();
-        }, []);
+        let currentDate = new Date();
+        let actual = cambiarFormatoFecha(currentDate);
+        console.log("La fecha de hoy es:", actual);
+        setFechaActual(actual);
+        setFechaInicio(actual);
+        setFechaFinal(actual);
+        setFechaLimite(actual);
+      }, []);
 
     const handleEventChange = (e) => {
-      console.log("TARGET", e.target);
+      //console.log("TARGET", e.target);
       const { name, value } = e.target;
       setEventFormData({
         ...eventFormData,
         [name]: value,
       });
-      if (name == "fecha_ini"){
-          setFechaInicio(value);
+      if (name == "fecha_ini" || name == "fecha_fin" || name == "fecha_lim"){
+        const eventDataok = {...eventFormData};
+        if (name == "fecha_ini"){
+            setFechaInicio(value);
+            setFechaLimite(value);
+            setFechaFinal(value);
+            eventDataok.fecha_ini= value;
+            eventDataok.fecha_fin= value;
+            eventDataok.fecha_lim= value;
+          }
+        if (name == "fecha_fin"){
+          setFechaFinal(value);
           setFechaLimite(value);
-          setFechaFinal(value)
+          eventDataok.fecha_fin= value;
+          eventDataok.fecha_lim= value;
         }
-      if (name == "fecha_fin"){
-        setFechaFinal(value);
-        setFechaLimite(value);
-      }
-      if (name == "fecha_lim"){
-        setFechaLimite(value);
+        if (name == "fecha_lim"){
+          setFechaLimite(value);
+        }
+        setEventFormData(eventDataok);
       }
       setEditar(true);
     };
-
-    const limpiarDataEvento = () => {
-      if (props.operacion=="Evento Nuevo"){
-        setEventFormData({
-          nombre_evento: "",
-          descr_corta: "",
-          fecha_ini: "",
-          fecha_fin: "",
-          ubicacion: "",
-          logotipo: "",
-          descr_larga: "",
-          reglas: "",
-          fecha_lim: "",
-          hora_lim: '23:59',
-          email_contacto: "",
-          tel_contacto: "",
-          nombre_contacto: "",
-          costo: 0,
-          id: ""
-        });}
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.target)
         const nombre_evento=data.get("nombre_evento")
-        const fecha_ini=data.get("fecha_ini")
+        /*const fecha_ini=data.get("fecha_ini")
         const fecha_fin=data.get("fecha_fin")
-        const fecha_lim=data.get("fecha_lim")
+        const fecha_lim=data.get("fecha_lim")*/
         if (props.operacion=="Editar Evento" && editar==false){
           console.log("no es necesario editar");
           alert("Evento actualizado");
           formulario.reset();
-        }else if (fechaLimite>fechaFinal){
-          alert("La fecha límite no debe ser mayor a la fecha de terminación");
-          setFechaLimite(fechaFinal);
-        } else if (fecha_ini=="" || fecha_fin=="" || fecha_lim==""){
-            alert("No debe de haber datos vacíos")
-          } else if (nombre_evento.length <3) {
+        } else if (nombre_evento.length <3) {
             alert("El nombre debe tener al menos 2 caracteres")
           } else {
+              /*const eventDataok = {...eventFormData};
+              console.log("FECHA DE INICIO A VER:", fecha_ini);
+              eventDataok.fecha_ini = fecha_ini.toString();
+              eventDataok.fecha_fin = fecha_fin.toString();
+              eventDataok.fecha_lim = fecha_lim.toString();
+              console.log("FECHAS:", eventDataok.fecha_ini, eventDataok.fecha_fin, eventDataok.fecha_lim);
+              console.log("EVento antes de grabar", eventDataok);
+              setEventFormData(eventDataok);
+              console.log("Evento a grabar:", eventFormData);*/
+              console.log("EVento antes de grabar", eventFormData);
+              console.log(props.indice, props.operacion);
               let resp ="";
               let oper ="";
               if (props.operacion=="Evento Nuevo"){
@@ -221,9 +258,10 @@ const ModalEvent = (props) => {
                                   id="fecha_ini"
                                   min={fechaActual}
                                   name="fecha_ini"
-                                  value={fechaInicio}
+                                  value={eventFormData.fecha_ini}
                                   className="form-control white-background-input"
                                   onChange={handleEventChange}
+                                  required
                                 />
                               </div>
                             </div>
@@ -239,9 +277,10 @@ const ModalEvent = (props) => {
                                   id="fecha_fin"
                                   min={fechaInicio}
                                   name="fecha_fin"
-                                  value={fechaFinal}
+                                  value={eventFormData.fecha_fin}
                                   className="form-control white-background-input"
                                   onChange={handleEventChange}
+                                  required
                                 />
                               </div>
                             </div>
@@ -388,10 +427,11 @@ const ModalEvent = (props) => {
                                 type="date"
                                 id="fecha_lim"
                                 name="fecha_lim"
-                                value={fechaLimite}
+                                value={eventFormData.fecha_lim}
                                 max={fechaFinal}
                                 className="form-control white-background-input"
                                 onChange={handleEventChange}
+                                required
                               />
                             </div>
                           </div>

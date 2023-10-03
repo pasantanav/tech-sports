@@ -61,7 +61,7 @@ const Registrarse = () => {
                             <img id="image" src={basket} className="img-fluid" alt="Image" />
                         </div>
                         <div className="row">
-                            <div classsName="col">
+                            <div className="col">
                                 <b><h1>Descripción</h1></b>
                                 <hr style={{ height: "2px", width: "100%", borderWidth: "0", color: "gray", }}></hr>
                                 <p>This event article, used for writing about and listing the events planned for the future on your website.You can edit all of this text from the Pages tab by clicking the edit button.</p>
