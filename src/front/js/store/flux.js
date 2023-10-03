@@ -252,7 +252,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return "Sesión expirada"
 					//return resp
 				} catch(error){
-					console.log("Error al crear el evento")
+					console.log("Error al editar el evento")
 				}
 			},
 			deleteEvent:async(eventId, index)=>{
@@ -277,7 +277,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return "Sesión expirada"
 					//return resp
 				} catch(error){
-					console.log("Error al crear el evento")
+					console.log("Error al borrar el evento")
 				}
 			},
 			getUserEvent: async () => {
@@ -381,7 +381,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return "Sesión expirada"
 					//return resp
 				} catch(error){
-					console.log("Error al crear el equipo")
+					console.log("Error al editar el equipo")
 				}
 			},
 			deleteTeam:async(teamId, index)=>{
@@ -406,7 +406,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return "Sesión expirada"
 					//return resp
 				} catch(error){
-					console.log("Error al crear el evento")
+					console.log("Error al eliminar el equipo")
 				}
 			},
 			logout: async () => {
@@ -426,7 +426,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore(store);
 
 						// Redirige al usuario a la página de inicio de sesión
+<<<<<<< HEAD
+						//navigate('/'); 
+=======
 						navigate('/');
+>>>>>>> refs/remotes/origin/pedro13
 					} else {
 						// Maneja el caso en el que la API de logout devuelva un código de error
 						console.error("Error al realizar logout:", resp);
