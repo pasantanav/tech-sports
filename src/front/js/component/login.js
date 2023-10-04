@@ -105,7 +105,8 @@ function LoginForm() {
           alert("Signup successfull")
         }
         formulario.reset();
-        window.location.reload(false)
+        setActiveTab('login');
+        //window.location.reload(false);
     }
   };
 
@@ -182,8 +183,8 @@ function LoginForm() {
                             required
                           />
                         </div>
-
                         <div className="row mb-4">
+                          {/*
                           <div className="col-md-6 d-flex justify-content-center">
                             <div className="form-check mb-3 mb-md-0">
                               <label className="form-check-label" htmlFor="loginCheck">
@@ -199,7 +200,7 @@ function LoginForm() {
                               />
                             </div>
                           </div>
-
+                          */}
                           <div className="col-md-6 d-flex justify-content-center">
                             <ResetPass/>
                           </div>
@@ -244,6 +245,7 @@ function LoginForm() {
                             maxLength="120"
                             className="form-control white-background-input"
                             onChange={handleRegisterChange}
+                            required
                           />
                         </div>
 
