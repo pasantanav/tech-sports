@@ -28,7 +28,7 @@ const EventList = () => {
                 "fecha_ini": '13/11/2023',
                 "fecha_fin": '13/11/2024',
                 "ubicacion": 'Colombia',
-                "logotipo":  "",
+                "logotipo":  response.filesUploaded[0].url,
                 "descr_larga":  "",
                 "reglas":  "",
                 "fecha_lim":  "",
@@ -80,7 +80,7 @@ const EventList = () => {
                             <td>
                                 <div className="d-flex align-items-center">
                                     <img
-                                        src={`https://mdbootstrap.com/img/new/avatars/${theEvent.id}.jpg`}
+                                        src={theEvent.logotipo}
                                         alt=""
                                         style={{ width: '45px', height: '45px' }}
                                         className="rounded-circle"

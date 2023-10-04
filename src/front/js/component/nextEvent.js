@@ -2,18 +2,11 @@ import React, { useEffect, useContext, useState } from "react"
 import '../../styles/nextEvent.css'
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import Registrarse from "./registrarse";
 
 const nextEvent = () => {
 
   const { store, actions } = useContext(Context);
-  /*const getEvent = async () => {
-    if (store.allEvents.length === 0) {
-      const { getAllEvents } = actions;
-      const resp = await getAllEvents();
-      if (resp == "Ok")
-        setEvents(store.allEvents);
-    }
-  }*/
 
   useEffect(() => {
     actions.getAllEvents();
@@ -45,7 +38,6 @@ const nextEvent = () => {
                 <h4>Fecha y Hora Límite</h4>
               </div>
             </div>
-            {/*<p id="eventTitle"><a href={"registrarse/"+index}>{value.nombre_evento}</a></p>*/}
             {store.allEvents.map((value, index) =>
               <div className="row" key={index}>
                 <div className="col">

@@ -17,6 +17,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			]
 		},
 		actions: {
+
+			
+			  
 			updateProfileImage: async (newImageUrl) => {
 				try {
 				  const { apiFetchProtected } = getActions();
