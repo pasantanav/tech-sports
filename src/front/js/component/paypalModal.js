@@ -6,7 +6,7 @@ const PaypalModal =()=>{
         <button type="button" className="primary" data-toggle="modal" data-target="#exampleModal" style="justify-tracks: left;">
           Pagar
         </button>
-        <div className="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div className="modal fade" id="basicModal" tabIndex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
