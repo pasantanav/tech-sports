@@ -1,6 +1,8 @@
 import React, { useEffect, useContext, useState } from "react"
 import '../../styles/nextEvent.css'
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
+import Registrarse from "./registrarse";
 const nextEvent = () => {
   const [events, setEvents] = useState([])
   const { store, actions } = useContext(Context);
@@ -47,7 +49,7 @@ const nextEvent = () => {
             {events.map((value, index) =>
               <div className="row">
                 <div className="col">
-                  <p id="eventTitle"><a href="registrarse">{value.nombre_evento}</a></p>
+                  <p id="eventTitle"><Link to="/registrarse" state={{"event":value, "s": "asdf"}}>{value.nombre_evento}</Link></p>
                 </div>
                 <div className="col">
                   <p>{value.fecha_ini}</p>

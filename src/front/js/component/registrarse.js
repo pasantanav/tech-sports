@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import "../../styles/registrarse.css";
 import basket from "../../img/basket7.jpeg"
 import PayPal from "./paypal";
+import { seLocation, useLocation } from "react-router-dom";
 
 const Registrarse = () => {
     const [contador, setContador,] = useState(1);
     const [total, setTotal,] = useState(75);
+    const location = useLocation();
+    const event = location.state.event;
 
     //fUNCIONES DEL BOTON SUMAR Y RESTAR
     const aumentar = () => {
@@ -25,14 +28,12 @@ const Registrarse = () => {
 
     }
 
-
-
     return (
         <div id="registerWrapper" className="card container">
             <div id="registerTitle" className="row">
                 <div className="col-4"></div>
                 <div className="col-4">
-                    <h1 >JAM ON IT</h1>
+                    <h1 >{event.nombre_evento}</h1>
                     <div className="divider divider-default m-3"></div>
                 </div>
                 <div className="col-4"></div>
@@ -44,14 +45,14 @@ const Registrarse = () => {
                         <hr style={{ height: "2px", width: "100%", borderWidth: "0", color: "gray", }}></hr>
                         <div id="center" className="row">
                             <div className="col">
-                                <b><h2>Date:</h2></b>
-                                <p>10/09/2023 08:00 PM</p>
+                                <b><h2></h2></b>
+                                <p>{event.fecha_ini}</p>
                             </div>
                             <hr style={{ height: "2px", width: "100%", borderWidth: "0", color: "gray", }}></hr>
                         </div>
                         <div className="row">
                             <div id="center" className="col">
-                                <b><h2>Ubicación</h2></b>
+                                <b><h2>{event.ubicacion}</h2></b>
                                 <p>New York, NY, USA(MAP)</p>
                             </div>
                         </div>
@@ -60,7 +61,7 @@ const Registrarse = () => {
                         </div>
                         <div className="row">
                             <div className="col">
-                                <b><h1>Descripción</h1></b>
+                                <b><h1>{event.descr_larga}</h1></b>
                                 <hr style={{ height: "2px", width: "100%", borderWidth: "0", color: "gray", }}></hr>
                                 <p>This event article, used for writing about and listing the events planned for the future on your website.You can edit all of this text from the Pages tab by clicking the edit button.</p>
                             </div>
@@ -88,7 +89,7 @@ const Registrarse = () => {
                             <hr style={{ height: "2px", width: "100%", borderWidth: "0", color: "gray", }}></hr>
                             <div className="row">
                                 <div className="col-3">
-                                    <p>Jam on it</p>
+                                    <p>{event.nombre_evento}</p>
                                 </div>
                                 <div className="col-3">
                                     <p>$75</p>
@@ -127,7 +128,7 @@ const Registrarse = () => {
                     </div>
                 </div>
             </div>
-            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -135,7 +136,66 @@ const Registrarse = () => {
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div className="modal-body">
-                            <PayPal />
+                            <div id="teamRegister" className="col-6">
+                                <div id="registerTable" className="container">
+                                    <div id="registerTableTitle" className="row">
+                                        <h3>Cantidad de equipos a registrar</h3>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-3">
+                                            <b><h5>Evento</h5></b>
+                                        </div>
+                                        <div className="col-3">
+                                            <b><h5>Costo</h5></b>
+                                        </div>
+                                        <div className="col-3">
+                                            <b><h5>Cant.</h5></b>
+                                        </div>
+                                        <div className="col-3">
+                                            <b><h5>Total</h5></b>
+                                        </div>
+                                        <hr style={{ height: "2px", width: "100%", borderWidth: "0", color: "gray", }}></hr>
+                                        <div className="row">
+                                            <div className="col-3">
+                                                <p>{event.nombre_evento}</p>
+                                            </div>
+                                            <div className="col-3">
+                                                <p>$75</p>
+                                            </div>
+                                            <div className="col-3">
+                                                <button className="button" id="disminuir" onClick={disminuir}>-</button>
+                                                <span ><button id="cantidad" value="0">{contador}</button></span>
+                                                <button className="button" id="aumentar" onClick={aumentar}>+</button>
+                                            </div>
+                                            <div className="col-3">
+                                                <p>${total}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr style={{ height: "2px", width: "100%", borderWidth: "0", color: "gray", }}></hr>
+                                    <div className="row">
+                                        <div className="col-3"></div>
+                                        <div className="col-3"></div>
+                                        <div className="col-3">
+                                            <b><h4>Total</h4></b>
+                                        </div>
+                                        <div className="col-3">
+                                            <b><h4>${total}</h4></b>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-3"></div>
+                                        <div className="col-3"></div>
+                                        <div className="col-3"></div>
+                                        <div className="col-3">
+                                            <button type="button" className="btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                Pagar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <PayPal total={total} />
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
