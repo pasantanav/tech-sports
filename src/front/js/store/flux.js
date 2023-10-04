@@ -453,10 +453,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return "Ok"
 					}
 					if (resp.code == 401) {
-						setStore({ accessToken: null })
+						/*setStore({ accessToken: null })
 						alert("Sesión expirada")
 					}
-					return "Sesión expirada"
+					return "Sesión expirada"*/
+						return "No hay eventos";
+					}
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
 				}

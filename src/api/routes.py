@@ -372,10 +372,19 @@ def load_allevents():
         response.append({
         "id": item.id,
         "nombre_evento": item.nombre_evento,
+        "descr_corta": item.descr_corta,
         "fecha_ini": item.fecha_ini,
         "fecha_fin": item.fecha_fin,
         "ubicacion": item.ubicacion,
+        "logotipo": item.logotipo,
+        "descr_larga": item.descr_larga,
+        "reglas": item.reglas,
         "fecha_lim": item.fecha_lim,
+        "hora_lim": item.hora_lim,
+        "email_contacto": item.email_contacto,
+        "tel_contacto": item.tel_contacto,
+        "nombre_contacto": item.nombre_contacto,
+        "costo": item.costo,
         "id_user": item.id_user})
     #después de las validaciones enviar msje de confirmación
     #pasando contenido
