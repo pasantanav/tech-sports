@@ -48,6 +48,9 @@ def update_profile_image():
     return jsonify({"message": "Imagen de perfil actualizada correctamente"}), 200
 
 
+
+
+
 @api.route('/signup', methods=['POST'])
 def create_user():
     #recibir correo y password

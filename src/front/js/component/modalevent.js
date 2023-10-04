@@ -1,11 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
+import * as filestack from 'filestack-js';
+
 
 const ModalEvent = (props) => {
 
+    const filestackClient = filestack.init('ApcaRKG5TSEuvL2v2O2Dnz');
     const { store, actions } = useContext(Context)
     const [fechaActual, setFechaActual] = useState("");
     const [fechaInicio, setFechaInicio] = useState("");
+    const [teamLogo, setTeamLogo] = useState(null)
     const [fechaFinal, setFechaFinal] = useState("");
     const [fechaLimite, setFechaLimite] = useState("");
     const [editar, setEditar] = useState(false);
@@ -27,6 +31,27 @@ const ModalEvent = (props) => {
       costo: 0,
       id: ""
     }:store.userEvent[props.indice]);
+    
+    const handleTeamLogoChange =  (e) => {
+          // Configura las opciones de carga de Filestack
+          const options = {
+            onUploadDone: (response) => {
+              // Extrae la URL de la imagen cargada
+              let eventoData = {...eventFormData};
+              const imageUrl = response.filesUploaded[0].url;
+              console.log('la URL de la imagen es:', imageUrl)       
+                eventoData.logotipo = imageUrl;
+                console.log(eventoData.logotipo)
+                setEventFormData(eventoData)
+              // Actualiza el estado 'teamLogo' con la URL de la imagen
+            },
+            accept: ['image/*'], // Acepta solo archivos de imagen
+          };
+          // Abre el picker de Filestack para seleccionar y cargar la imagen
+          filestackClient.picker(options).open();
+      
+    };
+    
       
       function cambiarFormatoFecha(fechaAnt){
         let day = fechaAnt.getDate().toString();
@@ -48,6 +73,7 @@ const ModalEvent = (props) => {
           setFechaInicio(store.userEvent[props.indice].fecha_ini);
           setFechaFinal(store.userEvent[props.indice].fecha_fin);
           setFechaLimite(store.userEvent[props.indice].fecha_lim);
+
         } else {
           let eventData = {...eventFormData};
           for (let value in eventData){
@@ -86,6 +112,7 @@ const ModalEvent = (props) => {
       if (name == "fecha_lim"){
         setFechaLimite(value);
       }
+      
       setEditar(true);
     };
 
@@ -241,10 +268,10 @@ const ModalEvent = (props) => {
                       </div>
                       
                       <div className="form-outline mb-4">
-                        <label className="form-label" htmlFor="logotipo">
-                          Logotipo
-                        </label>
-                        <div className="form-outline mb-4">
+  <label className="form-label" htmlFor="logotipo">
+    Logotipo del equipo
+  </label>
+          <div className="form-outline mb-4">
                           <input
                             type="text"
                             id="logotipo"
@@ -255,8 +282,11 @@ const ModalEvent = (props) => {
                             onChange={handleEventChange}
                             required
                           />
-                        </div>
-                      </div>
+                          </div>
+                          <button
+                          onClick={handleTeamLogoChange}
+                          />
+</div>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="descr_larga">
                           Descripción larga
