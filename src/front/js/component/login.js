@@ -183,7 +183,7 @@ function LoginForm() {
                             required
                           />
                         </div>
-                        <div className="row mb-4">
+                        <div className="row mb-4 text-center">
                           {/*
                           <div className="col-md-6 d-flex justify-content-center">
                             <div className="form-check mb-3 mb-md-0">
@@ -201,7 +201,7 @@ function LoginForm() {
                             </div>
                           </div>
                           */}
-                          <div className="col-md-6 d-flex justify-content-center">
+                          <div className="md-6 d-flex justify-content-center">
                             <ResetPass/>
                           </div>
 
@@ -293,7 +293,7 @@ function LoginForm() {
                           />
                         </div>
 
-                        <div className="form-check d-flex justify-content-center mb-4">
+                        {/*<div className="form-check d-flex justify-content-center mb-4">
                           <input
                             className="form-check-input me-2"
                             type="checkbox"
@@ -305,7 +305,7 @@ function LoginForm() {
                           <label className="form-check-label" htmlFor="registerCheck">
                             He leído y estoy de acuerdo con los términos
                           </label>
-                        </div>
+                        </div>*/}
                         <div className='text-center'>
                           <button type="submit" className="btn btn-primary btn-block mb-3">
                             Registrarse

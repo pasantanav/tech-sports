@@ -91,9 +91,9 @@ const EventoLista = () => {
                             <td>
                                 <p className="fw-normal mb-1">{theEvent.ubicacion}</p>
                             </td>
-                            <td>{theEvent.fecha_ini}</td>
-                            <td>{theEvent.fecha_fin}</td>
-                            <td>{theEvent.fecha_lim}</td>
+                            <td>{theEvent.fecha_ini==""? "": new Date(theEvent.fecha_ini+"T00:00:00").toLocaleDateString()}</td>
+                            <td>{theEvent.fecha_fin==""? "": new Date(theEvent.fecha_fin+"T00:00:00").toLocaleDateString()}</td>
+                            <td>{theEvent.fecha_lim==""? "": new Date(theEvent.fecha_lim+"T"+theEvent.hora_lim+":00").toLocaleString()}</td>
                             <td>{theEvent.costo}</td>
                                 <td>
                                     <div className="row">

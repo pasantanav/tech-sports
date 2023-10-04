@@ -191,8 +191,8 @@ const TeamLista = () => {
                             <td>
                                 <p className="fw-normal mb-1">{theTeam.jugadores}</p>
                             </td>
-                            <td>{theTeam.fecha_registro}</td>
                             <td>{theTeam.logotipo}</td>
+                            <td>{theTeam.fecha_registro==""? "": new Date(theTeam.fecha_registro).toLocaleString()}</td>
                                 <td>
                                     <div className="row">
                                         <div className="col-4">
@@ -205,11 +205,11 @@ const TeamLista = () => {
                                                 Eliminar
                                             </button>
                                         </div>
-                                        <div className="col-4">
+                                        {/*<div className="col-4">
                                             <button className="btn btn-primary">
                                                 Jugadores
                                             </button>
-                                        </div>
+                                        </div>*/}
                                     </div>
                                 </td>
                         </tr>

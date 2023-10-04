@@ -1,22 +1,24 @@
 import React, { useEffect, useContext, useState } from "react"
 import '../../styles/nextEvent.css'
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
+
 const nextEvent = () => {
-  const [events, setEvents] = useState([])
+
   const { store, actions } = useContext(Context);
-  const getEvent = async () => {
+  /*const getEvent = async () => {
     if (store.allEvents.length === 0) {
       const { getAllEvents } = actions;
-      await getAllEvents();
-      setEvents(store.allEvents)
+      const resp = await getAllEvents();
+      if (resp == "Ok")
+        setEvents(store.allEvents);
     }
-  }
+  }*/
+
   useEffect(() => {
+    actions.getAllEvents();
+  }, []);
 
-    getEvent();
-
-  }, [events])
-  console.log("ndfnsvnjsfvjdfvfv", store)
   return (
     <div className="contSuperior" style={{ minHeight: "400px" }}>
       <div style={{ textAlign: "center" }} className="col-12">
@@ -28,38 +30,40 @@ const nextEvent = () => {
           <div className="row">
             <div className="row">
               <div className="col">
-                <h3><b>Evento</b></h3>
+                <h4><b>Evento</b></h4>
               </div>
               <div className="col">
-                <h3>Fecha de inicio</h3>
+                <h4>Fecha de inicio</h4>
               </div>
               <div className="col">
-                <h3>Fecha final</h3>
+                <h4>Fecha final</h4>
               </div>
               <div className="col">
-                <h3>Ubicación</h3>
+                <h4>Ubicación</h4>
               </div>
               <div className="col">
-                <h3>Fecha Limite</h3>
+                <h4>Fecha y Hora Límite</h4>
               </div>
             </div>
-            {console.log("probando", events)}
-            {events.map((value, index) =>
-              <div className="row">
+            {/*<p id="eventTitle"><a href={"registrarse/"+index}>{value.nombre_evento}</a></p>*/}
+            {store.allEvents.map((value, index) =>
+              <div className="row" key={index}>
                 <div className="col">
-                  <p id="eventTitle"><a href="registrarse">{value.nombre_evento}</a></p>
+                  <Link to={"/registrarse/"+index}>
+                    <p id="eventTitle" style={{color: "blue"}}>{value.nombre_evento}</p>
+                  </Link>
                 </div>
                 <div className="col">
-                  <p>{value.fecha_ini}</p>
+                  <p>{value.fecha_ini==""? "": new Date(value.fecha_ini+"T00:00:00").toLocaleDateString()}</p>
                 </div>
                 <div className="col">
-                  <p>{value.fecha_fin}</p>
+                  <p>{value.fecha_fin==""? "": new Date(value.fecha_fin+"T00:00:00").toLocaleDateString()}</p>
                 </div>
                 <div className="col">
                   <p>{value.ubicacion}</p>
                 </div>
                 <div className="col">
-                  <p>{value.fecha_lim}</p>
+                  <p>{value.fecha_lim==""? "": new Date(value.fecha_lim+"T"+value.hora_lim+":00").toLocaleString()}</p>
                 </div>
               </div>
             )}
