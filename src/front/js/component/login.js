@@ -88,8 +88,6 @@ function LoginForm() {
       alert("El nombre debe tener al menos 2 caracteres")
     } else if (password.length < 5){
       alert("La contraseña debe debe tener al menos 5 caracteres")
-    } else if (!checkData){
-        alert("Confirme los términos")
     } else if (password!=pass2){
         alert("El password debe coincidir")
     } else {

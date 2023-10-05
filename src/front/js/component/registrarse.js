@@ -4,7 +4,6 @@ import basket from "../../img/basket7.jpeg"
 import PayPal from "./paypal";
 import { useNavigate, useParams } from 'react-router-dom';
 import {Context} from "../store/appContext";
-import { seLocation, useLocation } from "react-router-dom";
 
 const Registrarse = (props) => {
     const [contador, setContador,] = useState(1);
@@ -49,10 +48,6 @@ const Registrarse = (props) => {
             setBtnRegistro("Evento Cerrado");
         }
       }, [abierto]);
-
-    const location = useLocation();
-    const event = location.state.event;
-
 
     //fUNCIONES DEL BOTON SUMAR Y RESTAR
     const aumentar = () => {
