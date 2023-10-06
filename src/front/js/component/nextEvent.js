@@ -1,12 +1,12 @@
 import React, { useEffect, useContext, useState } from "react"
 import '../../styles/nextEvent.css'
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
-import Registrarse from "./registrarse";
+import { useNavigate } from "react-router-dom";
 
 const nextEvent = () => {
 
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
 
   useEffect(() => {
     actions.getAllEvents();
@@ -18,50 +18,32 @@ const nextEvent = () => {
         <h1>Eventos</h1>
         <div className="divider divider-default m-3"></div>
       </div>
-      <div id="header" className="card">
-        <div className="card-body">
-          <div className="row">
-            <div className="row">
-              <div className="col">
-                <h4><b>Evento</b></h4>
-              </div>
-              <div className="col">
-                <h4>Fecha de inicio</h4>
-              </div>
-              <div className="col">
-                <h4>Fecha final</h4>
-              </div>
-              <div className="col">
-                <h4>Ubicación</h4>
-              </div>
-              <div className="col">
-                <h4>Fecha y Hora Límite</h4>
-              </div>
-            </div>
+        <div className="container">
+        <div className="table-responsive">
+          <table className="table align-middle table-striped table-hover table-bordered">
+          <thead className="table-primary">
+            <tr>
+              <th scope="col">Evento</th>
+              <th scope="col">Fecha de Inicio</th>
+              <th scope="col">Fecha de Terminación</th>
+              <th scope="col">Ubicación</th>
+              <th scope="col">Fecha y Hora Límite de Registro</th>
+            </tr>
+          </thead>
+          <tbody style={{cursor: "pointer"}}>
             {store.allEvents.map((value, index) =>
-              <div className="row" key={index}>
-                <div className="col">
-                  <Link to={"/registrarse/"+index}>
-                    <p id="eventTitle" style={{color: "blue"}}>{value.nombre_evento}</p>
-                  </Link>
-                </div>
-                <div className="col">
-                  <p>{value.fecha_ini==""? "": new Date(value.fecha_ini+"T00:00:00").toLocaleDateString()}</p>
-                </div>
-                <div className="col">
-                  <p>{value.fecha_fin==""? "": new Date(value.fecha_fin+"T00:00:00").toLocaleDateString()}</p>
-                </div>
-                <div className="col">
-                  <p>{value.ubicacion}</p>
-                </div>
-                <div className="col">
-                  <p>{value.fecha_lim==""? "": new Date(value.fecha_lim+"T"+value.hora_lim+":00").toLocaleString()}</p>
-                </div>
-              </div>
+              <tr onClick={()=>navigate("/registrarse/"+index)} key={index}>
+                  <th scope="row">{value.nombre_evento}</th>
+                  <td>{value.fecha_ini==""? "": new Date(value.fecha_ini+"T00:00:00").toLocaleDateString()}</td>
+                  <td>{value.fecha_fin==""? "": new Date(value.fecha_fin+"T00:00:00").toLocaleDateString()}</td>
+                  <td>{value.ubicacion}</td>
+                  <td>{value.fecha_lim==""? "": new Date(value.fecha_lim+"T"+value.hora_lim+":00").toLocaleString()}</td>
+              </tr>
             )}
-          </div>
+            </tbody>
+          </table>
         </div>
-      </div>
+        </div>
     </div>
 
   );

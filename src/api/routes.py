@@ -362,7 +362,8 @@ def load_user_teams():
 @api.route('/loadallevents', methods=['GET'])
 def load_allevents():
     #ubicar usuario en la bd, que me traiga todos los resultados
-    lista = Events.query.all()
+    #lista = Events.query.all()
+    lista = Events.query.order_by(Events.fecha_ini.desc()).all()
     #si no se encontró el evento
     if lista is None:
         return jsonify({"message": "Events not found"}), 401

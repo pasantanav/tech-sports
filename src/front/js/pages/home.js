@@ -8,9 +8,9 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
-		<div className="mt-5">
-			<div className="card bg-dark text-white">
-				<div className="row">
+		<div className="mt-4">
+			<div className="card text-white">
+				<div className="row m-1">
 					<div className="col">
 						<img src={homeImageUrl} className="card-img img-fluid mw-100" alt="Regístrate ahora"></img>
 						<div className="cio card-img-overlay mx-5 float-left flex-row align-items-center">

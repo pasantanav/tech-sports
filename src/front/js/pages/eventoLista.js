@@ -2,7 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import '../../styles/accountpage.css'
 import "../../styles/eventList.css";
 import { Context } from "../store/appContext";
-import ModalEvent from "../component/modalevent"
+import ModalEvent from "../component/modalevent";
+import tournament from "../../img/perfil/tournament.jpg";
 import { Link, useNavigate } from "react-router-dom";
 const EventoLista = () => {
 
@@ -45,21 +46,29 @@ const EventoLista = () => {
         setOperation("Evento Nuevo");
         setIndice("n");
     }
-    const handleChange = (e, propertyName) => {
-        /*const currentEvent = Object.assign({}, selectedEvent);
-        currentEvent[propertyName] = e.target.value;
-        setSelectedEvent(currentEvent)*/
-    }
+
     return (
         <div className="contSuperior fatherBody" style={{minHeight:"500px"}}>
-            <div className="row text-center mb-3">
-                <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <Link to="/cuenta">
-                        <button className="btn btn-primary me-md-2" type="button">Volver a Perfil</button>
-                    </Link>
-                    <button className="btn btn-primary" onClick={() => createEvento()} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button">Crear Evento</button>
+            <div className="container">
+                <div className="card mb-4">
+                    <div className="card-body d-flex justify-content-between align-items-center">
+                        <div className="col-2 text-center">
+                            <img className="rounded" src={tournament} style={{ maxWidth: '100px', maxHeight: '100px', border: "solid #0D6EFD" }}></img>
+                        </div>
+                        <div className="col-6 text-center">
+                            <h2>Lista de Eventos</h2>
+                            </div>
+                        <div className="col-4">
+                            <Link to="/cuenta">
+                                <button className="btn btn-primary mx-3" type="button">Volver a Perfil</button>
+                            </Link>
+                            <button className="btn btn-primary" onClick={() => createEvento()} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button">Crear Evento</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div className="container">
+            <div className="table-responsive">
             <table className="table align-middle mb-0 bg-white" id='theEventstable'>
                 <thead className="bg-light">
                     <tr>
@@ -69,6 +78,7 @@ const EventoLista = () => {
                         <th>Fecha de Término</th>
                         <th>Fecha límite</th>
                         <th>Costo</th>
+                        <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,7 +87,7 @@ const EventoLista = () => {
                             <td>
                                 <div className="d-flex align-items-center">
                                     <img
-                                        src={`https://mdbootstrap.com/img/new/avatars/${theEvent.id}.jpg`}
+                                        src={theEvent.logotipo}
                                         alt=""
                                         style={{ width: '45px', height: '45px' }}
                                         className="rounded-circle"
@@ -94,31 +104,24 @@ const EventoLista = () => {
                             <td>{theEvent.fecha_ini==""? "": new Date(theEvent.fecha_ini+"T00:00:00").toLocaleDateString()}</td>
                             <td>{theEvent.fecha_fin==""? "": new Date(theEvent.fecha_fin+"T00:00:00").toLocaleDateString()}</td>
                             <td>{theEvent.fecha_lim==""? "": new Date(theEvent.fecha_lim+"T"+theEvent.hora_lim+":00").toLocaleString()}</td>
-                            <td>{theEvent.costo}</td>
-                                <td>
-                                    <div className="row">
-                                        <div className="col-4">
-                                            <button id={theEvent.id} onClick={(e) => handleEdit(e, index, theEvent.id)} className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                Editar
-                                            </button>
-                                        </div>
-                                        <div className="col-4">
-                                            <button className="btn btn-primary" onClick={() => deleteEvento(theEvent.id, theEvent.nombre_evento, index)} data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
-                                                Eliminar
-                                            </button>
-                                        </div>
-                                        <div className="col-4">
-                                            <button className="btn btn-primary">
-                                                Participantes
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
+                            <td>{"$"+theEvent.costo}</td>
+                            <td>
+                                <button id={theEvent.id} onClick={(e) => handleEdit(e, index, theEvent.id)} className="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    <i className="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button className="btn btn-primary m-1 btn-sm" onClick={() => deleteEvento(theEvent.id, theEvent.nombre_evento, index)} data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                                    <i className="fa-solid fa-trash"></i>
+                                </button>
+                                <button className="btn btn-primary btn-sm">
+                                    Participantes
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            
+            </div>
+            </div>
            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -130,8 +133,6 @@ const EventoLista = () => {
                             <ModalEvent operacion={operation} indice={indice} idEvent={idEvento}/>
                         </div>
                         <div className="modal-footer">
-                            {/*<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" className="btn btn-primary">Guardar</button>*/}
                         </div>
                     </div>
                 </div>

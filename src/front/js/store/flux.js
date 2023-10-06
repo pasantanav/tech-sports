@@ -17,9 +17,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			]
 		},
 		actions: {
-
-			
-			  
 			updateProfileImage: async (newImageUrl) => {
 				try {
 				  const { apiFetchProtected } = getActions();
@@ -39,7 +36,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					  },
 					})); */
 				  } else {
-
 					// Maneja el caso en el que la API de actualización de la imagen de perfil devuelva un código de error
 					console.error("Error al actualizar la imagen de perfil:", resp);
 					// Puedes mostrar un mensaje de error o realizar otra acción aquí

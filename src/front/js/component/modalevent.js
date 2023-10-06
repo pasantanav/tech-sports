@@ -104,28 +104,6 @@ const ModalEvent = (props) => {
           setFechaInicio(actual);
           setFechaFinal(actual);
           setFechaLimite(actual);
-          /*let eventData = {...eventFormData};
-          let currentDate = new Date();
-          let actual = cambiarFormatoFecha(currentDate);
-          console.log("La fecha actua es:", actual);
-          setFechaActual(actual);
-          setFechaInicio(actual);
-          setFechaFinal(actual);
-          setFechaLimite(actual);
-          for (let value in eventData){
-            eventData[value] = "";
-            if (value=="costo")
-              eventData[value] = 0;
-            if (value=="hora_lim")
-              eventData[value] = "23:59";
-            if (value=="fecha_ini")
-              eventData[value] = fechaInicio;
-            if (value=="fecha_fin")
-              eventData[value] = fechaFinal;
-            if (value=="fecha_lim")
-              eventData[value] = fechaLimite;
-          }
-          setEventFormData(eventData);*/
         }
       }, [props.indice]);
 
@@ -141,7 +119,6 @@ const ModalEvent = (props) => {
       }, []);
 
     const handleEventChange = (e) => {
-      //console.log("TARGET", e.target);
       const { name, value } = e.target;
       setEventFormData({
         ...eventFormData,
@@ -175,62 +152,50 @@ const ModalEvent = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.target)
-        const nombre_evento=data.get("nombre_evento")
-        /*const fecha_ini=data.get("fecha_ini")
-        const fecha_fin=data.get("fecha_fin")
-        const fecha_lim=data.get("fecha_lim")*/
-        if (props.operacion=="Editar Evento" && editar==false){
+        let eventoSinEsp = { ...eventFormData }
+        eventoSinEsp.nombre_evento=eventoSinEsp.nombre_evento.trim()
+        eventoSinEsp.descr_corta = eventoSinEsp.descr_corta.trim()
+        eventoSinEsp.ubicacion = eventoSinEsp.ubicacion.trim()
+        eventoSinEsp.logotipo = eventoSinEsp.logotipo.trim()
+        eventoSinEsp.descr_larga = eventoSinEsp.descr_larga.trim()
+        eventoSinEsp.reglas = eventoSinEsp.reglas.trim()
+        eventoSinEsp.email_contacto = eventoSinEsp.email_contacto.trim()
+        eventoSinEsp.tel_contacto = eventoSinEsp.tel_contacto.trim()
+        eventoSinEsp.nombre_contacto = eventoSinEsp.nombre_contacto.trim()
+        //setEventFormData(eventoSinEsp)
+        /*if (props.operacion=="Editar Evento" && editar==false){
           console.log("no es necesario editar");
           alert("Evento actualizado");
-          formulario.reset();
-        } else if (nombre_evento.length <3) {
+          formulario.reset();*/
+          if (nombre_evento=="" || descr_corta=="" || ubicacion=="" || logotipo==""
+          || descr_larga=="" || reglas=="" || email_contacto=="" || tel_contacto=="" || nombre_contacto==""){
+            alert("No debe haber información vacía o espacios en blanco")
+          } else if (nombre_evento.length <3) {
             alert("El nombre debe tener al menos 2 caracteres")
           } else {
-              /*const eventDataok = {...eventFormData};
-              console.log("FECHA DE INICIO A VER:", fecha_ini);
-              eventDataok.fecha_ini = fecha_ini.toString();
-              eventDataok.fecha_fin = fecha_fin.toString();
-              eventDataok.fecha_lim = fecha_lim.toString();
-              console.log("FECHAS:", eventDataok.fecha_ini, eventDataok.fecha_fin, eventDataok.fecha_lim);
-              console.log("EVento antes de grabar", eventDataok);
-              setEventFormData(eventDataok);
-              console.log("Evento a grabar:", eventFormData);*/
-              console.log("EVento antes de grabar", eventFormData);
-              console.log(props.indice, props.operacion);
               let resp ="";
               let oper ="";
               if (props.operacion=="Evento Nuevo"){
                 const {newEvent} = actions;
-                resp = await newEvent(eventFormData);
+                //resp = await newEvent(eventFormData);
+                resp = await newEvent(eventoSinEsp);
                 oper = "creado";
               } else {
                 //Si estamos editando el evento
                 const {editEvent} = actions;
-                resp = await editEvent(eventFormData, props.indice);
+                //resp = await editEvent(eventFormData, props.indice);
+                resp = await editEvent(eventoSinEsp, props.indice);
                 oper = "actualizado";
               }
-              console.log({resp})
-              console.log(resp.code)
               if (resp=="Ok"){
                 //MODAL
                 alert("Evento " + oper + " exitosamente");
                 limpiarDataEvento();
-                /*if (props.operacion=="Evento Nuevo"){
-                  let text = "Registro exitoso\n¿Quieres agregar otro evento?";
-                  if (confirm(text) == false) {
-                    staticBackdrop.hide();
-                  }
-                } else {
-                  alert("Registro exitoso")
-                }*/
                 formulario.reset();
               } else {
-                alert("Error al registrar Evento")
+                alert("Error al registrar Evento");
               }
-              //cleanEventData();
               formulario.reset();
-              //window.location.reload(false)
-              //preguntar si desea agregar otro evento?
             }
       };
 
@@ -333,10 +298,10 @@ const ModalEvent = (props) => {
                       </div>
                       
                       <div className="form-outline mb-4">
-  <label className="form-label" htmlFor="logotipo">
-    Logotipo del equipo
-  </label>
-          <div className="form-outline mb-4">
+                        <label className="form-label" htmlFor="logotipo">
+                          Logotipo del equipo
+                        </label>
+                        <div className="form-outline mb-4">
                           <input
                             type="text"
                             id="logotipo"
@@ -348,10 +313,8 @@ const ModalEvent = (props) => {
                             required
                           />
                           </div>
-                          <button
-                          onClick={handleTeamLogoChange}
-                          />
-</div>
+                          <button type="button" className="btn btn-secondary" onClick={handleTeamLogoChange}></button>
+                      </div>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="descr_larga">
                           Descripción larga

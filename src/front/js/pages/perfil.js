@@ -32,7 +32,7 @@ const Perfil = ()=>{
       //  }
       });
     } else {
-      navigate("/cuenta");
+      navigate("/");
     }
   }, [store.accessToken]);
 
@@ -67,7 +67,7 @@ const Perfil = ()=>{
   
    
   return (
-<div className="contSuperior">
+<div className="contSuperior mx-3">
         <div className="row">
           <div className="col-lg-4">
             <div className="card mb-4">
@@ -117,7 +117,7 @@ const Perfil = ()=>{
             </div>
           </div>
           <div className="col-lg-8">
-            <div className="card mb-4">
+            <div className="card mb-3">
               <div className="card-body">
                 <div className="row">
                   <div className="col-sm-3">
@@ -171,39 +171,40 @@ const Perfil = ()=>{
                 </div>
               </div>
             </div>
-
-        <div className="row">          
-            <div className="row row-cols-1 row-cols-md-3 g-4">
-              <div className="col">
-                <div className="card text-center" style={{width: "17.5rem"}}>
-                  <img src={tournament} className="card-img-top" alt="Eventos"/>
-                  <div className="card-body">  
-                    <p className="card-text">Crea, modifica o elimina tus eventos con sus datos.</p>
-                    <Link to={"/eventolista/"+profileData.userId}>
-                      <button className="btn btn-primary">Administrar Eventos</button>
-                    </Link>
+            <div className="col-lg-4 w-100">
+              <div className="card mb-4">
+              <div className="card-body d-flex justify-content-between align-items-stretch">
+                <div className="col">
+                  <div className="card text-center">
+                    <img src={tournament} className="card-img-top" alt="Eventos"/>
+                    <div className="card-body">  
+                      <p className="card-text">Crea, modifica o elimina tus eventos con sus datos.</p>
+                      <Link to={"/eventolista/"+profileData.userId}>
+                        <button className="btn btn-primary">Administrar Eventos</button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col">
-                <div className="card text-center" style={{width: "17.5rem"}}>
-                  <img src={teamlist} className="card-img-top" alt="Equipos"/>
-                  <div className="card-body">
-                    <p className="card-text">Consulta tus equipos registrados en los eventos.</p>
-                    <Link to="/teamlist" className="btn btn-primary">Administrar Equipos</Link>
+                <div className="col mx-2">
+                  <div className="card text-center" style={{maxWidth: "17.5rem"}}>
+                    <img src={teamlist} className="card-img-top" alt="Equipos"/>
+                    <div className="card-body">
+                      <p className="card-text">Consulta tus equipos registrados en los eventos.</p>
+                      <Link to="/teamlist" className="btn btn-primary">Administrar Equipos</Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col">
-                <div className="card text-center" style={{width: "17.5rem"}}>
+                <div className="col">
+                  <div className="card text-center" style={{maxWidth: "17.5rem"}}>
                     <img src={eventlist} className="card-img-top" alt="Registro"/>
                     <div className="card-body">
                       <p className="card-text">Registra tus equipos a eventos vigentes.</p>
                       <Link to="/nextevent" className="btn btn-primary">Registrar Equipos</Link>
                     </div>
                   </div>
+                </div>
               </div>
-            </div>
+              </div>
           </div>
         
         </div>

@@ -108,8 +108,9 @@ class Teams(db.Model):
 class Pagos(db.Model):
     __tablename__ = "pagos"
     id = db.Column(db.Integer, primary_key=True)
-    num_equipos= db.Column(db.Integer, unique=False, nullable=False)
+    cant_equipos= db.Column(db.Integer, unique=False, nullable=False)
     monto = db.Column(db.Float, unique=False, nullable=False)
+    cant_registrados= db.Column(db.Integer, unique=False, nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     events = db.relationship("Events", secondary=events_pagos, back_populates="pagos")
 
@@ -119,8 +120,9 @@ class Pagos(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "num_equipos": self.num_equipos,
+            "cant_equipos": self.cant_equipos,
             "monto": self.monto,
+            "cant_registrados": self.cant_registrados,
             "id_user": list(map(lambda x: x.serialize(), self.id_user)),
             "events": list(map(lambda x: x.serialize(), self.events))
         }
