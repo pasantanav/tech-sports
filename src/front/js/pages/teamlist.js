@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 //import ModalTeam from "../component/modalteams";
 import { Link, useNavigate } from "react-router-dom";
+import imgLogo from "../../img/LogoTS.jpg";
+import teamlist from "../../img/perfil/teamlist.jpg";
 
 const TeamLista = () => {
 
@@ -154,14 +156,26 @@ const TeamLista = () => {
       ////////////////////////////////////////////////////
     return (
         <div className="contSuperior fatherBody" style={{minHeight:"500px"}}>
-            <div className="row text-center mb-3">
-                <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-                    <Link to="/cuenta">
-                        <button className="btn btn-primary me-md-2" type="button">Volver a Perfil</button>
-                    </Link>
-                    <button className="btn btn-primary" onClick={() => createEquipo()} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button">Crear Equipo</button>
+            <div className="container">
+                <div className="card mb-4">
+                    <div className="card-body d-flex justify-content-between align-items-center">
+                        <div className="col-2 text-center">
+                            <img className="rounded" src={teamlist} style={{ maxWidth: '100px', maxHeight: '100px', border: "solid #0D6EFD" }}></img>
+                        </div>
+                        <div className="col-6 text-center">
+                            <h2>Lista de Equipos</h2>
+                            </div>
+                        <div className="col-4">
+                            <Link to="/cuenta">
+                                <button className="btn btn-primary mx-3" type="button">Volver a Perfil</button>
+                            </Link>
+                            <button className="btn btn-primary" onClick={() => createEquipo()} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button">Crear Equipo</button>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div className="container">
+            <div className="table-responsive">
             <table className="table align-middle mb-0 bg-white" id='theTeamstable'>
                 <thead className="bg-light">
                     <tr>
@@ -169,6 +183,7 @@ const TeamLista = () => {
                         <th>Jugadores</th>
                         <th>logotipo</th>
                         <th>Fecha de Registro</th>
+                        <th>Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -177,7 +192,7 @@ const TeamLista = () => {
                             <td>
                                 <div className="d-flex align-items-center">
                                     <img
-                                        src={`https://mdbootstrap.com/img/new/avatars/${theTeam.id}.jpg`}
+                                        src={imgLogo}
                                         alt=""
                                         style={{ width: '45px', height: '45px' }}
                                         className="rounded-circle"
@@ -193,30 +208,25 @@ const TeamLista = () => {
                             </td>
                             <td>{theTeam.logotipo}</td>
                             <td>{theTeam.fecha_registro==""? "": new Date(theTeam.fecha_registro).toLocaleString()}</td>
-                                <td>
-                                    <div className="row">
-                                        <div className="col-4">
-                                            <button id={theTeam.id} onClick={(e) => handleEdit(e, index, theTeam.id)} className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                                Editar
-                                            </button>
-                                        </div>
-                                        <div className="col-4">
-                                            <button className="btn btn-primary" onClick={() => deleteEquipo(theTeam.id, theTeam.nombre_equipo, index)} data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
-                                                Eliminar
-                                            </button>
-                                        </div>
-                                        {/*<div className="col-4">
-                                            <button className="btn btn-primary">
-                                                Jugadores
-                                            </button>
-                                        </div>*/}
-                                    </div>
-                                </td>
+                            <td>
+                                <button id={theTeam.id} onClick={(e) => handleEdit(e, index, theTeam.id)} className="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button className="btn btn-primary btn-sm m-2" onClick={() => deleteEquipo(theTeam.id, theTeam.nombre_equipo, index)} data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                                {/*<div className="col-4">
+                                    <button className="btn btn-primary">
+                                        Jugadores
+                                    </button>
+                                </div>*/}
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            
+            </div>
+            </div>
            <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -291,8 +301,6 @@ const TeamLista = () => {
 
                         </div>
                         <div className="modal-footer">
-                            {/*<button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" className="btn btn-primary">Guardar</button>*/}
                         </div>
                     </div>
                 </div>
