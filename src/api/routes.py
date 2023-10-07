@@ -412,3 +412,34 @@ def loadAllUser():
     #pasando contenido
     return jsonify({"Users":response}), 200
 
+
+    #ACTUALIZARUSUARIOS
+    
+@api.route('/user', methods=['PUT'])
+@jwt_required()
+def user_logout():
+    #obtener el jti del token que traemos en claims (get_jwt)
+    jti= get_jwt()["jti"]
+    email = request.json.get("email")
+    orderId = request.json.get("orderId")
+    payerId = request.json.get("payerId")
+    paymentSource = request.json.get("paymentSource")
+    paymentId = request.json.get("paymentId")
+    facilitatorAccessToken = request.json.get("paymentId")
+    name = request.json.get("name")
+    #buscar usuario en la bd, que me traiga el primer resultado
+    user = User.query.filter_by(email = email).first()
+    #si existe el usuario mostrar error
+    if user is not None:
+        return jsonify({"message": "User not found"}), 404
+    user.orderId=orderId
+    user.payerId=payerId
+    user.paymentSource=paymentSource
+    user.paymentId=paymentId
+    user.orderId=orderId
+    user.facilitatorAccessToken=facilitatorAccessToken
+    #guardarlo en la bd
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"message": "User logged out"}), 200
+
