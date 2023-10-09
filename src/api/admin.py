@@ -1,7 +1,7 @@
   
 import os
 from flask_admin import Admin
-from .models import db, User, TokenBlockedList, Events, Teams, Pagos, Registros
+from .models import db, User, TokenBlockedList, Events, Teams, Pagos, Registros, RegistrosPagos
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
@@ -16,4 +16,5 @@ def setup_admin(app):
     admin.add_view(ModelView(Teams, db.session))
     admin.add_view(ModelView(Pagos, db.session))
     admin.add_view(ModelView(Registros, db.session))
+    admin.add_view(ModelView(RegistrosPagos, db.session))
     admin.add_view(ModelView(TokenBlockedList, db.session))

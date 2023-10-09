@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, TokenBlockedList, Events, Teams
+from api.models import db, User, TokenBlockedList, Events, Teams, Pagos, Registros, RegistrosPagos
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
@@ -169,10 +169,7 @@ def create_event():
     costo= object_context["costo"]
     #crear nuevo evento a partir de esta data
     new_event = Events()
-
-
     new_event.nombre_evento = nombre_evento
-
     new_event.descr_corta = descr_corta
     new_event.fecha_ini = fecha_ini
     new_event.fecha_fin = fecha_fin
@@ -251,7 +248,7 @@ def load_events():
     lista = Events.query.filter_by(id_user = user).order_by(Events.fecha_ini.desc()).all()
     #si no se encontró el evento
     if lista is None:
-        return jsonify({"message": "Events not found"}), 401
+        return jsonify({"message": "Events not found"}), 402
     response=[]
     for item in lista:
     #    response.append({item})
@@ -287,7 +284,7 @@ def create_team():
     team = Teams.query.filter_by(nombre_equipo = nombre_equipo).first()
     #si existe el usuario mostrar error
     if team is not None:
-        return jsonify({"message": "Equipo ya existe"}), 402
+        return jsonify({"message": "Equipo ya existe"}), 405
     jugadores= object_context["jugadores"]
     fecha_registro= object_context["fecha_registro"]
     logotipo= object_context["logotipo"]
@@ -307,6 +304,7 @@ def create_team():
 @jwt_required()
 def edit_team():
     #recibir datos del equipo
+    id_user = get_jwt_identity()
     team = request.json
     object_context= team["teamData"]
     team_id = object_context["id"]
@@ -314,15 +312,19 @@ def edit_team():
     jugadores= object_context["jugadores"]
     fecha_registro= object_context["fecha_registro"]
     logotipo= object_context["logotipo"]
-    id_user= object_context["id_user"]
     #buscar equipo
     team = Teams.query.get(team_id)
+    #si existe el nombre del equipo mostrar error
     team.nombre_equipo = nombre_equipo
     team.jugadores = jugadores
     team.fecha_registro = fecha_registro
     team.logotipo = logotipo
     team.id_user = id_user
-    db.session.commit()
+    try:
+        db.session.commit()
+    except:
+        return jsonify({"message": "Equipo ya existe"}), 405
+    
     return jsonify(object_context), 201
 
 @api.route('/deleteteam', methods=['POST'])
@@ -344,7 +346,7 @@ def load_user_teams():
     lista = Teams.query.filter_by(id_user = user).all()
     #si no se encontró el evento
     if lista is None:
-        return jsonify({"message": "Teams not found"}), 401
+        return jsonify({"message": "Teams not found"}), 402
     response=[]
     for item in lista:
         response.append({
@@ -366,7 +368,7 @@ def load_allevents():
     lista = Events.query.order_by(Events.fecha_ini.desc()).all()
     #si no se encontró el evento
     if lista is None:
-        return jsonify({"message": "Events not found"}), 401
+        return jsonify({"message": "Events not found"}), 402
     response=[]
     for item in lista:
     #    response.append({item})
@@ -412,3 +414,67 @@ def loadAllUser():
     #pasando contenido
     return jsonify({"Users":response}), 200
 
+@api.route('/loadusereventsregister', methods=['GET'])
+@jwt_required()
+def load_usereventsregister():
+    user = get_jwt_identity()
+    lista_ev_pagados = Pagos.query.filter_by(id_user = user).first()
+    #user = User.query.filter_by(email = email).first()
+    #si el usuario no ha hecho pagos
+    if lista_ev_pagados is None:
+        return jsonify({"message": "No tienes eventos pagados"}), 404
+ 
+    listaPagReg = RegistrosPagos.query.filter_by(id_user = user).all()
+    if listaPagReg is None:
+        return jsonify({"message": "No tienes eventos pagados"}), 404
+
+    response=[]
+    for PagReg in listaPagReg:
+        if PagReg.cant_registrados < PagReg.cant_pagados:
+            response.append({"id": PagReg.event_id, "nombre_evento": PagReg.events.nombre_evento})
+ 
+    return jsonify({"eventos_disponibles":response}), 200
+
+@api.route('/loadregisters', methods=['GET'])
+@jwt_required()
+def load_registers():
+    user = get_jwt_identity()
+    #lista = Registros.query.filter_by(id_user = user).order_by(Registros.fecha_ini.desc()).all()
+    lista = Registros.query.filter_by(id_user = user).all()
+    #si no se encontró el registro
+    if lista is None:
+        return jsonify({"message": "Sin registros"}), 404
+    response=[]
+    for registro in lista:
+        response.append({
+            "event_id": registro.event_id,
+            "nombre_evento": registro.events.nombre_evento,
+            "fecha_ini": registro.events.fecha_ini,
+            "fecha_fin": registro.events.fecha_fin
+        })
+ 
+    return jsonify({"registros":response}), 200
+
+@api.route('/newregister', methods=['POST'])
+@jwt_required
+def create_register():
+    user = get_jwt_identity()
+    idEquipo = request.json.get("idEquipo")
+    idEvento = request.json.get("IdEvento")
+    fechaRegistro = request.json.get("fechaActual")
+    newRegister = Registros()
+    newRegister.id_user = user
+    newRegister.team_id = idEquipo
+    newRegister.event_id = idEvento
+    newRegister.fecha_reg = fechaRegistro
+    db.session.add(newRegister)
+    db.session.commit()
+
+    registro = RegistrosPagos.query.filter_by(id_user = user, event_id = idEvento).first()
+    if registro is not None:
+        cant = registro.cant_registrados
+        cant = cant + 1
+        registro.cant_registrados = cant
+        db.session.commit()
+
+    return jsonify({"msg":"Registro realizado"}), 200

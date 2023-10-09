@@ -25,6 +25,7 @@ import PerfilOrganizador from "./pages/perfilorganizador";
 import EventoLista from "./pages/eventoLista";
 import TeamLista from "./pages/teamlist";
 //import ModalTeams from "./component/modalteams";
+import RegistroEquipos from "./pages/registroEquipos";
 
 //create your first component
 const Layout = () => {
@@ -56,6 +57,7 @@ const Layout = () => {
                         <Route element={<Perfil />} path="/perfil" />
                         <Route element={<EventoLista />} path="/eventolista/:id" />
                         <Route element={<TeamLista />} path="/teamlist" />
+                        <Route element={<RegistroEquipos />} path="/registroEquipos" />
                         {/*<Route element={<ModalTeams />} path="/modalteams" />*/}
                     </Routes>
                     <Footer />

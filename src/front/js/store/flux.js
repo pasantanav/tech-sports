@@ -27,7 +27,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				  if (resp.code === 200) {
 					// La imagen de perfil se actualizó con éxito en el servidor
 					// Actualiza el estado global con la nueva URL de la imagen
-					console.log('la respuesta es' + resp)
+					//console.log('la respuesta es' + resp)
 					/*setStore((prevStore) => ({
 					  ...prevStore,
 					  userInfo: {
@@ -69,7 +69,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const resp = await request
 					//obtenemos los datos de la petición
 					const data = await resp.json()
-					console.log("PRUEBA_fetchpublic" + JSON.stringify(data) + resp.status)
+					//console.log("PRUEBA_fetchpublic" + JSON.stringify(data) + resp.status)
 					return { code: resp.status, data }
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
@@ -117,6 +117,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//trae de la API el code(resp.status) y data (mensaje y token)
 					//es decir, lo que regresa la función apiFetchPublic()
 					const resp = await apiFetchPublic("/login", "POST", { email, password })
+					//console.log({resp})
 					if (resp.code == 200) {
 						//si no hubo error agrego la data de API a mis variables *****
 						const { message, token } = resp.data
@@ -126,7 +127,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({ accessToken: token })
 					} else {
 						//borramos el token 
-						console.log("borramos el token")
+						//console.log("borramos el token")
 						localStorage.removeItem("accessToken")
 					}
 					return resp
@@ -141,19 +142,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//trae de la API el code(resp.status) y data (mensaje y token)
 					//es decir, lo que regresa la función apiFetchPublic()
 					const resp = await apiFetchPublic("/signup", "POST", { email, password, name })
-					/*if (resp.code==200){
-						//si no hubo error agrego la data de API a mis variables *****
-						const {message, token} = resp.data
-						//guardamos token en almacenamiento local
-						localStorage.setItem("accessToken", token)
-						//guardamos el token en el store
-						setStore ({accessToken:token})
-					} else {
-						//borramos el token 
-						console.log("borramos el token")
-						localStorage.removeItem("accessToken")
-					}*/
-					console.log("PRUEBA_signup", JSON.stringify(resp))
 					return resp
 				} catch (error) {
 					console.log("Error al solicitar los datos")
@@ -164,7 +152,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const { apiFetchProtected } = getActions()
 					const resp = await apiFetchProtected("/helloprotected")
 					///////////// extra
-					console.log("PRUEBA_getuserinfo", resp)
+					//console.log("PRUEBA_getuserinfo", resp)
 					if (resp.code == 200) {
 						setStore({ userInfo: resp.data })
 						return "Ok"
@@ -186,7 +174,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					// fetching data from the backend
 					const { apiFetchPublic } = getActions()
 					const data = await apiFetchPublic("/hello")
-					console.log("DATA: ", data)
+					//console.log("DATA: ", data)
 					setStore({ message: data.data.message })
 					// don't forget to return something, that is how the async resolves
 					return data;
@@ -205,9 +193,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//hacemos la petición
 					//trae de la API el code(resp.status) y data
 					//es decir, lo que regresa la función apiFetchPublic()
-					console.log("DATOSDELEVENTO: ", {eventData})
+					//console.log("DATOSDELEVENTO: ", {eventData})
 					const resp = await apiFetchProtected("/newevent", "POST", {eventData})
-					console.log("PRUEBA_newEvent", JSON.stringify(resp))
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró
+						//borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
 					if (resp.code==201){
 						//setStore({userInfo:resp.data})
 						const store = getStore();
@@ -215,15 +208,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore(store);
 						return "Ok"
 					}
-					//si el token expiró
-					//borramos token del almacenamiento local y del store
-					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
-						alert("Sesión expirada")
-					}
-					return "Sesión expirada"
-					//return resp
+					return resp
 				} catch(error){
 					console.log("Error al crear el evento")
 				}
@@ -231,9 +216,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			editEvent:async(eventData, index)=>{
 				try{
 					const {apiFetchProtected} = getActions()
-					console.log("DATOSDELEVENTO: ", {eventData})
+					//console.log("DATOSDELEVENTO: ", {eventData})
 					const resp = await apiFetchProtected("/editevent", "POST", {eventData})
-					console.log("PRUEBA_editEvent", JSON.stringify(resp))
+					if (resp == "No token"){
+						//si el token expiró
+						//borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
 					if (resp.code==201){
 						//setStore({userInfo:resp.data})
 						const store = getStore();
@@ -241,15 +231,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore(store);
 						return "Ok"
 					}
-					//si el token expiró
-					//borramos token del almacenamiento local y del store
-					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
-						alert("Sesión expirada")
-					}
-					return "Sesión expirada"
-					//return resp
+					return resp
 				} catch(error){
 					console.log("Error al editar el evento")
 				}
@@ -257,9 +239,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteEvent:async(eventId, index)=>{
 				try{
 					const {apiFetchProtected} = getActions()
-					console.log("Id del evento a borrar: ", eventId)
+					//console.log("Id del evento a borrar: ", eventId)
 					const resp = await apiFetchProtected("/deleteevent", "POST", {eventId})
-					console.log("PRUEBA_DeleteEvent", JSON.stringify(resp))
+					//console.log("PRUEBA_DeleteEvent", JSON.stringify(resp))
 					//si el token expiró borramos token del almacenamiento local y del store
 					if (resp.code==201){
 						const store = getStore();
@@ -268,13 +250,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						alert("Evento eliminado exitosamente");
 						return "Ok"
 					}
-					localStorage.removeItem("accessToken")
-					if (resp.code==401){
+					if (resp == "No token"){
+						//si el token expiró
+						//borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
 						setStore({accessToken:null})
-						return ("Sesión expirada")
 					}
-					return "Sesión expirada"
-					//return resp
+					return resp
 				} catch(error){
 					console.log("Error al borrar el evento")
 				}
@@ -283,8 +265,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const { apiFetchProtected } = getActions()
 					const resp = await apiFetchProtected("/loadevents")
-					///////////// extra
-					console.log("PRUEBA_getuserEvent", resp)
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró
+						//borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
+					//console.log("PRUEBA_getuserEvent", resp)
 					if (resp.code == 200) {
 						//setStore({userEvent:resp.data["eventos"]})
 						setStore({ userEvent: resp.data.eventos })
@@ -292,12 +279,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					//si el token expiró
 					//borramos token del almacenamiento local y del store
-					localStorage.removeItem("accessToken")
+					/*localStorage.removeItem("accessToken")
 					if (resp.code == 401) {
 						setStore({ accessToken: null })
 						alert("Sesión expirada")
-					}
-					return "Sesión expirada"
+					}*/
+					return resp
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
 				}
@@ -308,9 +295,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//hacemos la petición
 					//trae de la API el code(resp.status) y data
 					//es decir, lo que regresa la función apiFetchPublic()
-					console.log("DATOS DEL EQUIPO: ", {teamData})
+					//console.log("DATOS DEL EQUIPO: ", {teamData})
 					const resp = await apiFetchProtected("/newteam", "POST", {teamData})
-					console.log("PRUEBA_newTeam", JSON.stringify(resp))
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
 					//Si el equipo existe enviar error
 					if (resp.code==402){
 						return resp
@@ -324,13 +315,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					//si el token expiró
 					//borramos token del almacenamiento local y del store
-					localStorage.removeItem("accessToken")
+					/*localStorage.removeItem("accessToken")
 					if (resp.code==401){
 						setStore({accessToken:null})
 						alert("Sesión expirada")
-					}
-					return "Sesión expirada"
-					//return resp
+					}*/
+					return resp
 				} catch(error){
 					console.log("Error al crear el equipo")
 				}
@@ -339,20 +329,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try{
 					const {apiFetchProtected} = getActions()
 					const resp = await apiFetchProtected("/loaduserteams")
-					///////////// extra
-					console.log("PRUEBA_loaduserTeams", resp)
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
+					//console.log("PRUEBA_loaduserTeams", resp)
 					if (resp.code==200){
 						setStore({userTeam:resp.data.teams})
 						return "Ok"
 					}
-					//si el token expiró
-					//borramos token del almacenamiento local y del store
-					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
-						alert("Sesión expirada")
-					}
-					return "Sesión expirada"
+					return resp
 				}catch(error){
 					console.log("Error al solicitar los datos", error)
 				}
@@ -360,9 +347,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			editTeam:async(teamData, index)=>{
 				try{
 					const {apiFetchProtected} = getActions()
-					console.log("DATOSDELEQUIPO: ", {teamData})
 					const resp = await apiFetchProtected("/editteam", "POST", {teamData})
-					console.log("PRUEBA_editTeam", JSON.stringify(resp))
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
 					if (resp.code==201){
 						//setStore({userInfo:resp.data})
 						const store = getStore();
@@ -372,13 +362,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					//si el token expiró
 					//borramos token del almacenamiento local y del store
-					localStorage.removeItem("accessToken")
+					/*localStorage.removeItem("accessToken")
 					if (resp.code==401){
 						setStore({accessToken:null})
 						alert("Sesión expirada")
 					}
-					return "Sesión expirada"
-					//return resp
+					return "Sesión expirada"*/
+					return resp
 				} catch(error){
 					console.log("Error al editar el equipo")
 				}
@@ -386,10 +376,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteTeam:async(teamId, index)=>{
 				try{
 					const {apiFetchProtected} = getActions()
-					console.log("Id del equipo a borrar: ", teamId)
+					//console.log("Id del equipo a borrar: ", teamId)
 					const resp = await apiFetchProtected("/deleteteam", "POST", {teamId})
-					console.log("PRUEBA_DeleteTeam", JSON.stringify(resp))
+					//console.log("PRUEBA_DeleteTeam", JSON.stringify(resp))
 					//si el token expiró borramos token del almacenamiento local y del store
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró
+						//borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
 					if (resp.code==201){
 						const store = getStore();
 						store.userTeam.splice(index, 1);
@@ -397,13 +393,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						alert("Equipo eliminado exitosamente");
 						return "Ok"
 					}
-					localStorage.removeItem("accessToken")
+					/*localStorage.removeItem("accessToken")
 					if (resp.code==401){
 						setStore({accessToken:null})
 						return ("Sesión expirada")
 					}
-					return "Sesión expirada"
-					//return resp
+					return "Sesión expirada"*/
+					return resp
 				} catch(error){
 					console.log("Error al eliminar el equipo")
 				}
@@ -442,21 +438,80 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const { apiFetchPublic } = getActions();
 					const resp = await apiFetchPublic("/loadallevents")
 					///////////// extra
-					console.log("PRUEBA_getallEvent", resp)
+					//console.log("PRUEBA_getallEvent", resp)
 					if (resp.code == 200) {
 						//setStore({userEvent:resp.data["eventos"]})
 						setStore({ allEvents: resp.data.eventos })
 						return "Ok"
 					}
-					if (resp.code == 401) {
+					if (resp.code == 402) {
 						/*setStore({ accessToken: null })
 						alert("Sesión expirada")
 					}
 					return "Sesión expirada"*/
 						return "No hay eventos";
 					}
+					return resp
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
+				}
+			},
+			getUserEventsRegister: async () => {
+				try {
+					const { apiFetchProtected } = getActions()
+					const resp = await apiFetchProtected("/loadusereventsregister")
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
+					//console.log("Prueba_getEventsRegister", resp)
+					if (resp.code == 200) {
+						setStore({ userEventsRegister: resp.data.eventos_disponibles })
+						return "Ok"
+					}
+					return resp
+				} catch (error) {
+					console.log("Error al solicitar los datos", error)
+				}
+			},
+			getRegisters: async () => {
+				try {
+					const { apiFetchProtected } = getActions()
+					const resp = await apiFetchProtected("/loadregisters")
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
+					console.log("Prueba_getRegisters", resp)
+					if (resp.code == 200) {
+						setStore({ userRegisters: resp.data.registros })
+						return "Ok"
+					}
+					return resp
+				} catch (error) {
+					console.log("Error al solicitar los datos", error)
+				}
+			},
+			newRegister: async (idEquipo, idEvento, fechaActual) => {
+				try{
+					const { apiFetchProtected } = getActions()
+					const resp = await apiFetchProtected("/newregister", "POST", { idEquipo, idEvento, fechaActual })
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
+					console.log("Prueba newregister:", resp)
+					if (resp.code == 200){
+						store.userRegisters.push(resp.data);
+						setStore(store);
+						return "Ok"
+					}
+					return resp
+				} catch (error){
+					console.log("Error al hacer el registro", error)
 				}
 			}
 		}

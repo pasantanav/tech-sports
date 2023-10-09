@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import "../../styles/registrarse.css";
 import basket from "../../img/basket7.jpeg"
 import PayPal from "./paypal";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {Context} from "../store/appContext";
 
 const Registrarse = (props) => {
@@ -85,25 +85,29 @@ const Registrarse = (props) => {
         </div>
         <div className="row">
             {/*botón para acceder al modal*/}
-            <button type="button" 
-                style={{maxWidth:"150px"}}
-                onClick={handleClick}
-                className={abierto==true? "btn btn-primary btn-md my-1":"btn btn-danger disabled my-1"}
-                data-bs-dismiss = {store.accessToken==null? "modal":""}
-                data-bs-toggle={store.accessToken==null? "":"modal"} data-bs-target="#exampleModal">
-                {labelBtnRegistro}
-            </button>
+            <div>
+                <button type="button" 
+                    onClick={handleClick}
+                    className={abierto==true? "btn btn-primary btn-md my-1":"btn btn-danger disabled my-1"}
+                    data-bs-dismiss = {store.accessToken==null? "modal":""}
+                    data-bs-toggle={store.accessToken==null? "":"modal"} data-bs-target="#exampleModal">
+                    {labelBtnRegistro}
+                </button>
+                <Link to="/nextEvent">
+                    <button id="button-event" type="button" className="btn btn-primary mx-3">Ver otros Eventos</button>
+                </Link>
+            </div>
         </div>
         <div className="row">
             <div className="col-lg-8">
                 <article>
                     <header className="mb-4">
-                        <section className="mb-5">
-                        <p className="fs-5 mb-4">{datosEvento.descr_corta}</p>
+                        <section className="mb-4">
+                        <p className="fs-5 my-2">{datosEvento.descr_corta}</p>
                     </section>
                     </header>
                     <figure className="mb-4"><img className="img-fluid rounded" style={{maxWidth:"500px"}} src={basket} alt="..." /></figure>
-                    <section className="mb-5">
+                    <section className="mb-3">
                         <p className="fs-5 mb-4">{datosEvento.descr_larga}</p>
                     </section>
                 </article>
