@@ -7,6 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userTeam: [],
 			message: null,
 			allEvents: [],
+			paymentInformation: [],
 			modalmsje: [
 				{
 					boton: "Click",
@@ -19,32 +20,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			updateProfileImage: async (newImageUrl) => {
 				try {
-				  const { apiFetchProtected } = getActions();
-		  
-				  // Hace una solicitud al servidor para actualizar la imagen de perfil
-				  const resp = await apiFetchProtected("/updateimage", "POST", { newImageUrl });
-		  
-				  if (resp.code === 200) {
-					// La imagen de perfil se actualizó con éxito en el servidor
-					// Actualiza el estado global con la nueva URL de la imagen
-					//console.log('la respuesta es' + resp)
-					/*setStore((prevStore) => ({
-					  ...prevStore,
-					  userInfo: {
-						...prevStore.userInfo,
-						profileImage: newImageUrl,
-					  },
-					})); */
-				  } else {
-					// Maneja el caso en el que la API de actualización de la imagen de perfil devuelva un código de error
-					console.error("Error al actualizar la imagen de perfil:", resp);
-					// Puedes mostrar un mensaje de error o realizar otra acción aquí
-				  }
-				  return resp;
+					const { apiFetchProtected } = getActions();
+					// Hace una solicitud al servidor para actualizar la imagen de perfil
+					const resp = await apiFetchProtected("/updateimage", "POST", { newImageUrl });
+					if (resp.code === 200) {
+						// La imagen de perfil se actualizó con éxito en el servidor
+						// Actualiza el estado global con la nueva URL de la imagen
+						console.log('la respuesta es' + resp)
+						/*setStore((prevStore) => ({
+						  ...prevStore,
+						  userInfo: {
+							...prevStore.userInfo,
+							profileImage: newImageUrl,
+						  },
+						})); */
+					} else {
+						// Maneja el caso en el que la API de actualización de la imagen de perfil devuelva un código de error
+						console.error("Error al actualizar la imagen de perfil:", resp);
+						// Puedes mostrar un mensaje de error o realizar otra acción aquí
+					}
+					return resp;
 				} catch (error) {
-				  console.error("Error al actualizar la imagen:", error);
-				  // Maneja el caso en el que ocurra un error en la llamada a la API
-				  // Puedes mostrar un mensaje de error o realizar otra acción aquí
+					console.error("Error al actualizar la imagen:", error);
+					// Maneja el caso en el que ocurra un error en la llamada a la API
+					// Puedes mostrar un mensaje de error o realizar otra acción aquí
 				}
 			},
 			apiFetchPublic: async (endpoint, method = "GET", body = null) => {
@@ -56,8 +55,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						//objeto params con lo necesario para la petición que no es get
 						const params = {
 							method,
-							headers:{
-								"Content-Type":"application/json",
+							headers: {
+								"Content-Type": "application/json",
 								"Access-Control-Allow-Origin": "*"
 							}
 						}
@@ -85,7 +84,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const params = {
 						method,
-						headers:{
+						headers: {
 							"Authorization": "Bearer " + accessToken,
 							"Access-Control-Allow-Origin": "*"
 						}
@@ -187,9 +186,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				store.modalmsje.splice(0, 1, dataMsje);
 				setStore(store);
 			},
-			newEvent:async(eventData)=>{
-				try{
-					const {apiFetchProtected} = getActions()
+			newEvent: async (eventData) => {
+				try {
+					const { apiFetchProtected } = getActions()
 					//hacemos la petición
 					//trae de la API el code(resp.status) y data
 					//es decir, lo que regresa la función apiFetchPublic()
@@ -243,7 +242,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const resp = await apiFetchProtected("/deleteevent", "POST", {eventId})
 					//console.log("PRUEBA_DeleteEvent", JSON.stringify(resp))
 					//si el token expiró borramos token del almacenamiento local y del store
-					if (resp.code==201){
+					if (resp.code == 201) {
 						const store = getStore();
 						store.userEvent.splice(index, 1);
 						setStore(store);
@@ -288,10 +287,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
 				}
-      		},
-			newTeam:async(teamData)=>{
-				try{
-					const {apiFetchProtected} = getActions()
+			},
+			newTeam: async (teamData) => {
+				try {
+					const { apiFetchProtected } = getActions()
 					//hacemos la petición
 					//trae de la API el code(resp.status) y data
 					//es decir, lo que regresa la función apiFetchPublic()
@@ -303,10 +302,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({accessToken:null})
 					}
 					//Si el equipo existe enviar error
-					if (resp.code==402){
+					if (resp.code == 402) {
 						return resp
 					}
-					if (resp.code==201){
+					if (resp.code == 201) {
 						//setStore({userInfo:resp.data})
 						const store = getStore();
 						store.userTeam.push(resp.data);
@@ -325,9 +324,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al crear el equipo")
 				}
 			},
-			getUserTeams: async()=>{
-				try{
-					const {apiFetchProtected} = getActions()
+			getUserTeams: async () => {
+				try {
+					const { apiFetchProtected } = getActions()
 					const resp = await apiFetchProtected("/loaduserteams")
 					if (resp == "No token" || resp.code == 401){
 						//si el token expiró borramos token del almacenamiento local y del store
@@ -514,6 +513,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al hacer el registro", error)
 				}
 			}
+			,
+			savePaymentInfo: async (paypalData, index) => {
+				try {
+					const { apiFetchProtected } = getActions()
+					console.log("PaypalData: ", { paypalData })
+					const resp = await apiFetchProtected("/pagos_paypal", "POST", { paypalData })
+					console.log("PRUEBA_PaypalData", JSON.stringify(resp))
+					if (resp.code == 201) {
+
+						const store = getStore();
+						store.paymentInformation.splice(index, 1, resp.data);
+						setStore(store);
+						return "Ok"
+					}
+					//si el token expiró
+					//borramos token del almacenamiento local y del store
+					localStorage.removeItem("accessToken")
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
+						alert("Sesión expirada")
+					}
+					return "Sesión expirada"
+					//return resp
+				} catch (error) {
+					console.log("Error al agregar informacion de pago")
+				}
+			},
 		}
 	};
 

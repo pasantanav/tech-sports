@@ -80,7 +80,6 @@ const ResetPass = () => {
                     <div className="text-center">
                       <p>Escribe tu correo y te enviaremos tu contraseña.</p>
                       <div className="panel-body">
-                        <form onSubmit={handleResetPassword}>
                           <fieldset>
                             <div className="form-group">
                               <input
@@ -96,11 +95,11 @@ const ResetPass = () => {
                             <button
                               className="btn btn-lg btn-outline-primary btn-block mt-3"
                               type="submit"
+                              onSubmit={handleResetPassword}
                             >
                               Enviar Contraseña
                             </button>
-                          </fieldset>
-                        </form>
+                          </fieldset>             
                       </div>
                     </div>
                   </div>

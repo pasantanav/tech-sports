@@ -17,7 +17,8 @@ class User(db.Model):
     pagos = db.relationship('Pagos', back_populates='user', lazy=True)
     registros = db.relationship('Registros', back_populates='user', lazy=True)
     registrospagos = db.relationship('RegistrosPagos', back_populates='user', lazy=True)
-
+    Paypal = db.relationship('Pagos_Paypal', backref='user', lazy=True)
+    
     def __repr__(self):
         return f'<User {self.email}>'
 
@@ -182,3 +183,27 @@ class TokenBlockedList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     token = db.Column(db.String(1000), unique=True, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
+
+class Pagos_Paypal(db.Model):
+    __tablename__ = "pagos_paypal"
+    id = db.Column(db.Integer, primary_key=True)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    orderId = db.Column(db.String(80), unique=False, nullable=False)
+    payerId = db.Column(db.String(80), unique=False, nullable=False)
+    paymentSourceId = db.Column(db.String(80), unique=False, nullable=False)
+    paymentId = db.Column(db.String(80), unique=False, nullable=False)
+    
+    def __repr__(self):
+        return f'<Pagos_Paypal {self.orderId}>'
+
+    def serialize(self):
+        return {
+            "id":self.id,
+            "orderId":self.orderId,
+            "payerId":self.payerId,
+            "paymentSourceId":self.paymentSourceId,
+            "paymentId":self.paymentId,
+            "id_user":list(map(lambda x: x.serialize(), self.id_user)),
+            
+        }
+   

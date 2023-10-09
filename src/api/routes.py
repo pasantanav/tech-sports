@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, TokenBlockedList, Events, Teams, Pagos, Registros, RegistrosPagos
+from api.models import db, User, TokenBlockedList, Events, Teams, Pagos, Registros, RegistrosPagos, Pagos_Paypal
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
@@ -18,23 +18,18 @@ bcrypt = Bcrypt(app)
 def update_profile_image():
     # Obtener el ID del usuario autenticado desde el token
     user_id = get_jwt_identity()
-
     profile_image = request.json.get('newImageUrl')
     # Comprobar si se ha enviado un archivo en la solicitud
     if 'newImageUrl' not in request.json:
         return jsonify({"error": "No se ha enviado un archivo de imagen"}), 400
-
     # Verificar que el archivo sea una imagen 
     #allowed_extensions = {'jpg', 'jpeg', 'png', 'gif'}
    # if not profile_image.lower().endswith(tuple(allowed_extensions)):
       #  return jsonify({"error": "Tipo de archivo no permitido"}), 400
-    
     # Generar un nombre único para la imagen
     #filename = f"user_{user_id}_profile.jpg"  # Puedes cambiar la extensión según el tipo de archivo
-
     # Guardar la imagen
    # profile_image.save(os.path.join(upload_folder, filename))
-
     # Generar la URL completa de la imagen
   #  base_url = process.env.BACKEND_URL 
     #profile_image_url = f'{base_url}/{upload_folder}/{filename}'
@@ -43,13 +38,8 @@ def update_profile_image():
     user = User.query.get(user_id)
     user.url_perfil = profile_image
     db.session.commit()
-
     # Ejemplo de respuesta exitosa:
     return jsonify({"message": "Imagen de perfil actualizada correctamente"}), 200
-
-
-
-
 
 @api.route('/signup', methods=['POST'])
 def create_user():
@@ -478,3 +468,27 @@ def create_register():
         db.session.commit()
 
     return jsonify({"msg":"Registro realizado"}), 200
+
+    #ACTUALIZARUSUARIOS
+@api.route('/pagos_paypal', methods=['POST'])
+@jwt_required()
+def pagos_paypal():
+    #obtener el jti del token que traemos en claims (get_jwt)
+    user_id = get_jwt_identity()
+    orderId = request.json.get("orderId")
+    payerId = request.json.get("payerId")
+    paymentId = request.json.get("paymentId")
+    paymentSourceId = request.json.get(" paymentSourceId")
+    #buscar usuario en la bd, que me traiga el primer resultado
+    #registro de pago de paypal
+    new_pago = Pagos_Paypal()
+    new_pago.user_id=user_id
+    new_pago.orderId=orderId
+    new_pago.payerId=payerId
+    new_pago.paymentSourceId=paymentSourceId
+    new_pago.paymentId=paymentId
+    new_pago.orderId=orderId
+    #guardarlo en la bd
+    db.session.add(new_pago)
+    db.session.commit()
+    return jsonify({"message":"Pago registrado"}), 201
