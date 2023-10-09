@@ -415,9 +415,9 @@ def loadAllUser():
 
     #ACTUALIZARUSUARIOS
     
-@api.route('/user', methods=['PUT'])
+@api.route('/pagos_paypal', methods=['POST'])
 @jwt_required()
-def user_logout():
+def pagos_paypal():
     #obtener el jti del token que traemos en claims (get_jwt)
     user_id = get_jwt_identity()
     orderId = request.json.get("orderId")
@@ -436,5 +436,5 @@ def user_logout():
     #guardarlo en la bd
     db.session.add(new_pago)
     db.session.commit()
-    return jsonify({"message":"Pago registrado"}), 200
+    return jsonify({"message":"Pago registrado"}), 201
 

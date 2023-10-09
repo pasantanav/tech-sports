@@ -7,6 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userTeam: [],
 			message: null,
 			allEvents: [],
+			paymentInformation: [],
 			modalmsje: [
 				{
 					boton: "Click",
@@ -19,32 +20,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			updateProfileImage: async (newImageUrl) => {
 				try {
-				  const { apiFetchProtected } = getActions();
-		  
-				  // Hace una solicitud al servidor para actualizar la imagen de perfil
-				  const resp = await apiFetchProtected("/updateimage", "POST", { newImageUrl });
-		  
-				  if (resp.code === 200) {
-					// La imagen de perfil se actualizó con éxito en el servidor
-					// Actualiza el estado global con la nueva URL de la imagen
-					console.log('la respuesta es' + resp)
-					/*setStore((prevStore) => ({
-					  ...prevStore,
-					  userInfo: {
-						...prevStore.userInfo,
-						profileImage: newImageUrl,
-					  },
-					})); */
-				  } else {
-					// Maneja el caso en el que la API de actualización de la imagen de perfil devuelva un código de error
-					console.error("Error al actualizar la imagen de perfil:", resp);
-					// Puedes mostrar un mensaje de error o realizar otra acción aquí
-				  }
-				  return resp;
+					const { apiFetchProtected } = getActions();
+
+					// Hace una solicitud al servidor para actualizar la imagen de perfil
+					const resp = await apiFetchProtected("/updateimage", "POST", { newImageUrl });
+
+					if (resp.code === 200) {
+						// La imagen de perfil se actualizó con éxito en el servidor
+						// Actualiza el estado global con la nueva URL de la imagen
+						console.log('la respuesta es' + resp)
+						/*setStore((prevStore) => ({
+						  ...prevStore,
+						  userInfo: {
+							...prevStore.userInfo,
+							profileImage: newImageUrl,
+						  },
+						})); */
+					} else {
+						// Maneja el caso en el que la API de actualización de la imagen de perfil devuelva un código de error
+						console.error("Error al actualizar la imagen de perfil:", resp);
+						// Puedes mostrar un mensaje de error o realizar otra acción aquí
+					}
+					return resp;
 				} catch (error) {
-				  console.error("Error al actualizar la imagen:", error);
-				  // Maneja el caso en el que ocurra un error en la llamada a la API
-				  // Puedes mostrar un mensaje de error o realizar otra acción aquí
+					console.error("Error al actualizar la imagen:", error);
+					// Maneja el caso en el que ocurra un error en la llamada a la API
+					// Puedes mostrar un mensaje de error o realizar otra acción aquí
 				}
 			},
 			apiFetchPublic: async (endpoint, method = "GET", body = null) => {
@@ -56,8 +57,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						//objeto params con lo necesario para la petición que no es get
 						const params = {
 							method,
-							headers:{
-								"Content-Type":"application/json",
+							headers: {
+								"Content-Type": "application/json",
 								"Access-Control-Allow-Origin": "*"
 							}
 						}
@@ -85,7 +86,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					const params = {
 						method,
-						headers:{
+						headers: {
 							"Authorization": "Bearer " + accessToken,
 							"Access-Control-Allow-Origin": "*"
 						}
@@ -199,16 +200,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				store.modalmsje.splice(0, 1, dataMsje);
 				setStore(store);
 			},
-			newEvent:async(eventData)=>{
-				try{
-					const {apiFetchProtected} = getActions()
+			newEvent: async (eventData) => {
+				try {
+					const { apiFetchProtected } = getActions()
 					//hacemos la petición
 					//trae de la API el code(resp.status) y data
 					//es decir, lo que regresa la función apiFetchPublic()
-					console.log("DATOSDELEVENTO: ", {eventData})
-					const resp = await apiFetchProtected("/newevent", "POST", {eventData})
+					console.log("DATOSDELEVENTO: ", { eventData })
+					const resp = await apiFetchProtected("/newevent", "POST", { eventData })
 					console.log("PRUEBA_newEvent", JSON.stringify(resp))
-					if (resp.code==201){
+					if (resp.code == 201) {
 						//setStore({userInfo:resp.data})
 						const store = getStore();
 						store.userEvent.push(resp.data);
@@ -218,23 +219,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//si el token expiró
 					//borramos token del almacenamiento local y del store
 					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
 						alert("Sesión expirada")
 					}
 					return "Sesión expirada"
 					//return resp
-				} catch(error){
+				} catch (error) {
 					console.log("Error al crear el evento")
 				}
 			},
-			editEvent:async(eventData, index)=>{
-				try{
-					const {apiFetchProtected} = getActions()
-					console.log("DATOSDELEVENTO: ", {eventData})
-					const resp = await apiFetchProtected("/editevent", "POST", {eventData})
+			editEvent: async (eventData, index) => {
+				try {
+					const { apiFetchProtected } = getActions()
+					console.log("DATOSDELEVENTO: ", { eventData })
+					const resp = await apiFetchProtected("/editevent", "POST", { eventData })
 					console.log("PRUEBA_editEvent", JSON.stringify(resp))
-					if (resp.code==201){
+					if (resp.code == 201) {
 						//setStore({userInfo:resp.data})
 						const store = getStore();
 						store.userEvent.splice(index, 1, resp.data);
@@ -244,24 +245,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//si el token expiró
 					//borramos token del almacenamiento local y del store
 					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
 						alert("Sesión expirada")
 					}
 					return "Sesión expirada"
 					//return resp
-				} catch(error){
+				} catch (error) {
 					console.log("Error al editar el evento")
 				}
 			},
-			deleteEvent:async(eventId, index)=>{
-				try{
-					const {apiFetchProtected} = getActions()
+			deleteEvent: async (eventId, index) => {
+				try {
+					const { apiFetchProtected } = getActions()
 					console.log("Id del evento a borrar: ", eventId)
-					const resp = await apiFetchProtected("/deleteevent", "POST", {eventId})
+					const resp = await apiFetchProtected("/deleteevent", "POST", { eventId })
 					console.log("PRUEBA_DeleteEvent", JSON.stringify(resp))
 					//si el token expiró borramos token del almacenamiento local y del store
-					if (resp.code==201){
+					if (resp.code == 201) {
 						const store = getStore();
 						store.userEvent.splice(index, 1);
 						setStore(store);
@@ -269,13 +270,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return "Ok"
 					}
 					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
 						return ("Sesión expirada")
 					}
 					return "Sesión expirada"
 					//return resp
-				} catch(error){
+				} catch (error) {
 					console.log("Error al borrar el evento")
 				}
 			},
@@ -301,21 +302,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
 				}
-      		},
-			newTeam:async(teamData)=>{
-				try{
-					const {apiFetchProtected} = getActions()
+			},
+			newTeam: async (teamData) => {
+				try {
+					const { apiFetchProtected } = getActions()
 					//hacemos la petición
 					//trae de la API el code(resp.status) y data
 					//es decir, lo que regresa la función apiFetchPublic()
-					console.log("DATOS DEL EQUIPO: ", {teamData})
-					const resp = await apiFetchProtected("/newteam", "POST", {teamData})
+					console.log("DATOS DEL EQUIPO: ", { teamData })
+					const resp = await apiFetchProtected("/newteam", "POST", { teamData })
 					console.log("PRUEBA_newTeam", JSON.stringify(resp))
 					//Si el equipo existe enviar error
-					if (resp.code==402){
+					if (resp.code == 402) {
 						return resp
 					}
-					if (resp.code==201){
+					if (resp.code == 201) {
 						//setStore({userInfo:resp.data})
 						const store = getStore();
 						store.userTeam.push(resp.data);
@@ -325,45 +326,45 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//si el token expiró
 					//borramos token del almacenamiento local y del store
 					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
 						alert("Sesión expirada")
 					}
 					return "Sesión expirada"
 					//return resp
-				} catch(error){
+				} catch (error) {
 					console.log("Error al crear el equipo")
 				}
 			},
-			getUserTeams: async()=>{
-				try{
-					const {apiFetchProtected} = getActions()
+			getUserTeams: async () => {
+				try {
+					const { apiFetchProtected } = getActions()
 					const resp = await apiFetchProtected("/loaduserteams")
 					///////////// extra
 					console.log("PRUEBA_loaduserTeams", resp)
-					if (resp.code==200){
-						setStore({userTeam:resp.data.teams})
+					if (resp.code == 200) {
+						setStore({ userTeam: resp.data.teams })
 						return "Ok"
 					}
 					//si el token expiró
 					//borramos token del almacenamiento local y del store
 					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
 						alert("Sesión expirada")
 					}
 					return "Sesión expirada"
-				}catch(error){
+				} catch (error) {
 					console.log("Error al solicitar los datos", error)
 				}
-      		},
-			editTeam:async(teamData, index)=>{
-				try{
-					const {apiFetchProtected} = getActions()
-					console.log("DATOSDELEQUIPO: ", {teamData})
-					const resp = await apiFetchProtected("/editteam", "POST", {teamData})
+			},
+			editTeam: async (teamData, index) => {
+				try {
+					const { apiFetchProtected } = getActions()
+					console.log("DATOSDELEQUIPO: ", { teamData })
+					const resp = await apiFetchProtected("/editteam", "POST", { teamData })
 					console.log("PRUEBA_editTeam", JSON.stringify(resp))
-					if (resp.code==201){
+					if (resp.code == 201) {
 						//setStore({userInfo:resp.data})
 						const store = getStore();
 						store.userTeam.splice(index, 1, resp.data);
@@ -373,24 +374,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//si el token expiró
 					//borramos token del almacenamiento local y del store
 					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
 						alert("Sesión expirada")
 					}
 					return "Sesión expirada"
 					//return resp
-				} catch(error){
+				} catch (error) {
 					console.log("Error al editar el equipo")
 				}
 			},
-			deleteTeam:async(teamId, index)=>{
-				try{
-					const {apiFetchProtected} = getActions()
+			deleteTeam: async (teamId, index) => {
+				try {
+					const { apiFetchProtected } = getActions()
 					console.log("Id del equipo a borrar: ", teamId)
-					const resp = await apiFetchProtected("/deleteteam", "POST", {teamId})
+					const resp = await apiFetchProtected("/deleteteam", "POST", { teamId })
 					console.log("PRUEBA_DeleteTeam", JSON.stringify(resp))
 					//si el token expiró borramos token del almacenamiento local y del store
-					if (resp.code==201){
+					if (resp.code == 201) {
 						const store = getStore();
 						store.userTeam.splice(index, 1);
 						setStore(store);
@@ -398,13 +399,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return "Ok"
 					}
 					localStorage.removeItem("accessToken")
-					if (resp.code==401){
-						setStore({accessToken:null})
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
 						return ("Sesión expirada")
 					}
 					return "Sesión expirada"
 					//return resp
-				} catch(error){
+				} catch (error) {
 					console.log("Error al eliminar el equipo")
 				}
 			},
@@ -459,6 +460,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al solicitar los datos", error)
 				}
 			}
+			,
+			savePaymentInfo: async (paypalData, index) => {
+				try {
+					const { apiFetchProtected } = getActions()
+					console.log("PaypalData: ", { paypalData })
+					const resp = await apiFetchProtected("/pagos_paypal", "POST", { paypalData })
+					console.log("PRUEBA_PaypalData", JSON.stringify(resp))
+					if (resp.code == 201) {
+
+						const store = getStore();
+						store.paymentInformation.splice(index, 1, resp.data);
+						setStore(store);
+						return "Ok"
+					}
+					//si el token expiró
+					//borramos token del almacenamiento local y del store
+					localStorage.removeItem("accessToken")
+					if (resp.code == 401) {
+						setStore({ accessToken: null })
+						alert("Sesión expirada")
+					}
+					return "Sesión expirada"
+					//return resp
+				} catch (error) {
+					console.log("Error al agregar informacion de pago")
+				}
+			},
 		}
 	};
 

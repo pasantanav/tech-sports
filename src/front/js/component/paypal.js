@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-export default function PayPal(props) {
 
+export default function PayPal(props) {
   // Esta función se llamará cuando el usuario haga clic en el botón de PayPal
   const createOrder = (data, actions) => {
+    const { store, actions } = useContext(Context);
+    const [isOpen, setIsOpen] = useState(false);
+
     return actions.order.create({
       "purchase_units": [
         {
@@ -49,9 +52,17 @@ export default function PayPal(props) {
       ],
     });
   };
-  const onApprove = (data, actions) => {
-    console.log({ data })
-    console.log({ actions })
+  const onApprove = async ({ data }) => {
+    console.log(data)
+    const { savePaymentInfo } = actions;
+    resp = await savePaymentInfo({
+      orderId: data.orderID,
+      payerId: data.payerID,
+      paymentSourceId: data.paymentSourceID,
+      paymentId: data.paymentID
+    });
+
+    setIsOpen(true);
   }
   const onCancel = (data, actions) => {
     alert("onCancelData" + JSON.stringify(data))
@@ -64,8 +75,8 @@ export default function PayPal(props) {
 
   return (
     <PayPalScriptProvider options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}>
-
       <PayPalButtons createOrder={createOrder} onApprove={onApprove} onCancel={onCancel} onError={onError} />
     </PayPalScriptProvider>
+
   );
 };

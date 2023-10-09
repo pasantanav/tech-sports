@@ -154,7 +154,7 @@ class TokenBlockedList(db.Model):
 
 class Pagos_Paypal(db.Model):
     __tablename__ = "pagos_paypal"
-    id = db.Column(db.String(), unique=False, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     orderId = db.Column(db.String(80), unique=False, nullable=False)
     payerId = db.Column(db.String(80), unique=False, nullable=False)
