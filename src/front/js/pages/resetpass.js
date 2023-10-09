@@ -1,10 +1,9 @@
-import React, {  useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import emailjs from "emailjs-com";
 
 const ResetPass = () => {
   const [email, setEmail] = useState("");
-  const [recoveredPassword, setRecoveredPassword] = useState(""); // Agrega el estado para la contraseña recuperada
   const [isEmailSent, setIsEmailSent] = useState(false);
   const { store, actions } = useContext(Context);
 
@@ -12,41 +11,56 @@ const ResetPass = () => {
     setEmail(e.target.value);
   };
 
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const response = await fetch('/recoverpassword', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+  
+      if (response.status === 200) {
+        const data = await response.json();
+  
+        // Enviar el token de recuperación por correo electrónico
+        const serviceID = "service_wrzgalp"; // Reemplaza con tu Service ID de emailjs
+        const templateID = "template_orrizgu"; // Reemplaza con tu Template ID de emailjs
+        const userID = "t0uvEkZ3z_2b2oGDIZ"; // Reemplaza con tu User ID de emailjs
+  
+        const templateParams = {
+          email: email,
+          recoveryLink: data.recoveryToken
+        };
+  
+        const emailResponse = await emailjs.send(
+          serviceID,
+          templateID,
+          templateParams,
+          userID
+        );
+  
+        if (emailResponse.status === 200) {
+          console.log("Correo electrónico enviado con éxito");
+          setIsEmailSent(true);
+        } else {
+          console.error("Error al enviar el correo electrónico");
+        }
+      } else {
+        console.error("Error al enviar la solicitud al backend");
+      }
+    } catch (error) {
+      console.error("Error al enviar la solicitud al backend", error);
+    }
+  };
+
   useEffect(() => {
     // Obtén la contraseña recuperada del estado global cuando el componente se monte
     console.log(store.userInfo);
   }, []);
-
-  const handleResetPassword = async (e) => {
-    e.preventDefault();
-
-    const serviceID = "service_wrzgalp"; //  Service ID de emailjs
-    const templateID = "template_orrizgu"; // Template ID de emailjs
-    const userID = "0uvEkZ3z_2b2oGDIZ"; //  User ID de emailjs
-
-    try {
-      const templateParams = {
-        email,
-        recoveredPassword // Incluye la contraseña recuperada en los parámetros del correo electrónico
-      };
-
-      const response = await emailjs.send(
-        serviceID,
-        templateID,
-        templateParams,
-        userID
-      );
-
-      if (response.status === 200) {
-        console.log("Correo electrónico enviado con éxito");
-        setIsEmailSent(true);
-      } else {
-        console.error("Error al enviar el correo electrónico");
-      }
-    } catch (error) {
-      console.error("Error al enviar el correo electrónico", error);
-    }
-  };
 
   return (
     <div className="container">

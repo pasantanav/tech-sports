@@ -1,6 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+from datetime import timedelta
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User, TokenBlockedList, Events, Teams
 from api.utils import generate_sitemap, APIException
@@ -48,7 +49,32 @@ def update_profile_image():
     return jsonify({"message": "Imagen de perfil actualizada correctamente"}), 200
 
 
+@api.route("/changepassword", methods=["POST"])
+@jwt_required()
+def change_password():
+    new_password=request.json.get("password")
+    user_id=get_jwt_identity()
+    secure_password = bcrypt.generate_password_hash(new_password, 10).decode("utf-8")
+    user=User.query.get(user_id)
+    user.password=secure_password
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"msg": "Clave actualizada"})
 
+@api.route("/recoverpassword", methods=["POST"])
+def recover_password():
+    user_email = request.json.get("email")
+    user = User.query.filter_by(email=user_email).first()  # Corregir 'email' a 'user_email'
+    
+    # Si no se encontró el usuario
+    if user is None:
+        return jsonify({"message": "User not found"}), 401
+    
+    # Generar token temporal para la recuperación
+    token = create_access_token(
+        identity=user.id, expires_delta=timedelta(minutes=10), additional_claims={"type": "password"}  # Corregir 'true' a 'True'
+    )
+    return jsonify({"recoveryToken": token})
 
 
 @api.route('/signup', methods=['POST'])
