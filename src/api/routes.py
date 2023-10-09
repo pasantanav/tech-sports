@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, TokenBlockedList, Events, Teams
+from api.models import db, User, TokenBlockedList, Events, Teams, Pagos_Paypal
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
@@ -415,31 +415,26 @@ def loadAllUser():
 
     #ACTUALIZARUSUARIOS
     
-@api.route('/user', methods=['PUT'])
+@api.route('/pagos_paypal', methods=['POST'])
 @jwt_required()
-def user_logout():
+def pagos_paypal():
     #obtener el jti del token que traemos en claims (get_jwt)
-    jti= get_jwt()["jti"]
-    email = request.json.get("email")
+    user_id = get_jwt_identity()
     orderId = request.json.get("orderId")
     payerId = request.json.get("payerId")
-    paymentSource = request.json.get("paymentSource")
     paymentId = request.json.get("paymentId")
-    facilitatorAccessToken = request.json.get("paymentId")
-    name = request.json.get("name")
+    paymentSourceId = request.json.get(" paymentSourceId")
     #buscar usuario en la bd, que me traiga el primer resultado
-    user = User.query.filter_by(email = email).first()
-    #si existe el usuario mostrar error
-    if user is not None:
-        return jsonify({"message": "User not found"}), 404
-    user.orderId=orderId
-    user.payerId=payerId
-    user.paymentSource=paymentSource
-    user.paymentId=paymentId
-    user.orderId=orderId
-    user.facilitatorAccessToken=facilitatorAccessToken
+    #registro de pago de paypal
+    new_pago = Pagos_Paypal()
+    new_pago.user_id=user_id
+    new_pago.orderId=orderId
+    new_pago.payerId=payerId
+    new_pago.paymentSourceId=paymentSourceId
+    new_pago.paymentId=paymentId
+    new_pago.orderId=orderId
     #guardarlo en la bd
-    db.session.add(user)
+    db.session.add(new_pago)
     db.session.commit()
-    return jsonify({"message": "User logged out"}), 200
+    return jsonify({"message":"Pago registrado"}), 201
 
