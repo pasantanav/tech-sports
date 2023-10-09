@@ -40,7 +40,7 @@ const Perfil = ()=>{
     const options = {
       onUploadDone: (res) => {
         const newImageUrl = res.filesUploaded[0].url;
-        console.log('la URL de la imagen es:', newImageUrl)
+        //console.log('la URL de la imagen es:', newImageUrl)
         actions.updateProfileImage(newImageUrl).then(()=>{
 
           setProfileImage(newImageUrl);
@@ -78,7 +78,6 @@ const Perfil = ()=>{
                   className="rounded-circle img-fluid"
                   style={{ width: '150px' }}
                 />
-                {/*<h5 className="my-3">{JSON.stringify(store.userInfo)}</h5>*/}
                 <h5 className="my-3">{profileData.name}</h5>
                 <button className='btn btn-outline-primary ms-1' onClick={() => actions.logout()}>
                   Cerrar Sesión
@@ -199,7 +198,8 @@ const Perfil = ()=>{
                     <img src={eventlist} className="card-img-top" alt="Registro"/>
                     <div className="card-body">
                       <p className="card-text">Registra tus equipos a eventos vigentes.</p>
-                      <Link to="/nextevent" className="btn btn-primary">Registrar Equipos</Link>
+                      {/* era to="/nextevent" */}
+                      <Link to="/registroEquipos" className="btn btn-primary">Registrar Equipos</Link>
                     </div>
                   </div>
                 </div>

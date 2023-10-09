@@ -179,12 +179,18 @@ const ModalEvent = (props) => {
                 const {newEvent} = actions;
                 //resp = await newEvent(eventFormData);
                 resp = await newEvent(eventoSinEsp);
+                if (resp=="No token"){
+                  navigate("/cuenta");
+                }
                 oper = "creado";
               } else {
                 //Si estamos editando el evento
                 const {editEvent} = actions;
                 //resp = await editEvent(eventFormData, props.indice);
                 resp = await editEvent(eventoSinEsp, props.indice);
+                if (resp=="No token"){
+                  navigate("/cuenta");
+                }
                 oper = "actualizado";
               }
               if (resp=="Ok"){
