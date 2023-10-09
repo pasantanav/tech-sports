@@ -3,9 +3,10 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function PayPal(props) {
   // Esta función se llamará cuando el usuario haga clic en el botón de PayPal
-  const createOrder = (data, actions) => {
+  const createOrder = (data, paypalActions) => {
     const { store, actions } = useContext(Context);
     const [isOpen, setIsOpen] = useState(false);
+
 
     return actions.order.create({
       "purchase_units": [
