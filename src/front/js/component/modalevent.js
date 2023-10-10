@@ -236,7 +236,7 @@ const ModalEvent = (props) => {
                             name="descr_corta"
                             value={eventFormData.descr_corta}
                             rows="2"
-                            maxLength="100"
+                            maxLength="150"
                             className="form-control white-background-input"
                             onChange={handleEventChange}
                             required
@@ -332,7 +332,7 @@ const ModalEvent = (props) => {
                             name="descr_larga"
                             value={eventFormData.descr_larga}
                             rows="3"
-                            maxLength="250"
+                            maxLength="350"
                             className="form-control white-background-input"
                             onChange={handleEventChange}
                             required

@@ -1,0 +1,205 @@
+[
+    {
+        "target_class": "User",
+        "data": [
+            {
+                "id" : 1,
+                "email" : "admin@techsports.com",
+                "password" : "$2b$10$0m/o/IqlpGMxgOPKNOlktuEQNq/WgfBIXNxKdC1BJHmMBzK/YhsYW",
+                "is_active": true,
+                "name" : "Administrador",
+                "address" : "",
+                "phone" : "",
+                "url_perfil" : "https://cdn.filestackcontent.com/SFv9u451R8C3VD8onp3b"
+            },
+            {
+                "id" : 2,
+                "email" : "pedroasantanav@hotmail.com",
+                "password" : "$2b$10$ouJknIUdxz1g.zVk/L8t1eFE2b7ahL3Sr7g40s2SnIg54o1ZuSnIu",
+                "is_active": true,
+                "name" : "Pedro Santana",
+                "address" : "",
+                "phone" : "",
+                "url_perfil" : "https://cdn.filestackcontent.com/SFv9u451R8C3VD8onp3b"
+            },
+            {
+                "id" : 3,
+                "email" : "giuseppetaylor@gmail.com",
+                "password" : "$2b$10$ouJknIUdxz1g.zVk/L8t1eFE2b7ahL3Sr7g40s2SnIg54o1ZuSnIu",
+                "is_active": true,
+                "name" : "Giuseppe Taylor",
+                "address" : "",
+                "phone" : "",
+                "url_perfil" : "https://cdn.filestackcontent.com/SFv9u451R8C3VD8onp3b"
+            },
+            {
+                "id" : 4,
+                "email" : "jacoboospina@gmail.com",
+                "password" : "$2b$10$ouJknIUdxz1g.zVk/L8t1eFE2b7ahL3Sr7g40s2SnIg54o1ZuSnIu",
+                "is_active": true,
+                "name" : "Jacobo Ospina",
+                "address" : "",
+                "phone" : "",
+                "url_perfil" : "https://cdn.filestackcontent.com/SFv9u451R8C3VD8onp3b"
+            }
+        ]
+    },
+    {
+        "target_class": "Events",
+        "data": [
+            {
+                "id" : 1,
+                "nombre_evento" : "JAM ON IT",
+                "descr_corta" : "Torneo de basketball estatal con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios mvp de la categoría.",
+                "fecha_ini" : "2023-10-06",
+                "fecha_fin" : "2023-10-09",
+                "ubicacion" : "Sinaloa, México",
+                "logotipo" : "https://cdn.filestackcontent.com/NB5VnbfYQDu2Mh3ZkEtc",
+                "descr_larga" : "Torneo de basketball a nivel estado en donde se disputarán categorías varoniles y femeniles representando a cada municipio. El toreno llevará mecánica round-robing garantizándose 4 juegos en el torneo. Se entregarán medallas a los tres primeros lugares en cada categoría y y premios a mvp de la categoría.",
+                "reglas" : "reglas1.pdf",
+                "fecha_lim" : "2023-10-09",
+                "hora_lim" : "22:59",
+                "email_contacto" : "pedroasantanav@hotmail.com",
+                "tel_contacto" : "526681737348",
+                "nombre_contacto" : "Pedro Santana",
+                "costo" : "700.00",
+                "id_user": 2
+            },
+            {
+                "id" : 2,
+                "nombre_evento" : "THE BIG GAME",
+                "descr_corta" : "Torneo de basketball nacional en Costa Rica con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios a mvp.",
+                "fecha_ini" : "2023-09-07",
+                "fecha_fin" : "2023-09-11",
+                "ubicacion" : "San José, Costa Rica",
+                "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
+                "descr_larga" : "Torneo de basketball a nivel país Costa Rica en donde se disputarán categorías varoniles y femeniles representando a cada municipio. El toreno llevará mecánica round-robing garantizándose 4 juegos en el torneo. Se entregarán medallas a los tres primeros lugares en cada categoría y y premios a mvp de la categoría.",
+                "reglas" : "reglas2.pdf",
+                "fecha_lim" : "2023-09-10",
+                "hora_lim" : "20:00",
+                "email_contacto" : "giuseppetaylor@gmail.com",
+                "tel_contacto" : "506105875421",
+                "nombre_contacto" : "Giuseppe Taylor",
+                "costo" : "600.00",
+                "id_user": 3
+            },
+            {
+                "id" : 3,
+                "nombre_evento" : "MIDNIGHT BASKETBALL TOURNAMENT",
+                "descr_corta" : "Torneo de basketball nacional en Colombia con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios a mvp.",
+                "fecha_ini" : "2023-09-21",
+                "fecha_fin" : "2023-09-24",
+                "ubicacion" : "Medellín, Colombia",
+                "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
+                "descr_larga" : "Torneo de basketball a nivel país Colombia en donde se disputarán categorías varoniles y femeniles representando a cada municipio. El toreno llevará mecánica round-robing garantizándose 4 juegos en el torneo. Se entregarán medallas a los tres primeros lugares en cada categoría y y premios a mvp de la categoría.",
+                "reglas" : "reglas3.pdf",
+                "fecha_lim" : "2023-09-23",
+                "hora_lim" : "22:00",
+                "email_contacto" : "jacoboospina@gmail.com",
+                "tel_contacto" : "576041738547",
+                "nombre_contacto" : "Jacobo Ospina",
+                "costo" : "750.00",
+                "id_user": 4
+            }
+        ]
+    },
+    {
+        "target_class": "Teams",
+        "data": [
+            {
+                "id" : 1,
+                "nombre_equipo": "Equipo 1 usuario 1",
+                "jugadores" : "Lista de jugadores",
+                "fecha_registro" : "2023-09-08",
+                "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
+                "id_user" : 2
+            },
+            {
+                "id" : 2,
+                "nombre_equipo": "Equipo 2 usuario 1",
+                "jugadores" : "Lista de jugadores 2",
+                "fecha_registro" : "2023-09-09",
+                "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
+                "id_user" : 2
+            },
+            {
+                "id" : 3,
+                "nombre_equipo": "Equipo 1 usuario 2",
+                "jugadores" : "Lista de jugadores",
+                "fecha_registro" : "2023-09-10",
+                "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
+                "id_user" : 3
+            },
+            {
+                "id" : 4,
+                "nombre_equipo": "Equipo 2 usuario 2",
+                "jugadores" : "Lista de jugadores",
+                "fecha_registro" : "2023-09-11",
+                "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
+                "id_user" : 3
+            },
+            {
+                "id" : 5,
+                "nombre_equipo": "Equipo 1 usuario 3",
+                "jugadores" : "Lista de jugadores",
+                "fecha_registro" : "2023-09-10",
+                "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
+                "id_user" : 4
+            },
+            {
+                "id" : 6,
+                "nombre_equipo": "Equipo 2 usuario 3",
+                "jugadores" : "Lista de jugadores 2",
+                "fecha_registro" : "2023-09-11",
+                "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
+                "id_user" : 4
+            }
+        ]
+    },
+    {
+        "target_class": "Pagos",
+        "data": [
+            {
+                "id" : 1,
+                "cant_equipos" : 3,
+                "monto" : 1400.00,
+                "orderId" : "O-123456",
+                "payerId" : "pedroasantanav@hotmail.com",
+                "paymentSourceId" : "123456",
+                "paymentId" : "123456",
+                "id_user" : 2,
+                "event_id" : 1
+            },
+            {
+                "id" : 2,
+                "cant_equipos" : 2,
+                "monto" : 1200.00,
+                "orderId" : "O-123457",
+                "payerId" : "giuseppetaylor@gmail.com",
+                "paymentSourceId" : "123457",
+                "paymentId" : "123457",
+                "id_user" : 3,
+                "event_id" : 2
+            }
+        ]
+    },
+    {
+        "target_class" : "RegistrosPagos",
+        "data": [
+            {
+                "id" : 1,
+                "cant_registrados" : 0,
+                "cant_pagados" : 3,
+                "id_user" : 2,
+                "event_id" : 1
+            },
+            {
+                "id" : 2,
+                "cant_registrados" : 0,
+                "cant_pagados" : 2,
+                "id_user" : 3,
+                "event_id" : 2
+            }
+        ]
+    }
+]

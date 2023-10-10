@@ -2,12 +2,11 @@ import React, { useContext, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 export default function PayPal(props) {
+  const { store, actions } = useContext(Context);
+  const [isOpen, setIsOpen] = useState(false)
   // Esta función se llamará cuando el usuario haga clic en el botón de PayPal
-  const createOrder = (data, actions) => {
-    const { store, actions } = useContext(Context);
-    const [isOpen, setIsOpen] = useState(false);
-
-    return actions.order.create({
+  const createOrder = (data, action) => {
+    return action.order.create({
       "purchase_units": [
         {
           "reference_id": 1234,
@@ -52,7 +51,7 @@ export default function PayPal(props) {
       ],
     });
   };
-  const onApprove = async ({ data }) => {
+  const onApprove = async (data) => {
     console.log(data)
     const { savePaymentInfo } = actions;
     resp = await savePaymentInfo({
@@ -64,13 +63,13 @@ export default function PayPal(props) {
 
     setIsOpen(true);
   }
-  const onCancel = (data, actions) => {
+  const onCancel = (data, action) => {
     alert("onCancelData" + JSON.stringify(data))
-    alert("onCancelActions" + JSON.stringify(actions))
+    alert("onCancelActions" + JSON.stringify(action))
   }
-  const onError = (data, actions) => {
+  const onError = (data, action) => {
     console.log("onErrorData" + JSON.stringify(data))
-    console.log("onErrorActions" + JSON.stringify(actions))
+    console.log("onErrorActions" + JSON.stringify(action))
   }
 
   return (

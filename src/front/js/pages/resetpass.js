@@ -79,8 +79,7 @@ const ResetPass = () => {
                   <div className="panel-body">
                     <div className="text-center">
                       <p>Escribe tu correo y te enviaremos tu contraseña.</p>
-                      <div className="panel-body">
-                          <fieldset>
+
                             <div className="form-group">
                               <input
                                 className="form-control input-lg"
@@ -99,8 +98,7 @@ const ResetPass = () => {
                             >
                               Enviar Contraseña
                             </button>
-                          </fieldset>             
-                      </div>
+            
                     </div>
                   </div>
                 </div>
