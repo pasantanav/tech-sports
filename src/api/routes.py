@@ -52,7 +52,7 @@ def update_profile_image():
 @api.route("/changepassword", methods=["POST"])
 @jwt_required()
 def change_password():
-    new_password=request.json.get("password")
+    new_password=request.json.get("Password")
     user_id=get_jwt_identity()
     secure_password = bcrypt.generate_password_hash(new_password, 10).decode("utf-8")
     user=User.query.get(user_id)

@@ -9,3 +9,11 @@
 .form-check-input:hover{
     cursor: pointer
 }
+
+.Password-forgotten{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
