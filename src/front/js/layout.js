@@ -4,7 +4,9 @@ import ScrollToTop from "./component/scrollToTop";
 //import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
+
 import { Servicios } from "./pages/servicios";
+import RecoverPassword from "./pages/recoverPassword.js"
 //import { Single } from "./pages/single";
 //import Payment from "./pages/payment";
 import injectContext from "./store/appContext";
@@ -42,6 +44,7 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<TeamList />} path="/teams" />
+                        <Route element={<RecoverPassword/>} path="/changepassword" />
                         <Route element={<Home />} path="/" />
                         <Route element={<Servicios />} path="/servicios" />
                         <Route element={<h1>Not found!</h1>} />

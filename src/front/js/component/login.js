@@ -181,7 +181,7 @@ function LoginForm() {
                         </div>
                         <div className="row mb-4 text-center">
                           <div className="md-6 d-flex justify-content-center">
-                            <ResetPass/>
+                            
                           </div>
                         </div>
                         <div className='text-center'>
@@ -204,6 +204,14 @@ function LoginForm() {
                           </p>
                         </div>
                       </form>
+                      <div className='Password-forgotten'>
+                        <p>¿Olvidaste tu contraseña?</p>
+                         
+                        <div className='resetpass-cont'>
+                        <ResetPass/>
+                        </div> 
+                      </div>
+                      
                     </div>
                     <div
                       className={`tab-pane fade ${activeTab === 'register' ? 'show active' : ''}`}
