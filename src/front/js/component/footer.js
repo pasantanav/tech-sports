@@ -3,7 +3,7 @@ import "../../styles/footer.css";
 
 let menu = [
 	{label: 'Inicio', url: '/'},
-	{label: 'Servicios', url: '/demo'},
+	{label: 'Servicios', url: '/servicios'},
 	{label: 'Eventos', url: '/eventos'},
 	{label: 'Galería', url: '/galeria'},
 	{label: 'Organizadores', url: '/organizadores'},

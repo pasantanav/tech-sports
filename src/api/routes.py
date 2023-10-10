@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from datetime import timedelta
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, TokenBlockedList, Events, Teams
+from api.models import db, User, TokenBlockedList, Events, Teams, Pagos, Registros, RegistrosPagos, Pagos_Paypal
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
@@ -19,23 +19,18 @@ bcrypt = Bcrypt(app)
 def update_profile_image():
     # Obtener el ID del usuario autenticado desde el token
     user_id = get_jwt_identity()
-
     profile_image = request.json.get('newImageUrl')
     # Comprobar si se ha enviado un archivo en la solicitud
     if 'newImageUrl' not in request.json:
         return jsonify({"error": "No se ha enviado un archivo de imagen"}), 400
-
     # Verificar que el archivo sea una imagen 
     #allowed_extensions = {'jpg', 'jpeg', 'png', 'gif'}
    # if not profile_image.lower().endswith(tuple(allowed_extensions)):
       #  return jsonify({"error": "Tipo de archivo no permitido"}), 400
-    
     # Generar un nombre único para la imagen
     #filename = f"user_{user_id}_profile.jpg"  # Puedes cambiar la extensión según el tipo de archivo
-
     # Guardar la imagen
    # profile_image.save(os.path.join(upload_folder, filename))
-
     # Generar la URL completa de la imagen
   #  base_url = process.env.BACKEND_URL 
     #profile_image_url = f'{base_url}/{upload_folder}/{filename}'
@@ -44,9 +39,9 @@ def update_profile_image():
     user = User.query.get(user_id)
     user.url_perfil = profile_image
     db.session.commit()
-
     # Ejemplo de respuesta exitosa:
     return jsonify({"message": "Imagen de perfil actualizada correctamente"}), 200
+
 
 
 @api.route("/changepassword", methods=["POST"])
@@ -75,6 +70,7 @@ def recover_password():
         identity=user.id, expires_delta=timedelta(minutes=10), additional_claims={"type": "password"}  # Corregir 'true' a 'True'
     )
     return jsonify({"recoveryToken": token}), 200
+
 
 
 @api.route('/signup', methods=['POST'])
@@ -195,10 +191,7 @@ def create_event():
     costo= object_context["costo"]
     #crear nuevo evento a partir de esta data
     new_event = Events()
-
-
     new_event.nombre_evento = nombre_evento
-
     new_event.descr_corta = descr_corta
     new_event.fecha_ini = fecha_ini
     new_event.fecha_fin = fecha_fin
@@ -277,7 +270,7 @@ def load_events():
     lista = Events.query.filter_by(id_user = user).order_by(Events.fecha_ini.desc()).all()
     #si no se encontró el evento
     if lista is None:
-        return jsonify({"message": "Events not found"}), 401
+        return jsonify({"message": "Events not found"}), 402
     response=[]
     for item in lista:
     #    response.append({item})
@@ -313,7 +306,7 @@ def create_team():
     team = Teams.query.filter_by(nombre_equipo = nombre_equipo).first()
     #si existe el usuario mostrar error
     if team is not None:
-        return jsonify({"message": "Equipo ya existe"}), 402
+        return jsonify({"message": "Equipo ya existe"}), 405
     jugadores= object_context["jugadores"]
     fecha_registro= object_context["fecha_registro"]
     logotipo= object_context["logotipo"]
@@ -333,6 +326,7 @@ def create_team():
 @jwt_required()
 def edit_team():
     #recibir datos del equipo
+    id_user = get_jwt_identity()
     team = request.json
     object_context= team["teamData"]
     team_id = object_context["id"]
@@ -340,15 +334,19 @@ def edit_team():
     jugadores= object_context["jugadores"]
     fecha_registro= object_context["fecha_registro"]
     logotipo= object_context["logotipo"]
-    id_user= object_context["id_user"]
     #buscar equipo
     team = Teams.query.get(team_id)
+    #si existe el nombre del equipo mostrar error
     team.nombre_equipo = nombre_equipo
     team.jugadores = jugadores
     team.fecha_registro = fecha_registro
     team.logotipo = logotipo
     team.id_user = id_user
-    db.session.commit()
+    try:
+        db.session.commit()
+    except:
+        return jsonify({"message": "Equipo ya existe"}), 405
+    
     return jsonify(object_context), 201
 
 @api.route('/deleteteam', methods=['POST'])
@@ -370,7 +368,7 @@ def load_user_teams():
     lista = Teams.query.filter_by(id_user = user).all()
     #si no se encontró el evento
     if lista is None:
-        return jsonify({"message": "Teams not found"}), 401
+        return jsonify({"message": "Teams not found"}), 402
     response=[]
     for item in lista:
         response.append({
@@ -392,7 +390,7 @@ def load_allevents():
     lista = Events.query.order_by(Events.fecha_ini.desc()).all()
     #si no se encontró el evento
     if lista is None:
-        return jsonify({"message": "Events not found"}), 401
+        return jsonify({"message": "Events not found"}), 402
     response=[]
     for item in lista:
     #    response.append({item})
@@ -438,3 +436,91 @@ def loadAllUser():
     #pasando contenido
     return jsonify({"Users":response}), 200
 
+@api.route('/loadusereventsregister', methods=['GET'])
+@jwt_required()
+def load_usereventsregister():
+    user = get_jwt_identity()
+    lista_ev_pagados = Pagos.query.filter_by(id_user = user).first()
+    #user = User.query.filter_by(email = email).first()
+    #si el usuario no ha hecho pagos
+    if lista_ev_pagados is None:
+        return jsonify({"message": "No tienes eventos pagados"}), 404
+ 
+    listaPagReg = RegistrosPagos.query.filter_by(id_user = user).all()
+    if listaPagReg is None:
+        return jsonify({"message": "No tienes eventos pagados"}), 404
+
+    response=[]
+    for PagReg in listaPagReg:
+        if PagReg.cant_registrados < PagReg.cant_pagados:
+            response.append({"id": PagReg.event_id, "nombre_evento": PagReg.events.nombre_evento})
+ 
+    return jsonify({"eventos_disponibles":response}), 200
+
+@api.route('/loadregisters', methods=['GET'])
+@jwt_required()
+def load_registers():
+    user = get_jwt_identity()
+    #lista = Registros.query.filter_by(id_user = user).order_by(Registros.fecha_ini.desc()).all()
+    lista = Registros.query.filter_by(id_user = user).all()
+    #si no se encontró el registro
+    if lista is None:
+        return jsonify({"message": "Sin registros"}), 404
+    response=[]
+    for registro in lista:
+        response.append({
+            "event_id": registro.event_id,
+            "nombre_evento": registro.events.nombre_evento,
+            "fecha_ini": registro.events.fecha_ini,
+            "fecha_fin": registro.events.fecha_fin
+        })
+ 
+    return jsonify({"registros":response}), 200
+
+@api.route('/newregister', methods=['POST'])
+@jwt_required
+def create_register():
+    user = get_jwt_identity()
+    idEquipo = request.json.get("idEquipo")
+    idEvento = request.json.get("IdEvento")
+    fechaRegistro = request.json.get("fechaActual")
+    newRegister = Registros()
+    newRegister.id_user = user
+    newRegister.team_id = idEquipo
+    newRegister.event_id = idEvento
+    newRegister.fecha_reg = fechaRegistro
+    db.session.add(newRegister)
+    db.session.commit()
+
+    registro = RegistrosPagos.query.filter_by(id_user = user, event_id = idEvento).first()
+    if registro is not None:
+        cant = registro.cant_registrados
+        cant = cant + 1
+        registro.cant_registrados = cant
+        db.session.commit()
+
+    return jsonify({"msg":"Registro realizado"}), 200
+
+    #ACTUALIZARUSUARIOS
+@api.route('/pagos_paypal', methods=['POST'])
+@jwt_required()
+def pagos_paypal():
+    #obtener el jti del token que traemos en claims (get_jwt)
+    user_id = get_jwt_identity()
+    orderId = request.json.get("orderId")
+    payerId = request.json.get("payerId")
+    paymentId = request.json.get("paymentId")
+    paymentSourceId = request.json.get(" paymentSourceId")
+    #buscar usuario en la bd, que me traiga el primer resultado
+    #registro de pago de paypal
+    new_pago = Pagos_Paypal()
+    new_pago.user_id=user_id
+    new_pago.orderId=orderId
+    new_pago.payerId=payerId
+    new_pago.paymentSourceId=paymentSourceId
+    new_pago.paymentId=paymentId
+    new_pago.orderId=orderId
+    #guardarlo en la bd
+    db.session.add(new_pago)
+    db.session.commit()
+    return jsonify({"message":"Pago registrado"}), 201

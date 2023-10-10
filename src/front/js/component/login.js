@@ -57,14 +57,13 @@ function LoginForm() {
     const data = new FormData(e.target)
     const email = data.get("loginEmail")
     const password = data.get("loginPassword")
-    console.log(email, password)
     if (email=="" || password==""){
       //MODAL
       alert("No debe de haber datos vacíos")
     } else {
       const {login} = actions
       let resp = await login(email, password)
-      console.log({resp})
+      //console.log({resp})
       //si no existe el usuario enviamos un error
       if (resp.code!=200){
         //MODAL
@@ -80,7 +79,6 @@ function LoginForm() {
     const email = data.get("registerEmail")
     const password = data.get("registerPassword")
     const pass2 = data.get("registerRepeatPassword")
-    const checkData = data.get("registerCheck")
     if (email=="" || password=="" || pass2=="" || name==""){
       //MODAL
       alert("No debe de haber datos vacíos")
@@ -92,15 +90,15 @@ function LoginForm() {
         alert("El password debe coincidir")
     } else {
         const {signup} = actions
-        console.log(email, password, name)
+        //console.log(email, password, name)
         let resp = await signup(email, password, name)
-        console.log({resp})
+        //console.log({resp})
         //si ya existe el usuario enviamos un error
         if (resp.code!=201){
           //MODAL
           alert("El usuario ya está registrado")
         } else {
-          alert("Signup successfull")
+          alert("Registro exitoso")
         }
         formulario.reset();
         setActiveTab('login');
@@ -182,27 +180,9 @@ function LoginForm() {
                           />
                         </div>
                         <div className="row mb-4 text-center">
-                          {/*
-                          <div className="col-md-6 d-flex justify-content-center">
-                            <div className="form-check mb-3 mb-md-0">
-                              <label className="form-check-label" htmlFor="loginCheck">
-                                Recuérdame
-                              </label>
-                              <input
-                                className="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="loginCheck"
-                                name="loginCheck"
-                                defaultChecked
-                              />
-                            </div>
-                          </div>
-                          */}
                           <div className="md-6 d-flex justify-content-center">
                             
                           </div>
-
                         </div>
                         <div className='text-center'>
                           <button type="submit" className="btn btn-primary btn-block mb-4">
@@ -291,20 +271,6 @@ function LoginForm() {
                             required
                           />
                         </div>
-
-                        {/*<div className="form-check d-flex justify-content-center mb-4">
-                          <input
-                            className="form-check-input me-2"
-                            type="checkbox"
-                            value="on"
-                            id="registerCheck"
-                            name="registerCheck"
-                            onChange={(e) => e.target.value=="true"? e.target.value="false":e.target.value="true"}
-                          />
-                          <label className="form-check-label" htmlFor="registerCheck">
-                            He leído y estoy de acuerdo con los términos
-                          </label>
-                        </div>*/}
                         <div className='text-center'>
                           <button type="submit" className="btn btn-primary btn-block mb-3">
                             Registrarse
