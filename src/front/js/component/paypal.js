@@ -1,20 +1,21 @@
 import React, { useContext, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import ReactModal from "react-modal";
 
 export default function PayPal(props) {
-  // Esta función se llamará cuando el usuario haga clic en el botón de PayPal
-  const createOrder = (data, actions) => {
-    const { store, actions } = useContext(Context);
-    const [isOpen, setIsOpen] = useState(false);
+  const { store, actions } = useContext(Context);
+  const [isOpen, setIsOpen] = useState(false);
 
-    return actions.order.create({
+  // Esta función se llamará cuando el usuario haga clic en el botón de PayPal
+  const createOrder = (data, action) => {
+    return action.order.create({
       "purchase_units": [
         {
           "reference_id": 1234,
           "description": "Attempt n.1 for Quote ID 1234",
           "amount": {
             "currency_code": "USD",
-            "value": 14.4,
+            "value": 75.,
             "breakdown": {
               "item_total": { "currency_code": "USD", "value": "12" },
               "shipping": { "currency_code": "USD", "value": "1" },
@@ -52,6 +53,7 @@ export default function PayPal(props) {
       ],
     });
   };
+
   const onApprove = async ({ data }) => {
     console.log(data)
     const { savePaymentInfo } = actions;
@@ -64,19 +66,29 @@ export default function PayPal(props) {
 
     setIsOpen(true);
   }
-  const onCancel = (data, actions) => {
+
+  const onCancel = (data, action) => {
     alert("onCancelData" + JSON.stringify(data))
-    alert("onCancelActions" + JSON.stringify(actions))
+    alert("onCancelActions" + JSON.stringify(action))
   }
-  const onError = (data, actions) => {
+
+  const onError = (data, action) => {
     console.log("onErrorData" + JSON.stringify(data))
-    console.log("onErrorActions" + JSON.stringify(actions))
+    console.log("onErrorActions" + JSON.stringify(action))
   }
 
   return (
     <PayPalScriptProvider options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}>
       <PayPalButtons createOrder={createOrder} onApprove={onApprove} onCancel={onCancel} onError={onError} />
+      {isOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>¡Transacción Exitosa!</h2>
+            <p>Gracias por su compra.</p>
+            <button onClick={() => setIsOpen(false)}>Cerrar</button>
+          </div>
+        </div>
+      )}
     </PayPalScriptProvider>
-
   );
 };
