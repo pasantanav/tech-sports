@@ -55,20 +55,47 @@ const getState = ({ getStore, getActions, setStore }) => {
 				return "Error al realizar la solicitud de recuperación de contraseña";
 				}
 			},
+			// actions.js
 			changePasswordRecovery: async (passwordToken, newPassword) => {
 				const requestData = {
-				  password: newPassword, // Envía la nueva contraseña en un objeto con la propiedad 'password'
+				"Password": newPassword, // Envía la nueva contraseña en un objeto con la propiedad 'password'
 				};
-			  
-				let resp = await fetch(process.env.BACKEND_URL + "/changepassword", {
-				  method: "POST",
-				  body: JSON.stringify(requestData), // Envía el objeto en el cuerpo de la solicitud
-				  headers: {
+			
+				try {
+				const response = await fetch(process.env.BACKEND_URL + "/api" + "/changepassword", {
+					method: "POST",
+					body: JSON.stringify(requestData), // Envía el objeto en el cuerpo de la solicitud
+					headers: {
 					"Content-Type": "application/json",
-					"Authorization": `Bearer ${passwordToken}`
-				  }
+					"Authorization": "Bearer " + passwordToken,
+					//"Access-Control-Allow-Origin": "*"
+					}
 				});
-			  },
+			
+				if (response.code == 200) {
+					// Contraseña cambiada con éxito en el servidor
+					//const userData = await response.json();
+			
+					// Actualiza el estado global con la nueva contraseña
+					/*setStore((prevStore) => ({
+					...prevStore,
+					userInfo: {
+						...prevStore.userInfo,
+						Password: userData.newPassword, // Suponiendo que 'userInfo' contiene la contraseña
+					},
+					})); */
+					
+					return 'Ok'; // Puedes devolver los datos actualizados si es necesario
+				} else {
+					// La solicitud al servidor falló
+					throw new Error("La solicitud al servidor falló");
+				}
+				} catch (error) {
+				// Ocurrió un error durante la solicitud
+				throw error;
+				}
+			},
+  
 			updateProfileImage: async (newImageUrl) => {
 				try {
 					const { apiFetchProtected } = getActions();

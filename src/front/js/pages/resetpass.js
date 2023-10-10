@@ -4,6 +4,7 @@ import emailjs from "emailjs-com";
 
 const ResetPass = () => {
   const [email, setEmail] = useState("");
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false); // Nuevo estado para la alerta de éxito
   const { store, actions } = useContext(Context);
 
   const handleEmailChange = (e) => {
@@ -18,7 +19,6 @@ const ResetPass = () => {
       
       const recoveryUrl = `${process.env.FRONTEND_URL}/changepassword?token=${recoverytoken}`;
 
-      
       const templateParams = {
         to_email: emailAddress,
         recoveryLink: recoveryUrl,
@@ -45,16 +45,15 @@ const ResetPass = () => {
       const { resetPassword } = actions;
       console.log(email);
       let resp = await resetPassword(email);
-      console.log('la respuesta es' + resp.data.recoveryToken)
+      console.log('la respuesta es: ' + resp.data.recoveryToken)
 
       if (resp.code == 200) {
         // Llama a la función sendRecoveryEmail con el correo y el token de recuperación
-        const recoveryResult = await sendRecoveryEmail(email, resp.recoverytoken);
+        const recoveryResult = await sendRecoveryEmail(email, resp.data.recoveryToken);
 
         if (recoveryResult) {
-          // Si el correo se envió con éxito, puedes realizar alguna acción adicional aquí
-          // Por ejemplo, mostrar un mensaje al usuario
-          console.log('Correo de recuperación enviado con éxito.');
+          // Si el correo se envió con éxito, muestra la alerta de éxito
+          setShowSuccessAlert(true);
         }
       } else {
         // Si hubo un error al restablecer la contraseña, puedes manejarlo aquí
@@ -133,9 +132,14 @@ const ResetPass = () => {
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
-                Close
+                Cerrar
               </button>
             </div>
+            {showSuccessAlert && (
+              <div className="alert alert-success" role="alert">
+                Correo de recuperación enviado con éxito.
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -144,4 +148,3 @@ const ResetPass = () => {
 };
 
 export default ResetPass;
-

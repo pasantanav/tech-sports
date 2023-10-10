@@ -204,7 +204,14 @@ function LoginForm() {
                           </p>
                         </div>
                       </form>
-                      <ResetPass/>
+                      <div className='Password-forgotten'>
+                        <p>¿Olvidaste tu contraseña?</p>
+                         
+                        <div className='resetpass-cont'>
+                        <ResetPass/>
+                        </div> 
+                      </div>
+                      
                     </div>
                     <div
                       className={`tab-pane fade ${activeTab === 'register' ? 'show active' : ''}`}
