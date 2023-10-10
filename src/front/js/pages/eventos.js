@@ -8,7 +8,7 @@ import basket8 from '../../img/basket8.jpeg';
 import { Link } from "react-router-dom";
 
 const Eventos=()=>{
-
+	//modificando
 	return (
 		<div className="AppEventos text-center">
 		<div className="row">
@@ -27,37 +27,36 @@ const Eventos=()=>{
 		<div className="contEventos container">
 		  <Cards
 			src={basket8}
-			day="10 "
-			
+			day="06 Oct"
 			title="JAM ON IT"
-			time="10/09/2023 08:00 PM/ "
-			location="New York,NY,USA"
-			description="This event article, used for writing about and listing the events planned for the future on your website.You can edit all of this text from the Pages tab by clicking the edit button."
+			time="06/10/2023 08:00 PM/ "
+			location="México"
+			description="Torneo de basketball estatal con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios mvp de la categoría."
 		  />
   			<Cards
 			  src={basket7}
-			  day="25 Dec"
+			  day="09 Nov"
 			  title="THE BIG GAME"
-			  time="29/11/2023 08:00 PM/ "
-			  location="2816 Cinamon Lane , San Antonio, Tx"
-			  description="This event article, used for writing about and listing the events planned for the future on your website.You can edit all of this text from the Pages tab by clicking the edit button."
+			  time="09/11/2023 08:00 PM/ "
+			  location="San José, Costa Rica"
+			  description="Evento de basketball anual nacional en Costa Rica con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios a mvp."
 			/>
 			<Cards
 			  src={basket1}
-			  day="25 Dec"
-			  title="JAM ON IT"
-			  time="10/09/2023 08:00 PM/ "
-			  location="New York,NY,USA"
-			  description="This event article, used for writing about and listing the events planned for the future on your website.You can edit all of this text from the Pages tab by clicking the edit button."
+			  day="21 Sep"
+			  title="MIDNIGHT BASKETBALL TOURNAMENT"
+			  time="21/09/2023 08:00 PM/ "
+			  location="Medellín, Colombia"
+			  description="Torneo de basketball nacional en Colombia con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios a mvp."
 			/>
-			<Cards
+			{/*<Cards
 			  src={basket3}
 			  day="25 Dec"
 			  title="THE BIG GAME"
 			  time="29/11/2023 08:00 PM/ "
 			  location="2816 Cinamon Lane , San Antonio, Tx"
 			  description="This event article, used for writing about and listing the events planned for the future on your website.You can edit all of this text from the Pages tab by clicking the edit button."
-			/>
+			/>*/}
 		</div>
 	  </div>
 	);
