@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import ReactModal from "react-modal";
+import { Context } from "../store/appContext";
 
 export default function PayPal(props) {
   const { store, actions } = useContext(Context);
