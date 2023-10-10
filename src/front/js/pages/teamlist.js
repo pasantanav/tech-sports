@@ -217,10 +217,10 @@ const TeamLista = () => {
                             </td>
                             <td>{theTeam.fecha_registro==""? "": new Date(theTeam.fecha_registro).toLocaleString()}</td>
                             <td>
-                                <button id={theTeam.id} onClick={(e) => handleEdit(e, theTeam.id, index)} className="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <button id={theTeam.id} onClick={(e) => handleEdit(e, theTeam.id, index)} className="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                     <i className="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button className="btn btn-primary btn-sm m-2"
+                                <button className="btn btn-outline-primary btn-sm m-2"
                                     onClick={(e) => handleDelete(e, theTeam.id, theTeam.nombre_equipo, index)}
                                     data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
                                     <i className="fa-solid fa-trash"></i>

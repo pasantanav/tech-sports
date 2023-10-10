@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemyseeder import ResolvingSeeder
 
 db = SQLAlchemy()
 
@@ -41,12 +42,12 @@ class Events(db.Model):
     __tablename__ = "events"
     id = db.Column(db.Integer, primary_key=True)
     nombre_evento= db.Column(db.String(50), unique=False, nullable=False)
-    descr_corta = db.Column(db.String(100), unique=False, nullable=False)
+    descr_corta = db.Column(db.String(150), unique=False, nullable=False)
     fecha_ini = db.Column(db.String(50), unique=False, nullable=False)
     fecha_fin = db.Column(db.String(50), unique=False, nullable=False)
     ubicacion = db.Column(db.String(100), unique=False, nullable=False)
     logotipo = db.Column(db.String(150), unique=False, nullable=False)
-    descr_larga = db.Column(db.String(250), unique=False, nullable=False)
+    descr_larga = db.Column(db.String(350), unique=False, nullable=False)
     reglas = db.Column(db.String(150), unique=False, nullable=False)
     fecha_lim = db.Column(db.String(50), unique=False, nullable=False)
     hora_lim = db.Column(db.String(10), unique=False, nullable=False)
@@ -116,6 +117,10 @@ class Pagos(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cant_equipos= db.Column(db.Integer, unique=False, nullable=False)
     monto = db.Column(db.Float, unique=False, nullable=False)
+    orderId = db.Column(db.String(80), unique=False, nullable=False)
+    payerId = db.Column(db.String(80), unique=False, nullable=False)
+    paymentSourceId = db.Column(db.String(80), unique=False, nullable=False)
+    paymentId = db.Column(db.String(80), unique=False, nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship(User)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'), nullable=False)
@@ -129,6 +134,10 @@ class Pagos(db.Model):
             "id": self.id,
             "cant_equipos": self.cant_equipos,
             "monto": self.monto,
+            "orderId": self.orderId,
+            "payerId": self.payerId,
+            "paymentSourceId": self.paymentSourceId,
+            "paymentId": self.paymentId,
             "id_user": self.id_user,
             "nombre_evento": self.events.nombre,
             "fecha_ini" : self.events.fecha_ini,
@@ -207,3 +216,14 @@ class Pagos_Paypal(db.Model):
             
         }
    
+def seed():
+  seeder = ResolvingSeeder(db.session)
+  #modelos a llenar
+  seeder.register(User)
+  seeder.register(Events)
+  seeder.register(Teams)
+  seeder.register(Pagos)
+  seeder.register(Registros)
+  seeder.register(RegistrosPagos)
+  seeder.load_entities_from_json_file("seedData.json")
+  db.session.commit()

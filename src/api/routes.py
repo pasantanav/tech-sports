@@ -3,7 +3,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from datetime import timedelta
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, TokenBlockedList, Events, Teams, Pagos, Registros, RegistrosPagos, Pagos_Paypal
+from api.models import db, User, TokenBlockedList, Events, Teams, Pagos, Registros, RegistrosPagos, Pagos_Paypal, seed
 from api.utils import generate_sitemap, APIException
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
@@ -524,3 +524,13 @@ def pagos_paypal():
     db.session.add(new_pago)
     db.session.commit()
     return jsonify({"message":"Pago registrado"}), 201
+
+@api.route('/seed', methods=['POST', 'GET'])
+def handle_seed():
+    seed()
+    try:
+        response_body = {"message": "Datos cargados"}
+    except:
+        return jsonify({"message": "Error al cargar datos"}), 404
+    
+    return jsonify(response_body), 200
