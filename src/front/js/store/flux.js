@@ -5,6 +5,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userInfo: null,
 			userEvent: [],
 			userTeam: [],
+			recoveryToken: [],
 			message: null,
 			allEvents: [],
 			paymentInformation: [],
@@ -18,6 +19,56 @@ const getState = ({ getStore, getActions, setStore }) => {
 			]
 		},
 		actions: {
+
+			// Agrega esta acción a tu objeto 'actions' en flux.js
+			resetPassword: async (email) => {
+				try {
+				const { apiFetchPublic } = getActions();
+			
+				// Realiza una solicitud HTTP pública para solicitar el restablecimiento de contraseña
+				const resp = await apiFetchPublic("/recoverpassword", "POST", { email });
+			
+				// Verifica la respuesta del servidor
+				if (resp.code === 200) {
+					// Si la solicitud fue exitosa, puedes manejar la respuesta aquí
+					// Por ejemplo, mostrar un mensaje al usuario
+					console.log("Solicitud de recuperación de contraseña exitosa:", resp.data);
+					const {recoveryToken} = resp.data
+					localStorage.setItem("recoveryToken", recoveryToken)
+						//guardamos el token en el store
+						setStore({ recoveryToken: recoveryToken })
+
+					
+					return resp;
+				} else if (resp.code === 404) {
+					// Si el correo electrónico no se encuentra en la base de datos, puedes manejarlo aquí
+					console.error("Correo electrónico no encontrado en la base de datos");
+					return "Correo electrónico no encontrado en la base de datos";
+				} else {
+					// Maneja otros posibles errores aquí, por ejemplo, errores del servidor
+					console.error("Error al procesar la solicitud de recuperación de contraseña:", resp);
+					return "Error al procesar la solicitud de recuperación de contraseña";
+				}
+				} catch (error) {
+				console.error("Error al realizar la solicitud de recuperación de contraseña:", error);
+				// Maneja cualquier error que ocurra durante la solicitud HTTP
+				return "Error al realizar la solicitud de recuperación de contraseña";
+				}
+			},
+			changePasswordRecovery: async (passwordToken, newPassword) => {
+				const requestData = {
+				  password: newPassword, // Envía la nueva contraseña en un objeto con la propiedad 'password'
+				};
+			  
+				let resp = await fetch(process.env.BACKEND_URL + "/changepassword", {
+				  method: "POST",
+				  body: JSON.stringify(requestData), // Envía el objeto en el cuerpo de la solicitud
+				  headers: {
+					"Content-Type": "application/json",
+					"Authorization": `Bearer ${passwordToken}`
+				  }
+				});
+			  },
 			updateProfileImage: async (newImageUrl) => {
 				try {
 					const { apiFetchProtected } = getActions();
