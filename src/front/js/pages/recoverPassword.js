@@ -1,10 +1,18 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { Context } from '../store/appContext';
+import { useSearchParams } from 'react-router-dom';
 
-function PasswordRecoveryForm() {
+function RecoverPassword() {
+  const {store, actions} = useContext(Context)
+  const [searchParams, setSearchParams] = useSearchParams()
   const [formData, setFormData] = useState({
-    email: '',
     newPassword: '',
+    confirmPassword: '',
   });
+
+  const [passwordsMatch, setPasswordsMatch] = useState(true);
+  
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -14,12 +22,20 @@ function PasswordRecoveryForm() {
     });
   };
 
-  
-
   const handleSubmit = (e) => {
-
-    
     e.preventDefault();
+    const data = formData;
+    const tokenPassword=searchParams.get("token")
+    // Verificar si las contraseñas coinciden antes de enviar la solicitud
+    if (data.newPassword === data.confirmPassword) {
+      let resp =  actions.changePasswordRecovery(tokenPassword, data.newPassword, )
+      console.log('Contraseña enviada:', data.newPassword);
+    }
+    
+     else {
+      // Si las contraseñas no coinciden, muestra un mensaje de error
+      setPasswordsMatch(false);
+    }
   };
 
   return (
@@ -29,22 +45,8 @@ function PasswordRecoveryForm() {
           <h2>Recuperación de contraseña</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Correo electrónico
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
               <label htmlFor="newPassword" className="form-label">
-                Nueva contraseña
+                Nueva contraseña:
               </label>
               <input
                 type="password"
@@ -56,6 +58,23 @@ function PasswordRecoveryForm() {
                 required
               />
             </div>
+            <div className="mb-3">
+              <label htmlFor="confirmPassword" className="form-label">
+                Confirmar contraseña:
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
+              />
+              {!passwordsMatch && (
+                <p className="text-danger">Las contraseñas no coinciden.</p>
+              )}
+            </div>
             <button type="submit" className="btn btn-primary">
               Enviar solicitud
             </button>
@@ -66,4 +85,4 @@ function PasswordRecoveryForm() {
   );
 }
 
-export default PasswordRecoveryForm;
+export default RecoverPassword;

@@ -64,17 +64,17 @@ def change_password():
 @api.route("/recoverpassword", methods=["POST"])
 def recover_password():
     user_email = request.json.get("email")
-    user = User.query.filter_by(email=user_email).first()  # Corregir 'email' a 'user_email'
+    user = User.query.filter_by(email=user_email).first() 
     
     # Si no se encontró el usuario
     if user is None:
-        return jsonify({"message": "User not found"}), 401
+        return jsonify({"message": "User not found"}), 404
     
     # Generar token temporal para la recuperación
     token = create_access_token(
         identity=user.id, expires_delta=timedelta(minutes=10), additional_claims={"type": "password"}  # Corregir 'true' a 'True'
     )
-    return jsonify({"recoveryToken": token})
+    return jsonify({"recoveryToken": token}), 200
 
 
 @api.route('/signup', methods=['POST'])
