@@ -42,12 +42,11 @@ const TeamLista = () => {
     }
     
     const deleteEquipo = (id, nombre, index) => {
-        /*const newTodos = todoArray.filter(todo => todo.id == id)
-        setTodoArrays(newTodos)*/
         setTeamIdDelete(id);
         setTeamToDelete(nombre);
         setIndice(index);
         console.log("A borrar, id:", teamIdDelete, " nombre:", nombre, " index:", index);
+      };
 
     const handleDelete = (e, id_team, nom, ind)=>{
         //console.log("ID a borrar:", id_team, nom, ind)
