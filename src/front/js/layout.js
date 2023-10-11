@@ -4,7 +4,9 @@ import ScrollToTop from "./component/scrollToTop";
 //import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
+
 import { Servicios } from "./pages/servicios";
+import RecoverPassword from "./pages/recoverPassword.js"
 //import { Single } from "./pages/single";
 //import Payment from "./pages/payment";
 import injectContext from "./store/appContext";
@@ -25,6 +27,7 @@ import PerfilOrganizador from "./pages/perfilorganizador";
 import EventoLista from "./pages/eventoLista";
 import TeamLista from "./pages/teamlist";
 //import ModalTeams from "./component/modalteams";
+import RegistroEquipos from "./pages/registroEquipos";
 
 //create your first component
 const Layout = () => {
@@ -41,6 +44,7 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<TeamList />} path="/teams" />
+                        <Route element={<RecoverPassword/>} path="/changepassword" />
                         <Route element={<Home />} path="/" />
                         <Route element={<Servicios />} path="/servicios" />
                         <Route element={<h1>Not found!</h1>} />
@@ -56,6 +60,7 @@ const Layout = () => {
                         <Route element={<Perfil />} path="/perfil" />
                         <Route element={<EventoLista />} path="/eventolista/:id" />
                         <Route element={<TeamLista />} path="/teamlist" />
+                        <Route element={<RegistroEquipos />} path="/registroEquipos" />
                         {/*<Route element={<ModalTeams />} path="/modalteams" />*/}
                     </Routes>
                     <Footer />

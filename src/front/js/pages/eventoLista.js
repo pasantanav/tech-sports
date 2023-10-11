@@ -106,10 +106,10 @@ const EventoLista = () => {
                             <td>{theEvent.fecha_lim==""? "": new Date(theEvent.fecha_lim+"T"+theEvent.hora_lim+":00").toLocaleString()}</td>
                             <td>{"$"+theEvent.costo}</td>
                             <td>
-                                <button id={theEvent.id} onClick={(e) => handleEdit(e, index, theEvent.id)} className="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                <button id={theEvent.id} onClick={(e) => handleEdit(e, index, theEvent.id)} className="btn btn-outline-primary m-1 btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                     <i className="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button className="btn btn-primary m-1 btn-sm" onClick={() => deleteEvento(theEvent.id, theEvent.nombre_evento, index)} data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                                <button className="btn btn-outline-primary m-1 btn-sm" onClick={() => deleteEvento(theEvent.id, theEvent.nombre_evento, index)} data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
                                     <i className="fa-solid fa-trash"></i>
                                 </button>
                                 <button className="btn btn-primary btn-sm">

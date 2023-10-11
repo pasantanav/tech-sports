@@ -18,23 +18,27 @@ const TeamLista = () => {
       }, [store.accessToken]);
 
     const [operation, setOperation] = useState("Equipo Nuevo");
-    const [indice, setIndice] = useState(null);
+    const [indice, setIndice] = useState("");
     const [idEquipo, setIdEquipo] = useState(0);
+
     const [teamToDelete, setTeamToDelete] = useState(null);
     const [pdfUrl, setPdfUrl] = useState("");
     const [teamIdDelete, setTeamIdDelete] = useState(null);
     const filestackClient = filestack.init('ApcaRKG5TSEuvL2v2O2Dnz');
+    const [idToDelete, setIdToDelete] = useState("");
+
 
     useEffect(()=>{
         actions.getUserTeams()
         setOperation("Equipo Nuevo");
       }, []);
 
-    const handleEdit = (e, index, id_equipo) => {
+    const handleEdit = (e, id_tm, indx) => {
+        //console.log("ID a editar:", id_tm, indx)
         //setSelectedTeam(teamData.find(t => t.id == e.target.id))
         setOperation("Editar Equipo");
-        setIndice(index);
-        setIdEquipo(id_equipo);
+        setIndice(indx);
+        setIdEquipo(id_tm);
     }
     
     const deleteEquipo = (id, nombre, index) => {
@@ -44,6 +48,14 @@ const TeamLista = () => {
         setTeamToDelete(nombre);
         setIndice(index);
         console.log("A borrar, id:", teamIdDelete, " nombre:", nombre, " index:", index);
+
+    const handleDelete = (e, id_team, nom, ind)=>{
+        //console.log("ID a borrar:", id_team, nom, ind)
+        setIdToDelete(id_team);
+        setTeamToDelete(nom);
+        setIndice(ind);
+        console.log("A borrar, id:", idToDelete, " nombre:", teamToDelete, " index:", indice);
+
     }
     const createEquipo = () => {
         setOperation("Equipo Nuevo");
@@ -156,40 +168,50 @@ const TeamLista = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData(e.target);
-        const nombre_equipo=data.get("nombre_equipo");
-        console.log("ESTA ES LA OPERACION:", operation);
-        if (operation=="Editar Equipo" && editar==false){
-          console.log("no es necesario editar");
+        const nombre_equipo=data.get("nombre_equipo").trim();
+        const jugadores=data.get("jugadores").trim();
+        const logotipo = data.get("logotipo").trim();
+        //console.log("Equipo a editar:", teamFormData)
+        let teamDataSinEsp = { ...teamFormData };
+        teamDataSinEsp.nombre_equipo = nombre_equipo;
+        teamDataSinEsp.jugadores = jugadores;
+        teamDataSinEsp.logotipo = logotipo;
+        if (nombre_equipo=="" || jugadores=="" || logotipo == ""){
+            alert("No debe haber datos vacíos o espacios en blanco")
+        /*} else if (operation=="Editar Equipo" && editar==false){
+          //console.log("no es necesario editar");
           alert("Equipo actualizado");
-          formulario.reset();
+          formulario.reset();*/
           } else if (nombre_equipo.length <3) {
             alert("El nombre debe tener al menos 2 caracteres")
           } else {
               let resp ="";
               let oper ="";
-              console.log("Id Equipo:", idEquipo);
+              //console.log("OPERACIÓN:", operation)
               if (operation=="Equipo Nuevo"){
-                const {newTeam} = actions;
-                console.log("Equipo a registrar:", teamFormData);
-                resp = await newTeam(teamFormData);
-                oper = "creado";
-              } else {
-                //Si estamos editando el equipo
+                  const {newTeam} = actions;
+                  //console.log("Equipo a registrar:", teamDataSinEsp);
+                  resp = await newTeam(teamDataSinEsp);
+                  oper = "creado";
+                } else {
+                    //Si estamos editando el equipo
+                //console.log("Equipo a editar:", teamFormData, "indice:", indice)
                 const {editTeam} = actions;
-                resp = await editTeam(teamFormData, indice);
+                resp = await editTeam(teamDataSinEsp, indice);
                 oper = "actualizado";
               }
-              console.log({resp})
-              console.log(resp.code)
+              //console.log({resp})
+              //console.log(resp.code)
+              limpiarDataEquipo();
               if (resp=="Ok"){
                 alert("Equipo " + oper + " exitosamente");
-                limpiarDataEquipo();
-              } else {
-                if (resp.code == 402)
+                if (operation=="Equipo Nuevo")
+                    limpiarDataEquipo();
+              } else if (resp.code == 405 ){
                     alert("Equipo ya existe");
-                else
+                } else {
                     alert("Error al registrar Equipo");
-              }
+                }
               formulario.reset();
               //window.location.reload(false)
             }
@@ -250,11 +272,13 @@ const TeamLista = () => {
                             </td>
                             <td>{theTeam.fecha_registro==""? "": new Date(theTeam.fecha_registro).toLocaleString()}</td>
                             <td>
-                                <button id={theTeam.id} onClick={(e) => handleEdit(e, index, theTeam.id)} className="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    <i class="fa-solid fa-pen-to-square"></i>
+                                <button id={theTeam.id} onClick={(e) => handleEdit(e, theTeam.id, index)} className="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    <i className="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button className="btn btn-primary btn-sm m-2" onClick={() => deleteEquipo(theTeam.id, theTeam.nombre_equipo, index)} data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
-                                    <i class="fa-solid fa-trash"></i>
+                                <button className="btn btn-outline-primary btn-sm m-2"
+                                    onClick={(e) => handleDelete(e, theTeam.id, theTeam.nombre_equipo, index)}
+                                    data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
+                                    <i className="fa-solid fa-trash"></i>
                                 </button>
                                 {/*<div className="col-4">
                                     <button className="btn btn-primary">
@@ -345,7 +369,7 @@ const TeamLista = () => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" className="btn btn-primary" onClick={() => actions.deleteTeam(teamIdDelete, indice)} data-bs-dismiss="modal">Eliminar</button>
+                            <button type="button" className="btn btn-primary" onClick={() => actions.deleteTeam(idToDelete, indice)} data-bs-dismiss="modal">Eliminar</button>
                         </div>
                     </div>
                 </div>

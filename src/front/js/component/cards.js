@@ -9,8 +9,8 @@ const Cards = (props) => {
           <div style={{ position: "absolute", width: "9%", height: "40%", top: "3%", left: "2%", backgroundColor: "black", opacity: "0.5" }} className={props.day}>
             <div className="row">
               <div className="col">
-                <h1 style={{ color: "white", marginTop: "4%" }}> 25</h1>
-                <h2 style={{ color: "white" }}> Dec</h2>
+                <h1 style={{ color: "white", marginTop: "4%" }}>{props.day}</h1>
+                {/*<h2 style={{ color: "white" }}> Dec</h2>*/}
               </div>
             </div>
           </div>

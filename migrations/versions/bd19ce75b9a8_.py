@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 728180af9d04
+Revision ID: bd19ce75b9a8
 Revises: 
-Create Date: 2023-10-05 01:37:13.355067
+Create Date: 2023-10-10 04:14:00.607286
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '728180af9d04'
+revision = 'bd19ce75b9a8'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -40,12 +40,12 @@ def upgrade():
     op.create_table('events',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('nombre_evento', sa.String(length=50), nullable=False),
-    sa.Column('descr_corta', sa.String(length=100), nullable=False),
+    sa.Column('descr_corta', sa.String(length=150), nullable=False),
     sa.Column('fecha_ini', sa.String(length=50), nullable=False),
     sa.Column('fecha_fin', sa.String(length=50), nullable=False),
     sa.Column('ubicacion', sa.String(length=100), nullable=False),
     sa.Column('logotipo', sa.String(length=150), nullable=False),
-    sa.Column('descr_larga', sa.String(length=250), nullable=False),
+    sa.Column('descr_larga', sa.String(length=350), nullable=False),
     sa.Column('reglas', sa.String(length=150), nullable=False),
     sa.Column('fecha_lim', sa.String(length=50), nullable=False),
     sa.Column('hora_lim', sa.String(length=10), nullable=False),
@@ -57,18 +57,13 @@ def upgrade():
     sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('pagos',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('cant_equipos', sa.Integer(), nullable=False),
-    sa.Column('monto', sa.Float(), nullable=False),
-    sa.Column('cant_registrados', sa.Integer(), nullable=False),
-    sa.Column('id_user', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id')
-    )
-    op.create_table('registros',
+    op.create_table('pagos_paypal',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('id_user', sa.Integer(), nullable=False),
+    sa.Column('orderId', sa.String(length=80), nullable=False),
+    sa.Column('payerId', sa.String(length=80), nullable=False),
+    sa.Column('paymentSourceId', sa.String(length=80), nullable=False),
+    sa.Column('paymentId', sa.String(length=80), nullable=False),
     sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -83,38 +78,51 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('nombre_equipo')
     )
-    op.create_table('events_pagos',
-    sa.Column('events_id', sa.Integer(), nullable=False),
-    sa.Column('pagos_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['events_id'], ['events.id'], ),
-    sa.ForeignKeyConstraint(['pagos_id'], ['pagos.id'], ),
-    sa.PrimaryKeyConstraint('events_id', 'pagos_id')
+    op.create_table('pagos',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('cant_equipos', sa.Integer(), nullable=False),
+    sa.Column('monto', sa.Float(), nullable=False),
+    sa.Column('orderId', sa.String(length=80), nullable=False),
+    sa.Column('payerId', sa.String(length=80), nullable=False),
+    sa.Column('paymentSourceId', sa.String(length=80), nullable=False),
+    sa.Column('paymentId', sa.String(length=80), nullable=False),
+    sa.Column('id_user', sa.Integer(), nullable=False),
+    sa.Column('event_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['event_id'], ['events.id'], ),
+    sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('events_registros',
-    sa.Column('events_id', sa.Integer(), nullable=False),
-    sa.Column('registros_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['events_id'], ['events.id'], ),
-    sa.ForeignKeyConstraint(['registros_id'], ['registros.id'], ),
-    sa.PrimaryKeyConstraint('events_id', 'registros_id')
+    op.create_table('registros',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('fecha_reg', sa.String(length=50), nullable=False),
+    sa.Column('id_user', sa.Integer(), nullable=False),
+    sa.Column('event_id', sa.Integer(), nullable=False),
+    sa.Column('team_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['event_id'], ['events.id'], ),
+    sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
+    sa.ForeignKeyConstraint(['team_id'], ['teams.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('teams_registros',
-    sa.Column('teams_id', sa.Integer(), nullable=False),
-    sa.Column('registros_id', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['registros_id'], ['registros.id'], ),
-    sa.ForeignKeyConstraint(['teams_id'], ['teams.id'], ),
-    sa.PrimaryKeyConstraint('teams_id', 'registros_id')
+    op.create_table('registrospagos',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('cant_registrados', sa.Integer(), nullable=False),
+    sa.Column('cant_pagados', sa.Integer(), nullable=False),
+    sa.Column('id_user', sa.Integer(), nullable=False),
+    sa.Column('event_id', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['event_id'], ['events.id'], ),
+    sa.ForeignKeyConstraint(['id_user'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
 
 
 def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
-    op.drop_table('teams_registros')
-    op.drop_table('events_registros')
-    op.drop_table('events_pagos')
-    op.drop_table('teams')
+    op.drop_table('registrospagos')
     op.drop_table('registros')
     op.drop_table('pagos')
+    op.drop_table('teams')
+    op.drop_table('pagos_paypal')
     op.drop_table('events')
     op.drop_table('user')
     op.drop_table('tokenblockedlist')

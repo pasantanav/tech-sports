@@ -202,12 +202,18 @@ const ModalEvent = (props) => {
                 const {newEvent} = actions;
                 //resp = await newEvent(eventFormData);
                 resp = await newEvent(eventoSinEsp);
+                if (resp=="No token"){
+                  navigate("/cuenta");
+                }
                 oper = "creado";
               } else {
                 //Si estamos editando el evento
                 const {editEvent} = actions;
                 //resp = await editEvent(eventFormData, props.indice);
                 resp = await editEvent(eventoSinEsp, props.indice);
+                if (resp=="No token"){
+                  navigate("/cuenta");
+                }
                 oper = "actualizado";
               }
               if (resp=="Ok"){
@@ -253,7 +259,7 @@ const ModalEvent = (props) => {
                             name="descr_corta"
                             value={eventFormData.descr_corta}
                             rows="2"
-                            maxLength="100"
+                            maxLength="150"
                             className="form-control white-background-input"
                             onChange={handleEventChange}
                             required
@@ -353,7 +359,7 @@ const ModalEvent = (props) => {
                             name="descr_larga"
                             value={eventFormData.descr_larga}
                             rows="3"
-                            maxLength="250"
+                            maxLength="350"
                             className="form-control white-background-input"
                             onChange={handleEventChange}
                             required
