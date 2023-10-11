@@ -32,6 +32,7 @@ const Perfil = ()=>{
       //  }
       });
     } else {
+      alert("Sesión expirada");
       navigate("/");
     }
   }, [store.accessToken]);

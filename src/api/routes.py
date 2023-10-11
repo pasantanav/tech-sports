@@ -472,34 +472,60 @@ def load_registers():
             "event_id": registro.event_id,
             "nombre_evento": registro.events.nombre_evento,
             "fecha_ini": registro.events.fecha_ini,
-            "fecha_fin": registro.events.fecha_fin
+            "fecha_fin": registro.events.fecha_fin,
+            "nombre_equipo": registro.teams.nombre_equipo,
+            "fecha_registro": registro.fecha_reg
         })
  
     return jsonify({"registros":response}), 200
 
 @api.route('/newregister', methods=['POST'])
-@jwt_required
+@jwt_required()
 def create_register():
-    user = get_jwt_identity()
+    user_id = get_jwt_identity()
     idEquipo = request.json.get("idEquipo")
-    idEvento = request.json.get("IdEvento")
+    idEvento = request.json.get("idEvento")
     fechaRegistro = request.json.get("fechaActual")
+    #revisar si el equipo ya está registrado en ese evento
+    registro = Registros.query.filter_by(id_user = user_id, event_id = idEvento, team_id = idEquipo).first()
+    if registro is not None:
+        return jsonify({"message": "Equipo ya está registrado"}), 402
+    #Buscar el pago en el registro de pagos que debe existir
+    registropagos = RegistrosPagos.query.filter_by(id_user = user_id, event_id = idEvento).first()
+    nombreEvento= registropagos.events.nombre_evento
+    fechaIni= registropagos.events.fecha_ini
+    fechaFin= registropagos.events.fecha_fin
+    # Como siempre que se hace un pago también se guarda un registropago
+    # el registro debe existir entonces se comparan las cantidades
+    if registropagos is not None:
+        if registropagos.cant_registrados<registropagos.cant_pagados:
+            cant = registropagos.cant_registrados
+            cant = cant + 1
+            registropagos.cant_registrados = cant
+            db.session.commit()
+        else:
+            return jsonify({"message:" "Límite de registros del evento excedido"})
+    
     newRegister = Registros()
-    newRegister.id_user = user
+    newRegister.id_user = user_id
     newRegister.team_id = idEquipo
     newRegister.event_id = idEvento
     newRegister.fecha_reg = fechaRegistro
     db.session.add(newRegister)
     db.session.commit()
 
-    registro = RegistrosPagos.query.filter_by(id_user = user, event_id = idEvento).first()
-    if registro is not None:
-        cant = registro.cant_registrados
-        cant = cant + 1
-        registro.cant_registrados = cant
-        db.session.commit()
+    team = Teams.query.get(idEquipo)
+    nombreEquipo = team.nombre_equipo
 
-    return jsonify({"msg":"Registro realizado"}), 200
+    response = {
+        "event_id": idEvento,
+        "nombre_evento": nombreEvento,
+        "fecha_ini": fechaIni,
+        "fecha_fin": fechaFin,
+        "nombre_equipo": nombreEquipo,
+        "fecha_registro": fechaRegistro
+    }
+    return jsonify({"registros": response}), 200
 
     #ACTUALIZARUSUARIOS
 @api.route('/pagos_paypal', methods=['POST'])

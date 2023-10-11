@@ -13,11 +13,12 @@ const RegistroEquipos = () => {
   const [registros, setRegistros] = useState([]);
   const [selectedEventos, setSelectedEventos] = useState("");
   const [selectedEquipos, setSelectedEquipos] = useState("");
+  const [exitoso, setExitoso] = useState(false);
 
   useEffect(() => {
     actions.getRegisters().then(respRegister =>{
       if (respRegister == "Ok"){
-        setRegistros([...store.userRegisters])
+        setRegistros([...store.registers])
       }
     });
     actions.getUserTeams().then(respTeams => {
@@ -36,29 +37,34 @@ const RegistroEquipos = () => {
         //alert("Sesión expirada");
         navigate("/cuenta");
       }
-      if (respEventsReg=="Ok"){
-        setEventos([{id: "-", nombre_equipo: "Elige un evento"}, ...store.userEventsRegister]);
+      if (respEventsReg=="Ok" && store.userEventsRegister.length!=0){
+        setEventos([{id: "-", nombre_evento: "Elige un evento"}, ...store.userEventsRegister]);
       } else {
         setEventos([{id: "-", nombre_evento: "No tienes eventos pagados"}]);
       }
     });
   }, []);
 
-  /*useEffect(() => {
+  useEffect(() => {
+    actions.getRegisters().then(respRegister =>{
+      if (respRegister == "Ok"){
+        setRegistros([...store.registers])
+      }
+    });
     //Si se graba el registro hay que mostrar de nuevo los eventos
     //por si en alguno ya están completos los registros no mostrarlo
     actions.getUserEventsRegister().then(respEventsReg =>{
-      if (respEventsReg=="Ok"){
+      if (respEventsReg=="Ok" && store.userEventsRegister.length!=0){
         setEventos([{id: "-", nombre_equipo: "Elige un evento"}, ...store.userEventsRegister]);
       } else {
         setEventos([{id: "-", nombre_evento: "No tienes eventos pagados"}]);
       }
     });
-    setRegExitoso(false);
-  }, [regExitoso==true]);*/
+    setExitoso(false);
+  }, [exitoso==true]);
 
   const handleChangeEventos = e => {
-    console.log(e.target.value);
+    console.log("Valor evento:", e.target.value);
     setSelectedEventos(e.target.value);
   };
   
@@ -71,26 +77,32 @@ const RegistroEquipos = () => {
     e.preventDefault()
     console.log("evento:", selectedEventos, "equipo:", selectedEquipos);
     if (selectedEventos == "-" || selectedEquipos == "-" ||
-        selectedEventos == "" || selectedEquipos == ""){
+        selectedEventos == "" || selectedEquipos == "" ||
+        selectedEventos == "Elige un evento" || selectedEquipos == "Elige un equipo"
+        ){
       alert("Debes elegir Evento y Equipo")
     } else {
-      let currentDate = new Date();
+      let currentDate = new Date().toLocaleString();
       const {newRegister} = actions;
       let id_equipo = selectedEquipos;
       let id_evento = selectedEventos;
-      console.log("id_equipo:", id_equipo, "id_evento", id_evento);
+      console.log("id_equipo:", id_equipo, "id_evento", id_evento, " fecha:", currentDate);
       let resp = await newRegister(id_equipo, id_evento, currentDate);
       console.log("resultado registro:", resp)
       if (resp == "Ok"){
-        //Si se graba el registro hay que mostrar de nuevo los eventos
+        alert("Registro exitoso");
+        setExitoso(true);
+        setSelectedEventos("Elige un evento");
+        setSelectedEquipos("Elige un equipo");
+        /*//Si se graba el registro hay que mostrar de nuevo los eventos
         //por si en alguno ya están completos los registros no mostrarlo
         actions.getUserEventsRegister().then(respEventsReg =>{
           if (respEventsReg=="Ok"){
-            setEventos([{id: "-", nombre_equipo: "Elige un evento"}, ...store.userEventsRegister]);
+            setEventos([{id: "-", nombre_evento: "Elige un evento"}, ...store.userEventsRegister]);
           } else {
             setEventos([{id: "-", nombre_evento: "No tienes eventos pagados"}]);
           }
-        });
+        });*/
       }
     }
   }
@@ -153,11 +165,12 @@ const RegistroEquipos = () => {
               </thead>
               <tbody>
                 {registros.map((value, index) =>
-                  <tr onClick={()=>navigate("/registrarse/"+index)} key={index}>
+                  <tr key={index}>
                       <th scope="row">{value.nombre_evento}</th>
                       <td>{value.fecha_ini==""? "": new Date(value.fecha_ini+"T00:00:00").toLocaleDateString()}</td>
                       <td>{value.fecha_fin==""? "": new Date(value.fecha_fin+"T00:00:00").toLocaleDateString()}</td>
-                      <td>{value.ubicacion}</td>
+                      <td>{value.nombre_equipo}</td>
+                      <td>{value.fecha_registro}</td>
                   </tr>
                 )}
               </tbody>

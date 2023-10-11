@@ -9,6 +9,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			allEvents: [],
 			paymentInformation: [],
+			userRegisters: [],
+			registers: [],
 			modalmsje: [
 				{
 					boton: "Click",
@@ -564,7 +566,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					console.log("Prueba_getRegisters", resp)
 					if (resp.code == 200) {
-						setStore({ userRegisters: resp.data.registros })
+						setStore({ registers: resp.data.registros })
 						return "Ok"
 					}
 					return resp
@@ -575,6 +577,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			newRegister: async (idEquipo, idEvento, fechaActual) => {
 				try{
 					const { apiFetchProtected } = getActions()
+					console.log("Datos a registrar:", idEquipo, idEvento, fechaActual)
 					const resp = await apiFetchProtected("/newregister", "POST", { idEquipo, idEvento, fechaActual })
 					if (resp == "No token" || resp.code == 401){
 						//si el token expiró borramos token del almacenamiento local y del store
@@ -583,9 +586,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					console.log("Prueba newregister:", resp)
 					if (resp.code == 200){
-						store.userRegisters.push(resp.data);
+						const store = getStore();
+						store.registers.push(resp.data.registros);
 						setStore(store);
 						return "Ok"
+					}
+					if (resp.code == 402){
+						alert("El equipo ya está registrado")
 					}
 					return resp
 				} catch (error){
