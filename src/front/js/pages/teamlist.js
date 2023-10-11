@@ -4,6 +4,7 @@ import { Context } from "../store/appContext";
 import { Link, useNavigate } from "react-router-dom";
 import imgLogo from "../../img/LogoTS.jpg";
 import teamlist from "../../img/perfil/teamlist.jpg";
+import * as filestack from 'filestack-js';
 
 const TeamLista = () => {
 
@@ -19,8 +20,13 @@ const TeamLista = () => {
     const [operation, setOperation] = useState("Equipo Nuevo");
     const [indice, setIndice] = useState("");
     const [idEquipo, setIdEquipo] = useState(0);
-    const [teamToDelete, setTeamToDelete] = useState("");
+
+    const [teamToDelete, setTeamToDelete] = useState(null);
+    const [pdfUrl, setPdfUrl] = useState("");
+    const [teamIdDelete, setTeamIdDelete] = useState(null);
+    const filestackClient = filestack.init('ApcaRKG5TSEuvL2v2O2Dnz');
     const [idToDelete, setIdToDelete] = useState("");
+
 
     useEffect(()=>{
         actions.getUserTeams()
@@ -34,6 +40,14 @@ const TeamLista = () => {
         setIndice(indx);
         setIdEquipo(id_tm);
     }
+    
+    const deleteEquipo = (id, nombre, index) => {
+        /*const newTodos = todoArray.filter(todo => todo.id == id)
+        setTodoArrays(newTodos)*/
+        setTeamIdDelete(id);
+        setTeamToDelete(nombre);
+        setIndice(index);
+        console.log("A borrar, id:", teamIdDelete, " nombre:", nombre, " index:", index);
 
     const handleDelete = (e, id_team, nom, ind)=>{
         //console.log("ID a borrar:", id_team, nom, ind)
@@ -41,6 +55,7 @@ const TeamLista = () => {
         setTeamToDelete(nom);
         setIndice(ind);
         console.log("A borrar, id:", idToDelete, " nombre:", teamToDelete, " index:", indice);
+
     }
     const createEquipo = () => {
         setOperation("Equipo Nuevo");
@@ -66,7 +81,45 @@ const TeamLista = () => {
       id: ""
     }:store.userTeam[indice]);
       
+    const handleTeamLogoChange =  (e) => {
+        // Configura las opciones de carga de Filestack
+        const options = {
+          onUploadDone: (response) => {
+            // Extrae la URL de la imagen cargada
+            let teamData = {...teamFormData};
+            const imageUrl = response.filesUploaded[0].url;
+            console.log('la URL de la imagen es:', imageUrl)       
+              teamData.logotipo = imageUrl;
+              console.log(teamData.logotipo)
+              setTeamFormData(teamData)
+            // Actualiza el estado 'teamLogo' con la URL de la imagen
+          },
+          accept: ['image/*'], // Acepta solo archivos de imagen
+        };
+        // Abre el picker de Filestack para seleccionar y cargar la imagen
+        filestackClient.picker(options).open();
+    
+  };
 
+  const handleFileUpload = () => {
+    const options = {
+      onUploadDone: (response) => {
+        const pdfUrl = response.filesUploaded[0].url;
+        actions.savePdfUrl(pdfUrl);
+       let teamData = {...teamFormData}
+
+
+       teamData.jugadores = pdfUrl
+       console.log('URL del PDF subido:', pdfUrl);
+        console.log(teamData.jugadores)
+       setTeamFormData(teamData)
+        
+        
+      },
+      accept: ['application/pdf'], // Acepta solo archivos PDF
+    };
+    filestackClient.picker(options).open();
+  };
       useEffect(()=>{
         console.log("ESTA ES LA OPERACION:", operation);
         if (operation=="Editar Equipo"){
@@ -213,7 +266,9 @@ const TeamLista = () => {
                                 </div>
                             </td>
                             <td>
-                                <p className="fw-normal mb-1">{theTeam.jugadores}</p>
+                            <Link to={theTeam.jugadores} target="_blank">
+                                <button className="btn btn-outline-primary btn-sm m-2"><i className="fa-solid fa-person-running"></i></button>
+                                </Link>
                             </td>
                             <td>{theTeam.fecha_registro==""? "": new Date(theTeam.fecha_registro).toLocaleString()}</td>
                             <td>
@@ -271,16 +326,9 @@ const TeamLista = () => {
                                             Jugadores
                                             </label>
                                             <div className="form-outline mb-4">
-                                            <input
-                                                type="text"
-                                                id="jugadores"
-                                                name="jugadores"
-                                                value={teamFormData.jugadores}
-                                                maxLength="100"
-                                                className="form-control white-background-input"
-                                                onChange={handleTeamChange}
-                                                required
-                                            />
+                                            <button type="button" className="btn btn-secondary" onClick={handleFileUpload}>
+                                                Subir listado de jugadores
+                                            </button>
                                             </div>
                                         </div>
                                         <div className="form-outline mb-4">
@@ -288,17 +336,10 @@ const TeamLista = () => {
                                             Logotipo
                                             </label>
                                             <div className="form-outline mb-4">
-                                            <input
-                                                type="text"
-                                                id="logotipo"
-                                                name="logotipo"
-                                                value={teamFormData.logotipo}
-                                                maxLength="150"
-                                                className="form-control white-background-input"
-                                                onChange={handleTeamChange}
-                                                required
-                                            />
-                                            </div>
+                                            <button type="button" className="btn btn-secondary" onClick={handleTeamLogoChange}>
+                                                Subir logotipo del equipo
+                                            </button>
+                                        </div>
                                         </div>
                                         <div className='text-center'>
                                             <button type="submit" className="btn btn-primary btn-block mx-4 mb-4" data-bs-dismiss={operation=="Editar Equipo"? "modal":""}>

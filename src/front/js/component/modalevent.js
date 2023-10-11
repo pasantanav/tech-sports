@@ -12,6 +12,7 @@ const ModalEvent = (props) => {
     const [teamLogo, setTeamLogo] = useState(null)
     const [fechaFinal, setFechaFinal] = useState("");
     const [fechaLimite, setFechaLimite] = useState("");
+    const [pdfUrl, setPdfUrl] = useState("");
     const [editar, setEditar] = useState(false);
     const formulario = document.getElementById("formEvent");
     const [eventFormData, setEventFormData] = useState(props.operacion=="Evento Nuevo"? {
@@ -51,6 +52,28 @@ const ModalEvent = (props) => {
           filestackClient.picker(options).open();
       
     };
+
+    const handleFileUpload = () => {
+      const options = {
+        onUploadDone: (response) => {
+          const pdfUrl = response.filesUploaded[0].url;
+          setPdfUrl(pdfUrl);
+          actions.savePdfUrl(pdfUrl);
+         let eventoData = {...eventFormData}
+
+
+         eventoData.reglas = pdfUrl
+         console.log('URL del PDF subido:', pdfUrl);
+          console.log(eventoData.reglas)
+         setEventFormData(eventoData)
+          
+          
+        },
+        accept: ['application/pdf'], // Acepta solo archivos PDF
+      };
+      filestackClient.picker(options).open();
+    };
+    
     
       
       function cambiarFormatoFecha(fechaAnt){
@@ -158,17 +181,17 @@ const ModalEvent = (props) => {
         eventoSinEsp.ubicacion = eventoSinEsp.ubicacion.trim()
         eventoSinEsp.logotipo = eventoSinEsp.logotipo.trim()
         eventoSinEsp.descr_larga = eventoSinEsp.descr_larga.trim()
-        eventoSinEsp.reglas = eventoSinEsp.reglas.trim()
         eventoSinEsp.email_contacto = eventoSinEsp.email_contacto.trim()
+        eventoSinEsp.reglas = eventoSinEsp.reglas.trim()
         eventoSinEsp.tel_contacto = eventoSinEsp.tel_contacto.trim()
         eventoSinEsp.nombre_contacto = eventoSinEsp.nombre_contacto.trim()
-        //setEventFormData(eventoSinEsp)
-        /*if (props.operacion=="Editar Evento" && editar==false){
-          console.log("no es necesario editar");
-          alert("Evento actualizado");
-          formulario.reset();*/
+        if (pdfUrl) {
+         
+          eventFormData.reglas = pdfUrl;
+      }
+       
           if (nombre_evento=="" || descr_corta=="" || ubicacion=="" || logotipo==""
-          || descr_larga=="" || reglas=="" || email_contacto=="" || tel_contacto=="" || nombre_contacto==""){
+          || descr_larga=="" || email_contacto=="" || tel_contacto=="" || nombre_contacto==""){
             alert("No debe haber información vacía o espacios en blanco")
           } else if (nombre_evento.length <3) {
             alert("El nombre debe tener al menos 2 caracteres")
@@ -315,11 +338,15 @@ const ModalEvent = (props) => {
                             value={eventFormData.logotipo}
                             maxLength="150"
                             className="form-control white-background-input"
+                            placeholder="subir URL del logotipo "
                             onChange={handleEventChange}
                             required
                           />
+                          <p>o</p>
                           </div>
-                          <button type="button" className="btn btn-secondary" onClick={handleTeamLogoChange}></button>
+                          <button type="button" className="btn btn-secondary" onClick={handleTeamLogoChange}>
+                            Subir logotipo del equipo
+                          </button>
                       </div>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="descr_larga">
@@ -344,17 +371,13 @@ const ModalEvent = (props) => {
                           Reglas
                         </label>
                         <div className="form-outline mb-4">
-                          <input
-                            type="text"
-                            id="reglas"
-                            name="reglas"
-                            value={eventFormData.reglas}
-                            maxLength="150"
-                            className="form-control white-background-input"
-                            onChange={handleEventChange}
-                            required
-                          />
+                         
+                        <button type="button" className="btn btn-secondary" onClick={handleFileUpload}>
+                        Subir PDF del reglamento del equipo
+                        </button>
                         </div>
+                        
+
                       </div>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="nombre_contacto">

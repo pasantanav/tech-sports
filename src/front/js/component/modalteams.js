@@ -6,6 +6,7 @@ const ModalTeams = (props) => {
     const { store, actions } = useContext(Context);
     const [editar, setEditar] = useState(false);
     const [fechaActual, setFechaActual] = useState("");
+    const [pdfUrl, setPdfUrl] = useState("");
     const formulario = document.getElementById("formTeam");
     const [teamFormData, setTeamFormData] = useState(props.operacion=="Equipo Nuevo"? {
       id: "",
@@ -56,6 +57,26 @@ const ModalTeams = (props) => {
       });
       setEditar(true);
     };
+
+    const handleTeamLogoChange =  (e) => {
+      // Configura las opciones de carga de Filestack
+      const options = {
+        onUploadDone: (response) => {
+          // Extrae la URL de la imagen cargada
+          let teamData = {...teamFormData};
+          const imageUrl = response.filesUploaded[0].url;
+          console.log('la URL de la imagen es:', imageUrl)       
+            teamData.logotipo = imageUrl;
+            console.log(team.logotipo)
+            setTeamFormData(teamData)
+          // Actualiza el estado 'teamLogo' con la URL de la imagen
+        },
+        accept: ['image/*'], // Acepta solo archivos de imagen
+      };
+      // Abre el picker de Filestack para seleccionar y cargar la imagen
+      filestackClient.picker(options).open();
+  
+};
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -132,20 +153,12 @@ const ModalTeams = (props) => {
                       </div>
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="logotipo">
-                          Logotipo
+                          Logotipooooooooo
                         </label>
                         <div className="form-outline mb-4">
-                          <input
-                            type="text"
-                            id="logotipo"
-                            name="logotipo"
-                            value={teamFormData.logotipo}
-                            maxLength="150"
-                            className="form-control white-background-input"
-                            onChange={handleTeamChange}
-                            required
-                          />
-                        </div>
+                        <button type="button" className="btn btn-secondary" onClick={handleTeamLogoChange}>
+                            Subir logotipo del equipoooooooo
+                          </button>
                       </div>
                       <div className='text-center'>
                         <button type="submit" className="btn btn-primary btn-block mx-4 mb-4" data-bs-dismiss={props.operacion=="Editar Equipo"? "modal":""}>

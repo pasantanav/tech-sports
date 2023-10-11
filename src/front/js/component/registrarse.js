@@ -3,6 +3,7 @@ import "../../styles/registrarse.css";
 import basket from "../../img/basket7.jpeg"
 import PayPal from "./paypal";
 import { Link, useNavigate, useParams } from 'react-router-dom';
+
 import { Context } from "../store/appContext";
 
 const Registrarse = (props) => {
@@ -64,6 +65,7 @@ const Registrarse = (props) => {
     if (temContador < 0) {
       return;
     }
+
     setTotal(temContador * subTotal);
     setContador(temContador);
   }
@@ -155,14 +157,61 @@ const Registrarse = (props) => {
                 </div>
               </div>
             </div>
-          </div>
-          <div className="card mb-4">
-            <div className="card-header" style={{ backgroundColor: "#0D6EFD", color: "white" }}>Datos de Contacto</div>
-            <div className="card-body">
-              <div className="flex-row">
-                <div className="flex-col">
-                  <span className="fa-solid fa-user" style={{ color: "#0D6EFD" }}></span>
-                  <span className="txt m-2"><strong>Contacto</strong></span>
+
+            <div className="col-lg-4">
+                <div className="card mb-4">
+                    <div className="card-header" style={{backgroundColor: "#0D6EFD", color:"white"}}>Información del Evento</div>
+                    <div className="card-body">
+                            <div className="flex-row">
+                                <div className="flex-col">
+                                    <span className="fas fa-map-marker-alt" style={{color:"#0D6EFD"}}></span>
+                                    <span className="txt m-2"><strong>Dirección</strong></span>
+                                </div>
+                                <div className="flex-col">
+                                    <span className="txt ml-3">{datosEvento.ubicacion}</span>
+                                </div>
+                            </div>
+                            <div className="flex-row my-1">
+                                <div className="flex-col">
+                                    <span className="fa-solid fa-calendar" style={{color:"#0D6EFD"}}></span>
+                                    <span className="txt m-2"><strong>Fecha de inicio</strong></span>
+                                </div>
+                                <div className="flex-col">
+                                    <span className="txt ml-3">{datosEvento.fecha_ini==""? "": new Date(datosEvento.fecha_ini+"T00:00:00").toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                            <div className="flex-row">
+                                <div className="flex-col">
+                                    <span className="fa-solid fa-calendar" style={{color:"#0D6EFD"}}></span>
+                                    <span className="txt m-2"><strong>Fecha de terminación</strong></span>
+                                </div>
+                                <div className="flex-col">
+                                    <span className="txt ml-3">{datosEvento.fecha_fin==""? "": new Date(datosEvento.fecha_fin+"T00:00:00").toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                            <div className="flex-row">
+                                <div className="flex-col">
+                                    <span className="fa-solid fa-calendar" style={{color:"red"}}></span>
+                                    <span className="txt m-2"><strong>Fecha y hora límite de registro</strong></span>
+                               
+
+                                </div>
+                                <div className="flex-col">
+                                    <span className="txt ml-3">{datosEvento.fecha_lim==""? "": new Date(datosEvento.fecha_lim+"T"+datosEvento.hora_lim+":00").toLocaleString()}
+                                    </span>
+                                </div>
+                                </div>
+                                <span className="txt m-2"><strong></strong></span>
+                                
+                                <div>
+                                <Link to={datosEvento.reglas} target="_blank">
+                                <button className="btn btn-outline-primary">Ver el reglamento del evento</button>
+                                </Link>
+
+                            </div>
+                            
+                    </div>
+
                 </div>
                 <div className="flex-col">
                   <span className="txt ml-3">{datosEvento.nombre_contacto}</span>

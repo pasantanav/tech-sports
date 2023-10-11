@@ -4,6 +4,7 @@ import ReactModal from "react-modal";
 import { Context } from "../store/appContext";
 
 export default function PayPal(props) {
+
   useEffect(() => {
     console.log("monto", props.costo)
   }, [ ]);
