@@ -592,11 +592,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			}
 			,
-			savePaymentInfo: async (paypalData, index) => {
+			savePaymentInfo: async (orderID,payerID,paymentSourceID,paymentID, index) => {
 				try {
 					const { apiFetchProtected } = getActions()
-					console.log("PaypalData: ", { paypalData })
-					const resp = await apiFetchProtected("/pagos_paypal", "POST", { paypalData })
+					console.log("PaypalData: ", paypalData, "indice", index )
+					const resp = await apiFetchProtected("/pagos_paypal", "POST", { orderID,payerID,paymentSourceID,paymentID})
 					console.log("PRUEBA_PaypalData", JSON.stringify(resp))
 					if (resp.code == 201) {
 
