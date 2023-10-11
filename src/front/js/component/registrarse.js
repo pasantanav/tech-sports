@@ -2,7 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import "../../styles/registrarse.css";
 import basket from "../../img/basket7.jpeg"
 import PayPal from "./paypal";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+
 import {Context} from "../store/appContext";
 
 const Registrarse = (props) => {
@@ -66,7 +67,7 @@ const Registrarse = (props) => {
         setTotal(temContador * total);
         setContador(temContador);
     }
-
+   
     const handleClick = (e) => {
         e.preventDefault();
         if (store.accessToken==null){
@@ -143,12 +144,23 @@ const Registrarse = (props) => {
                                 <div className="flex-col">
                                     <span className="fa-solid fa-calendar" style={{color:"red"}}></span>
                                     <span className="txt m-2"><strong>Fecha y hora límite de registro</strong></span>
+                               
+
                                 </div>
                                 <div className="flex-col">
                                     <span className="txt ml-3">{datosEvento.fecha_lim==""? "": new Date(datosEvento.fecha_lim+"T"+datosEvento.hora_lim+":00").toLocaleString()}
                                     </span>
                                 </div>
+                                </div>
+                                <span className="txt m-2"><strong></strong></span>
+                                
+                                <div>
+                                <Link to={datosEvento.reglas} target="_blank">
+                                <button className="btn btn-outline-primary">Ver el reglamento del evento</button>
+                                </Link>
+
                             </div>
+                            
                     </div>
                 </div>
                 <div className="card mb-4">

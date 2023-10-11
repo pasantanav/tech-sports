@@ -12,6 +12,7 @@ const ModalEvent = (props) => {
     const [teamLogo, setTeamLogo] = useState(null)
     const [fechaFinal, setFechaFinal] = useState("");
     const [fechaLimite, setFechaLimite] = useState("");
+    const [pdfUrl, setPdfUrl] = useState("");
     const [editar, setEditar] = useState(false);
     const formulario = document.getElementById("formEvent");
     const [eventFormData, setEventFormData] = useState(props.operacion=="Evento Nuevo"? {
@@ -56,8 +57,10 @@ const ModalEvent = (props) => {
       const options = {
         onUploadDone: (response) => {
           const pdfUrl = response.filesUploaded[0].url;
-
+          setPdfUrl(pdfUrl);
+          actions.savePdfUrl(pdfUrl);
          let eventoData = {...eventFormData}
+
 
          eventoData.reglas = pdfUrl
          console.log('URL del PDF subido:', pdfUrl);
@@ -179,11 +182,16 @@ const ModalEvent = (props) => {
         eventoSinEsp.logotipo = eventoSinEsp.logotipo.trim()
         eventoSinEsp.descr_larga = eventoSinEsp.descr_larga.trim()
         eventoSinEsp.email_contacto = eventoSinEsp.email_contacto.trim()
+        eventoSinEsp.reglas = eventoSinEsp.reglas.trim()
         eventoSinEsp.tel_contacto = eventoSinEsp.tel_contacto.trim()
         eventoSinEsp.nombre_contacto = eventoSinEsp.nombre_contacto.trim()
+        if (pdfUrl) {
+         
+          eventFormData.reglas = pdfUrl;
+      }
        
           if (nombre_evento=="" || descr_corta=="" || ubicacion=="" || logotipo==""
-          || descr_larga=="" || reglas=="" || email_contacto=="" || tel_contacto=="" || nombre_contacto==""){
+          || descr_larga=="" || email_contacto=="" || tel_contacto=="" || nombre_contacto==""){
             alert("No debe haber información vacía o espacios en blanco")
           } else if (nombre_evento.length <3) {
             alert("El nombre debe tener al menos 2 caracteres")

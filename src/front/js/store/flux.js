@@ -15,7 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: "bodyok",
 					footer: "footerok"
 				}
-			]
+			],
+			pdfUrl: null,
 		},
 		actions: {
 			updateProfileImage: async (newImageUrl) => {
@@ -487,6 +488,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al agregar informacion de pago")
 				}
 			},
+			savePdfUrl: (pdfUrl) => {
+				const store = getStore();
+				store.pdfUrl = pdfUrl;
+				setStore(store);
+			  },
 		}
 	};
 
