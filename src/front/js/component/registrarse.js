@@ -167,8 +167,31 @@ const Registrarse = (props) => {
                 </div>
               </div>
               <div className="flex-row">
+
+              </div>
+              
+              <div>
+                <Link to={datosEvento.reglas} target="_blank">
+                  <button className="btn btn-outline-primary">Ver el reglamento del evento</button>
+                </Link>
+                
+              </div>
+              
+            </div>
+            
+          </div>
+          
+        </div>  
+        <div className="contact-containerr">
+        <div className="col-lg-4 contactt" >
+          <div className="card mb-4">
+            <div className="card-header" style={{ backgroundColor: "#0D6EFD", color: "white" }}>
+             Contacto
+            </div>
+            <div className="card-body">
+              <div className="flex-row">
                 <div className="flex-col">
-                  <span className="fa-solid fa-envelope" style={{ color: "#0D6EFD" }}></span>
+                  <span className="fas fa-map-marker-alt" style={{ color: "#0D6EFD" }}></span>
                   <span className="txt m-2"><strong>Email</strong></span>
                 </div>
                 <div className="flex-col">
@@ -184,87 +207,32 @@ const Registrarse = (props) => {
                   <span className="txt ml-3">{datosEvento.tel_contacto}</span>
                 </div>
               </div>
-              <div>
-                <Link to={datosEvento.reglas} target="_blank">
-                  <button className="btn btn-outline-primary">Ver el reglamento del evento</button>
-                </Link>
-              </div>
             </div>
           </div>
-        </div>
+        </div>  
+          </div>  
+        
+        
       </div>
+      
+              
       <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div className="modal-body">
+                        <PayPal />
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" className="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
             </div>
-            <div className="modal-body">
-              <div className="container">
-                <div className="row">
-                  <div className="col-md-12">
-                    <h3>Cantidad de equipos a registrar</h3>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3">
-                    <b><h5>Evento</h5></b>
-                  </div>
-                  <div className="col-md-3">
-                    <b><h5>Costo</h5></b>
-                  </div>
-                  <div className="col-md-3">
-                    <b><h5>Cant.</h5></b>
-                  </div>
-                  <div className="col-md-3">
-                    <b><h5>Total</h5></b>
-                  </div>
-                </div>
-                <hr />
-                <div className="row">
-                  <div className="col-md-3">
-                    <p>Jam on it</p>
-                  </div>
-                  <div className="col-md-3">
-                    <p>${datosEvento.costo}</p>
-                  </div>
-                  <div className="col-md-3">
-                    <button className="button" id="disminuir" onClick={disminuir}>-</button>
-                    <span><button id="cantidad" value="0">{contador}</button></span>
-                    <button className="button" id="aumentar" onClick={aumentar}>+</button>
-                  </div>
-                  <div className="col-md-3">
-                    <p>${total}</p>
-                  </div>
-                </div>
-                <hr />
-                <div className="row">
-                  <div className="col-md-3"></div>
-                  <div className="col-md-3"></div>
-                  <div className="col-md-3">
-                    <b><h4>Total</h4></b>
-                  </div>
-                  <div className="col-md-3">
-                    <b><h4>${total}</h4></b>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-3"></div>
-                  <div className="col-md-3"></div>
-                  <div className="col-md-3"></div>
-                  <div className="col-md-3">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Registrar</button>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
   );
 };
