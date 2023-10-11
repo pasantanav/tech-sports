@@ -506,20 +506,20 @@ def create_register():
 @jwt_required()
 def pagos_paypal():
     #obtener el jti del token que traemos en claims (get_jwt)
-    user_id = get_jwt_identity()
-    orderId = request.json.get("orderId")
-    payerId = request.json.get("payerId")
-    paymentId = request.json.get("paymentId")
-    paymentSourceId = request.json.get(" paymentSourceId")
+    user_id= get_jwt_identity()
+    orderId= request.json.get("orderID")
+    payerId= request.json.get("payerID")
+    paymentSourceId= request.json.get("paymentSourceID")
+    paymentId= request.json.get("paymentID")
+    
     #buscar usuario en la bd, que me traiga el primer resultado
     #registro de pago de paypal
-    new_pago = Pagos_Paypal()
+    new_pago= Pagos_Paypal()
     new_pago.user_id=user_id
     new_pago.orderId=orderId
     new_pago.payerId=payerId
     new_pago.paymentSourceId=paymentSourceId
     new_pago.paymentId=paymentId
-    new_pago.orderId=orderId
     #guardarlo en la bd
     db.session.add(new_pago)
     db.session.commit()
