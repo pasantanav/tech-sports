@@ -22,9 +22,9 @@ export default function PayPal(props) {
           "description": "Attempt n.1 for Quote ID 1234",
           "amount": {
             "currency_code": "USD",
-            "value":850,
+            "value":store.currentPaypal,
             "breakdown": {
-              "item_total": { "currency_code":"USD", "value":"850"},
+              "item_total": { "currency_code":"USD", "value":store.currentPaypal},
               "shipping": { "currency_code":"USD", "value":"0"},
               "tax_total": { "currency_code":"USD", "value":"0"},
               "discount": { "currency_code":"USD", "value":"0"}
@@ -35,7 +35,7 @@ export default function PayPal(props) {
               "name": "OnePlus 6 T-rex 12\" name for 14\"\" blabla \" more double quotes",
               "unit_amount": {
                 "currency_code": "USD",
-                "value":850
+                "value":store.currentPaypal
               },
               "tax": {
                 "currency_code": "USD",
@@ -94,7 +94,7 @@ export default function PayPal(props) {
   return (
     <>
     {isSuccess&&<div className="alert alert-success alert-dismissible fade show" role="alert">
-      ¡Transaction completed!
+      ¡Transacción Completada!
 
   <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>}

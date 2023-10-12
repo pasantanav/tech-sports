@@ -55,6 +55,7 @@ const Registrarse = (props) => {
     let temContador = contador + 1;
     const subTotal = parseInt(datosEvento.costo);
     setTotal(temContador * subTotal);
+    actions.setCurrentPaypal(temContador * subTotal)
     setContador(temContador);
     console.log(contador);
   };
@@ -65,8 +66,8 @@ const Registrarse = (props) => {
     if (temContador < 0) {
       return;
     }
-
     setTotal(temContador * subTotal);
+    actions.setCurrentPaypal(temContador * subTotal)
     setContador(temContador);
   };
 
@@ -167,27 +168,21 @@ const Registrarse = (props) => {
                 </div>
               </div>
               <div className="flex-row">
-
               </div>
-              
               <div>
                 <Link to={datosEvento.reglas} target="_blank">
                   <button className="btn btn-outline-primary">Ver el reglamento del evento</button>
                 </Link>
-                
               </div>
-              
             </div>
-            
           </div>
-          
         </div>  
         <div className="contact-containerr">
         <div className="col-lg-4 contactt" >
           <div className="card mb-4">
             <div className="card-header" style={{ backgroundColor: "#0D6EFD", color: "white" }}>
              Contacto
-            </div>
+            </div> 
             <div className="card-body">
               <div className="flex-row">
                 <div className="flex-col">
@@ -211,11 +206,7 @@ const Registrarse = (props) => {
           </div>
         </div>  
           </div>  
-        
-        
-      </div>
-      
-              
+      </div>      
       <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
@@ -282,7 +273,7 @@ const Registrarse = (props) => {
                   </div>
                 </div>
               </div>
-
+              
               <PayPal index={params.index} costo={total} />
             </div>
             <div className="modal-footer">
@@ -295,5 +286,7 @@ const Registrarse = (props) => {
     </div>
   );
 };
-
 export default Registrarse;
+
+
+  
