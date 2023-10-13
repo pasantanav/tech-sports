@@ -12,6 +12,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userRegisters: [],
 			registers: [],
 			pagos: [],
+			currentPaypal:Number,
 			modalmsje: [
 				{
 					boton: "Click",
@@ -601,6 +602,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			}
 			,
+			setCurrentPaypal: (total) =>{
+				setStore({currentPaypal: Number(total)})
+			   },
 			savePaymentInfo: async (orderID,payerID,paymentSourceID,paymentID, index) => {
 				try {
 					const { apiFetchProtected } = getActions()

@@ -38,5 +38,13 @@
     height: 45%;
 }
 
+.contact-containerr{
 
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -70px;
+}
 
+.contactt{
+    margin-right: -15px;
+}

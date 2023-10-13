@@ -9,14 +9,21 @@ import imgRegistros from "../../img/perfil/registros.jpg";
 import imgPagos from "../../img/perfil/pagos.jpg";
 import * as filestack from 'filestack-js';
 import "../../styles/perfil.css";
+import { Modal, Button, Form } from 'react-bootstrap';
 
 const Perfil = ()=>{
   const { store, actions } = useContext(Context);
   const [userData, setUserData] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const profileData = {...store.userInfo};
   const [profileImage, setProfileImage] = useState(
    null
   );
+  const [name, setName] = useState(profileData.name);
+  const [email, setEmail] = useState(profileData.email);
+  const [phone, setPhone] = useState(profileData.phone);
+  const [address, setAddress] = useState(profileData.address);
+  const [password, setPassword] = useState(profileData.password);
   const navigate = useNavigate()
   const filestackClient = filestack.init('ApcaRKG5TSEuvL2v2O2Dnz');
  // Manejar la selección de archivos y actualización de imagen de perfil
@@ -39,6 +46,22 @@ const Perfil = ()=>{
       navigate("/cuenta");
     }
   }, [store.accessToken]);
+
+  const openEditModal = () => {
+    setIsEditModalOpen(true);
+  };
+  
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+  
+  const handleEditProfile = (e) => {
+    e.preventDefault();
+    // Lógica para actualizar los datos del perfil aquí...
+    // actions.updateProfile(newProfileData); // Reemplaza con la llamada a tu acción de actualización de perfil
+    setIsEditModalOpen(false);
+  };
+
 
   const handleOpenFilePicker = () => {
     const options = {
@@ -168,9 +191,63 @@ const Perfil = ()=>{
                 </div>
                 <hr />
                 <div className='text-center'>
-                  <button type="button" className="btn btn-primary">
-                    Editar Datos
-                  </button>
+                <button type="button" className="btn btn-primary" onClick={openEditModal}>
+                Editar Datos
+              </button>
+        
+
+                  <Modal show={isEditModalOpen} onHide={closeEditModal}>
+                    <Modal.Header closeButton>
+                      <Modal.Title>Editar Datos</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Form onSubmit={handleEditProfile}>
+                        <Form.Group controlId="name">
+                          <Form.Label>Nombre</Form.Label>
+                          <Form.Control
+                            type="text"
+                            defaultValue={profileData.name}
+                            onChange={(e) => setName(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="email">
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control
+                            type="email"
+                            defaultValue={profileData.email}
+                            onChange={(e) => setEmail(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="phone">
+                          <Form.Label>Télefono</Form.Label>
+                          <Form.Control
+                            type="text"
+                            defaultValue={profileData.phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="address">
+                          <Form.Label>Dirección</Form.Label>
+                          <Form.Control
+                            type="text"
+                            defaultValue={profileData.address}
+                            onChange={(e) => setAddress(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="password">
+                          <Form.Label>Contraseña</Form.Label>
+                          <Form.Control
+                            type="password"
+                            defaultValue={profileData.password}
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">
+                          Guardar Cambios
+                        </Button>
+                      </Form>
+                    </Modal.Body>
+                  </Modal>
                 </div>
               </div>
             </div>
