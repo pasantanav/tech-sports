@@ -12,7 +12,6 @@ import lebron17 from "../../img/lebron17.jpg";
 import basket6 from "../../img/basket6.jpeg";
 import basket22 from "../../img/basket22.jpeg";
  import basket23 from "../../img/basket23.jpeg";
- import basket24 from "../../img/basket24.jpeg";
  import basket25 from "../../img/basket25.jpeg";
  import basket26 from "../../img/basket26.jpeg";
  import basket28 from "../../img/basket28.jpeg";

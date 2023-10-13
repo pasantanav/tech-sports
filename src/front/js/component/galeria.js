@@ -13,7 +13,6 @@ import 'yet-another-react-lightbox/styles.css';
  import basket6 from "../../img/basket6.jpeg";
  import basket22 from "../../img/basket22.jpeg";
  import basket23 from "../../img/basket23.jpeg";
- import basket24 from "../../img/basket24.jpeg";
  import basket25 from "../../img/basket25.jpeg";
  import basket26 from "../../img/basket26.jpeg";
  import basket28 from "../../img/basket28.jpeg";
@@ -80,21 +79,21 @@ import 'yet-another-react-lightbox/styles.css';
            </div>
            <div className="col-3 mt-1">
              <img id="image"
-               src={basket15}
+               src={basket16}
                alt="Gallery image 1"
                className="active w-100"
              />
            </div>
            <div className="col-3 mt-1">
              <img id="image"
-               src={basket16}
+               src={basket31}
                alt="Gallery image 2"
                className="active w-100"
              />
            </div>
            <div className="col-3 mt-1">
              <img id="image"
-               src={lebron17}
+               src={basket37}
                alt="Gallery image 3"
                className="active w-100"
              />
@@ -106,27 +105,31 @@ import 'yet-another-react-lightbox/styles.css';
                className="active w-100"
              />
            </div>
-         </div>
-       </div>
-       <button type="button" onClick={() => setOpen(true)}>
-        Open Lightbox
+           <button className="btn btn-primary" style={{ height:"100%", margin: "-118", display: "flex", justifyContent: "center", alignItems: "center"}} type="button" onClick={() => setOpen(true)}>
+        Ver más
       </button>
+         </div>
+         
+       </div>
+
+    
 
       <Lightbox
         open={open}
         close={() => setOpen(false)}
         slides={[
-          { src: basket22 },
-          { src:basket23  },
-          { src: basket24 },
+          { src: lebron17 },
+          { src:basket34  },
+          { src:basket15 },
           { src: basket25 },
           { src:basket26 },
+          { src: basket22 },
+          { src:basket23  },
+          { src: basket25 },
           { src: basket28 },
           { src: basket29 },
           { src:basket31 },
           { src: basket32 },
-          { src: basket33 },
-          { src:basket34  },
           { src: basket35 },
           { src: basket36 },
           { src:basket37},
@@ -136,9 +139,10 @@ import 'yet-another-react-lightbox/styles.css';
           { src: mascotas4 },
           { src: mascotas5 },
           { src:mascotas6 },
-          { src: mascotas7 }
+          { src: mascotas7 },
+          { src: basket33 }
         ]}
-      />
+        />
      </div>
    );
  }
