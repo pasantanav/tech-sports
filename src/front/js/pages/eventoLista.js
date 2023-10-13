@@ -12,7 +12,8 @@ const EventoLista = () => {
 
     useEffect(()=>{
         if (!store.accessToken) {
-            navigate("/");
+            alert("Sesión expirada");
+            navigate("/cuenta");
           }
       }, [store.accessToken]);
 
@@ -48,7 +49,7 @@ const EventoLista = () => {
     }
 
     return (
-        <div className="contSuperior fatherBody" style={{minHeight:"500px"}}>
+        <div className="contSuperior h-100 fatherBody" style={{minHeight:"500px"}}>
             <div className="container">
                 <div className="card mb-4">
                     <div className="card-body d-flex justify-content-between align-items-center">
@@ -112,9 +113,11 @@ const EventoLista = () => {
                                 <button className="btn btn-outline-primary m-1 btn-sm" onClick={() => deleteEvento(theEvent.id, theEvent.nombre_evento, index)} data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
                                     <i className="fa-solid fa-trash"></i>
                                 </button>
-                                <button className="btn btn-primary btn-sm">
-                                    Participantes
-                                </button>
+                                <Link to={theEvent.reglas} target="_blank">
+                                    <button className="btn btn-outline-primary btn-sm">
+                                        Reglas
+                                    </button>
+                                </Link>
                             </td>
                         </tr>
                     ))}

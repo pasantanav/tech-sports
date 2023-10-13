@@ -8,12 +8,14 @@ export const Home = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
-		<div className="mt-4">
+		<div className="container-fluid mt-4 w-100">
 			<div className="card text-white">
 				<div className="row m-1">
 					<div className="col">
-						<img src={homeImageUrl} className="card-img img-fluid mw-100" alt="Regístrate ahora"></img>
-						<div className="cio card-img-overlay mx-5 float-left flex-row align-items-center">
+						<div className="d-flex">
+							<img src={homeImageUrl} className="card-img img-fluid mw-100" alt="Regístrate ahora"></img>
+						</div>
+						<div className="cio flex-row card-img-overlay mx-5 float-left align-items-center">
 							<div className="heading-group">
 								<h1>Administra tus Eventos Deportivos</h1>
 								<p className="heading-3 text-light">Organiza tus torneos en un solo click</p>

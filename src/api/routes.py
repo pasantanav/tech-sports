@@ -551,6 +551,32 @@ def pagos_paypal():
     db.session.commit()
     return jsonify({"message":"Pago registrado"}), 201
 
+@api.route('/loadpagos', methods=['POST'])
+@jwt_required()
+def load_pagos():
+    user = get_jwt_identity()
+    idEvento = request.json.get("eventId")
+    if idEvento == "-":
+        lista_pagos = Pagos.query.filter_by(id_user = user).all()
+    else:
+        lista_pagos = Pagos.query.filter_by(id_user = user, event_id = idEvento).all()
+    #si el usuario no ha hecho pagos
+    if lista_pagos is None:
+        return jsonify({"message": "No tienes pagos realizados"}), 404
+    response = []
+    for item in lista_pagos:
+        response.append({
+            "cant_equipos": item.cant_equipos,
+            "monto": item.monto,
+            "orderId": item.orderId,
+            "payerId": item.payerId,
+            "paymentSourceId": item.paymentSourceId,
+            "paymentId": item.paymentId,
+            "event_id": item.event_id,
+            "nombre_evento": item.events.nombre_evento
+        })
+    return jsonify({"pagos":response}), 200
+
 @api.route('/seed', methods=['POST', 'GET'])
 def handle_seed():
     seed()

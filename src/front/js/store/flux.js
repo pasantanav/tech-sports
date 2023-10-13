@@ -11,6 +11,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			paymentInformation: [],
 			userRegisters: [],
 			registers: [],
+			pagos: [],
 			currentPaypal:Number,
 			modalmsje: [
 				{
@@ -634,7 +635,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				store.pdfUrl = pdfUrl;
 				setStore(store);
-			  },
+			},
+			getPagos: async (eventId) => {
+				try {
+					const { apiFetchProtected } = getActions()
+					const resp = await apiFetchProtected("/loadpagos", "POST", {eventId})
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
+					//console.log("PRUEBA_loaduserTeams", resp)
+					if (resp.code==200){
+						setStore({pagos:resp.data.pagos})
+						return "Ok"
+					}
+					return resp
+				}catch(error){
+					console.log("Error al solicitar los datos", error)
+				}
+      		}
 		}
 	};
 

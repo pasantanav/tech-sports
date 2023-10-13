@@ -13,7 +13,7 @@ const TeamLista = () => {
 
     useEffect(()=>{
         if (!store.accessToken) {
-            navigate("/");
+            navigate("/cuenta");
           }
       }, [store.accessToken]);
 
