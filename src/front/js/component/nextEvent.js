@@ -33,7 +33,15 @@ const nextEvent = () => {
           <tbody style={{cursor: "pointer"}}>
             {store.allEvents.map((value, index) =>
               <tr onClick={()=>navigate("/registrarse/"+index)} key={index}>
-                  <th scope="row">{value.nombre_evento}</th>
+                  <th scope="row">
+                    <img
+                      src={value.logotipo}
+                      alt=""
+                      style={{ width: '45px', height: '45px' }}
+                      className="rounded-circle m-1"
+                      />
+                    {value.nombre_evento}
+                  </th>
                   <td>{value.fecha_ini==""? "": new Date(value.fecha_ini+"T00:00:00").toLocaleDateString()}</td>
                   <td>{value.fecha_fin==""? "": new Date(value.fecha_fin+"T00:00:00").toLocaleDateString()}</td>
                   <td>{value.ubicacion}</td>

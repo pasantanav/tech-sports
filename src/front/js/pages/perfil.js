@@ -5,7 +5,10 @@ import tournament from "../../img/perfil/tournament.jpg";
 import teamlist from "../../img/perfil/teamlist.jpg";
 import eventlist from "../../img/perfil/eventlist.jpg";
 import imgLogo from "../../img/LogoTS.jpg";
+import imgRegistros from "../../img/perfil/registros.jpg";
+import imgPagos from "../../img/perfil/pagos.jpg";
 import * as filestack from 'filestack-js';
+import "../../styles/perfil.css";
 
 const Perfil = ()=>{
   const { store, actions } = useContext(Context);
@@ -32,8 +35,8 @@ const Perfil = ()=>{
       //  }
       });
     } else {
-      alert("Sesión expirada");
-      navigate("/");
+      //alert("Sesión expirada");
+      navigate("/cuenta");
     }
   }, [store.accessToken]);
 
@@ -173,38 +176,88 @@ const Perfil = ()=>{
             </div>
             <div className="col-lg-4 w-100">
               <div className="card mb-4">
-              <div className="card-body d-flex justify-content-between align-items-stretch">
-                <div className="col">
-                  <div className="card text-center">
-                    <img src={tournament} className="card-img-top" alt="Eventos"/>
-                    <div className="card-body">  
-                      <p className="card-text">Crea, modifica o elimina tus eventos con sus datos.</p>
-                      <Link to={"/eventolista/"+profileData.userId}>
-                        <button className="btn btn-primary">Administrar Eventos</button>
-                      </Link>
+                {/*<div className="card-body d-flex justify-content-between align-items-stretch">*/}
+                <div className="card-body d-flex justify-content-between align-items-stretch">
+                    <div className="col">
+                      <div className="card text-center" style={{maxWidth: "17.5rem"}}>
+                        <Link to={"/eventolista/"+profileData.userId}>
+                          <div className="contImage">
+                            <img src={tournament} className="d-block w-100 h-auto" alt="Eventos"/>
+                            <div className="overlay">
+                              <div className="textOverlay">Crea, modifica o elimina tus eventos.</div>
+                            </div>
+                          </div>
+                        </Link>
+                        <div className="card-body">  
+                          <div>
+                            <Link to={"/eventolista/"+profileData.userId}>
+                              <button className="btn btn-outline-primary w-100">Administrar Eventos</button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="col mx-2">
-                  <div className="card text-center" style={{maxWidth: "17.5rem"}}>
-                    <img src={teamlist} className="card-img-top" alt="Equipos"/>
-                    <div className="card-body">
-                      <p className="card-text">Consulta tus equipos registrados en los eventos.</p>
-                      <Link to="/teamlist" className="btn btn-primary">Administrar Equipos</Link>
+                    <div className="col mx-2">
+                      <div className="card text-center" style={{maxWidth: "17.5rem"}}>
+                        <Link to="/teamlist">
+                          <div className="contImage">
+                            <img src={teamlist} className="d-block w-100 h-auto" alt="Equipos"/>
+                            <div className="overlay">
+                              <div className="textOverlay">Crea, modifica o elimina tus equipos.</div>
+                            </div>
+                          </div>
+                        </Link>
+                        <div className="card-body">
+                          <Link to="/teamlist" className="btn btn-outline-primary w-100">Administrar Equipos</Link>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="card text-center" style={{maxWidth: "17.5rem"}}>
-                    <img src={eventlist} className="card-img-top" alt="Registro"/>
-                    <div className="card-body">
-                      <p className="card-text">Registra tus equipos a eventos vigentes.</p>
-                      {/* era to="/nextevent" */}
-                      <Link to="/registroEquipos" className="btn btn-primary">Registrar Equipos</Link>
+                    <div className="col">
+                      <div className="card text-center" style={{maxWidth: "17.5rem"}}>
+                        <Link to="/nextEvent">
+                          <div className="contImage">
+                            <img src={eventlist} className="d-block w-100 h-auto" alt="Registrar"/>
+                            <div className="overlay">
+                              <div className="textOverlay">Consulta los eventos y paga.</div>
+                            </div>
+                          </div>
+                        </Link>
+                        <div className="card-body">
+                          <Link to="/nextEvent" className="btn btn-outline-primary w-100">Registrar Equipos</Link>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                    <div className="col mx-2">
+                      <div className="card text-center" style={{maxWidth: "17.5rem"}}>
+                        <Link to="/registroEquipos">
+                            <div className="contImage">
+                              <img src={imgRegistros} className="d-block w-100 h-auto" alt="Registros"/>
+                              <div className="overlay">
+                                <div className="textOverlay">Registra equipos a eventos.</div>
+                              </div>
+                            </div>
+                          </Link>
+                          <div className="card-body">
+                            <Link to="/registroEquipos" className="btn btn-outline-primary w-100">Administrar Registros</Link>
+                          </div>
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="card text-center" style={{maxWidth: "17.5rem"}}>
+                        <Link to="/consultapagos">
+                          <div className="contImage">
+                            <img src={imgPagos} className="d-block w-100 h-auto" alt="Pagos"/>
+                            <div className="overlay">
+                              <div className="textOverlay">Consulta los pagos realizados.</div>
+                            </div>
+                          </div>
+                        </Link>
+                        <div className="card-body">
+                          <Link to="/consultapagos" className="btn btn-outline-primary w-100">Consultar Pagos</Link>
+                        </div>
+                      </div>
+                    </div>
                 </div>
-              </div>
               </div>
           </div>
         

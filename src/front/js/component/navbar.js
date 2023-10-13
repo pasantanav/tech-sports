@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, StrictMode } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/navbar.css";
+import logoTS from "../../img/LogoTS.jpg";
 
 export const Navbar = () => {
 
@@ -38,6 +39,9 @@ export const Navbar = () => {
 	return (
 		<nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light shadow p-3 mb-5">
 			<div className="container-fluid">
+				<Link to={"/"}>
+			    	<img src={logoTS}  alt="TechSports" style={{ width: '45px', height: '45px' }} className="mx-2 rounded-circle"/>
+				</Link>
 				<a className="navbar-brand" href="/">TechSports</a>
 				<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
 					aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
