@@ -59,6 +59,7 @@ const Perfil = ()=>{
   
   const handleEditProfile = (e) => {
     e.preventDefault();
+
     
     const updatedProfileData = {
       name,
@@ -67,6 +68,12 @@ const Perfil = ()=>{
       address
     };
   
+
+    
+    if (name.trim() === '') {
+      alert('El campo de nombre no puede estar en blanco');
+      return;
+    }
     // Lógica para actualizar los datos del perfil aquí...
     actions.editProfile(updatedProfileData).then(() => {
       setIsEditModalOpen(false);
@@ -236,8 +243,9 @@ const Perfil = ()=>{
                           <Form.Control
                             type="email"
                             defaultValue={profileData.email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            disabled
                           />
+                          <p className="text-muted">Para modificar tu correo electrónico, por favor, contáctanos.</p>
                         </Form.Group>
                         <Form.Group controlId="phone">
                           <Form.Label>Télefono</Form.Label>
