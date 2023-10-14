@@ -187,6 +187,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al solicitar los datos", error)
 				}
 			},
+			// actions.js
+				editProfile: async (newProfileData) => {
+					try {
+					const { apiFetchProtected } = getActions();
+					const resp = await apiFetchProtected("/editprofile", "POST",  newProfileData );
+						console.log(resp)
+					if (resp.code === 200) {
+						// Actualiza el estado global con la nueva información del perfil
+						const store = getStore()
+						store.userInfo.splice(newProfileData)
+						setStore(store)
+						alert("Perfil actualizado con exito")
+						return "Ok"; // Puedes devolver los datos actualizados si es necesario
+					} else {
+						// La solicitud al servidor falló
+						throw new Error("Error al procesar la solicitud de edición del perfil" + resp.code );
+					}
+					} catch (error) {
+					  Error("Error al realizar la edición del perfil", error  );
+					}
+				},
+  
 			loadTokens: () => {
 				//traer el token del almacenamiento local
 				let token = localStorage.getItem("accessToken")
@@ -229,6 +251,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error al solicitar los datos")
 				}
 			},
+			
 			getUserInfo: async () => {
 				try {
 					const { apiFetchProtected } = getActions()
