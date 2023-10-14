@@ -52,13 +52,36 @@ const Perfil = ()=>{
   const closeEditModal = () => {
     setIsEditModalOpen(false);
   };
+
+  
   
   const handleEditProfile = (e) => {
     e.preventDefault();
+    
+    const updatedProfileData = {
+      name,
+      email,
+      phone,
+      address
+    };
+  
     // Lógica para actualizar los datos del perfil aquí...
-    // actions.updateProfile(newProfileData); // Reemplaza con la llamada a tu acción de actualización de perfil
-    setIsEditModalOpen(false);
+    actions.editProfile(updatedProfileData).then(() => {
+      setIsEditModalOpen(false);
+      
+      // Actualizar el estado de la aplicación con los nuevos datos editados
+      setUserData(updatedProfileData);
+  
+      // Llamar a getUserInfo nuevamente para obtener los datos actualizados
+      actions.getUserInfo().then(data => {
+      }).catch(error => {
+        console.error(error);
+      });
+    }).catch(error => {
+      console.error(error) ;
+    });
   };
+  
 
 
   const handleOpenFilePicker = () => {
@@ -104,13 +127,18 @@ const Perfil = ()=>{
                   style={{ width: '150px' }}
                 />
                 <h5 className="my-3">{profileData.name}</h5>
-                <button className='btn btn-outline-primary ms-1' onClick={() => actions.logout()}>
-                  Cerrar Sesión
-                </button>
                 <p className="text-muted mb-4">{profileData.address}</p>
-                <button type="button" className="btn btn-primary" onClick={handleOpenFilePicker}>
+                 <div>
+                 <button type="button" className="btn btn-primary" onClick={handleOpenFilePicker}>
                   Cambiar imagen de perfil
                 </button>
+                 </div>
+               <div>
+               <button className='btn btn-outline-primary ms-1' onClick={() => actions.logout()}>
+                  Cerrar Sesión
+                </button>
+               </div>
+                
               </div>
             </div>
             <div className="card mb-4 mb-lg-0">
@@ -179,14 +207,7 @@ const Perfil = ()=>{
                   </div>
                 </div>
                 <hr />
-                <div className="row">
-                  <div className="col-sm-3">
-                    <p className="mb-0">Contraseña</p>
-                  </div>
-                  <div className="col-sm-9">
-                    <p className="text-muted mb-0">{profileData.password}</p>
-                  </div>
-                </div>
+                
                 <hr />
                 <div className='text-center'>
                 <button type="button" className="btn btn-primary" onClick={openEditModal}>
@@ -233,12 +254,7 @@ const Perfil = ()=>{
                           />
                         </Form.Group>
                         <Form.Group controlId="password">
-                          <Form.Label>Contraseña</Form.Label>
-                          <Form.Control
-                            type="password"
-                            defaultValue={profileData.password}
-                            onChange={(e) => setPassword(e.target.value)}
-                          />
+                          
                         </Form.Group>
                         <Button variant="primary" type="submit">
                           Guardar Cambios

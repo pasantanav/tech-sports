@@ -42,6 +42,37 @@ def update_profile_image():
     # Ejemplo de respuesta exitosa:
     return jsonify({"message": "Imagen de perfil actualizada correctamente"}), 200
 
+# Define una nueva ruta Blueprint para la edición de perfil
+#edit_profile_api = Blueprint('edit_profile_api', __name__)
+
+# Ruta para la edición de perfil
+@api.route('/editprofile', methods=['POST'])
+@jwt_required()
+def edit_profile():
+    # Obtener el ID del usuario autenticado desde el token
+    user_id = get_jwt_identity()
+    # Obtener los datos de perfil enviados en la solicitud
+    new_profile_data = request.json
+
+    # Buscar el usuario en la base de datos
+    user = User.query.get(user_id)
+
+    # Actualiza los campos de perfil con los nuevos datos
+    if 'name' in new_profile_data:
+        user.name = new_profile_data['name']
+    if 'email' in new_profile_data:
+        user.email = new_profile_data['email']
+    if 'address' in new_profile_data:
+        user.address = new_profile_data['address']
+    if 'phone' in new_profile_data:
+        user.phone = new_profile_data['phone']
+
+    # Guarda los cambios en la base de datos
+    db.session.commit()
+
+    # Responde con un mensaje de éxito
+    return jsonify({"message": "Perfil actualizado correctamente"}), 200
+
 
 
 @api.route("/changepassword", methods=["POST"])
