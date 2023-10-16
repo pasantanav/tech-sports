@@ -12,16 +12,14 @@ export const Home = () => {
 			<div className="card text-white">
 				<div className="row m-1">
 					<div className="col">
-						<div className="d-flex">
-							<img src={homeImageUrl} className="card-img img-fluid mw-100" alt="Regístrate ahora"></img>
-						</div>
-						<div className="cio flex-row card-img-overlay mx-5 float-left align-items-center">
+						<img src={homeImageUrl} className="card-img img-fluid mw-100" alt="Regístrate ahora"></img>
+						<div className="cio card-img-overlay d-flex flex-column mx-5 align-items-center">
 							<div className="heading-group">
 								<h1>Administra tus Eventos Deportivos</h1>
 								<p className="heading-3 text-light">Organiza tus torneos en un solo click</p>
 							</div>
 							<div className="divider divider-default"></div>
-							<p className="heading-5">Utiliza nuestra tecnología a tu favor. Estamos listos para dar a tus eventos una ventaja competitiva en la organización.</p>
+							<p className="heading-5 m-1">Utiliza nuestra tecnología a tu favor. Estamos listos para dar a tus eventos una ventaja competitiva en la organización.</p>
 							<div className="group-md button-group">
 								<Link to="/organizadores">
 									<span className="btn btn-primary btn-lg mt-4" href="#" role="button">

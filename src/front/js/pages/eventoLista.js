@@ -26,6 +26,7 @@ const EventoLista = () => {
 
     useEffect(()=>{
         actions.getUserEvent()
+        document.getElementById("spinner").style.display = "none";
         setOperation("Evento Nuevo");
       }, []);
 
@@ -69,6 +70,12 @@ const EventoLista = () => {
                 </div>
             </div>
             <div className="container">
+                <div className="text-center" id="spinner">
+                    <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Cargando...</span>
+                    </div>
+                    <p className="text-primary">Cargando...</p>
+                </div>
             <div className="table-responsive">
             <table className="table align-middle mb-0 bg-white" id='theEventstable'>
                 <thead className="bg-light">

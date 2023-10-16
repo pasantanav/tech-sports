@@ -10,6 +10,7 @@ const nextEvent = () => {
 
   useEffect(() => {
     actions.getAllEvents();
+    document.getElementById("spinner").style.display = "none";
   }, []);
 
   return (
@@ -19,6 +20,12 @@ const nextEvent = () => {
         <div className="divider divider-default m-3"></div>
       </div>
         <div className="container">
+          <div className="text-center" id="spinner">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Cargando...</span>
+            </div>
+            <p className="text-primary">Cargando...</p>
+          </div>
         <div className="table-responsive">
           <table className="table align-middle table-striped table-hover table-bordered">
           <thead className="table-primary">
