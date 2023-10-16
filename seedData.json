@@ -162,72 +162,72 @@
         "data": [
             {
                 "id" : 1,
-                "nombre_equipo": "Equipo 1 usuario 1",
-                "jugadores" : "Lista de jugadores 1",
+                "nombre_equipo": "Los Vencedores",
+                "jugadores" : "https://cdn.filestackcontent.com/UnbJOVaPSMm2BHQvSLZn",
                 "fecha_registro" : "2023-09-08",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 2
             },
             {
                 "id" : 2,
-                "nombre_equipo": "Equipo 2 usuario 1",
-                "jugadores" : "Lista de jugadores 2",
+                "nombre_equipo": "Club San Vicente",
+                "jugadores" : "https://cdn.filestackcontent.com/RidqzhrRH6ndtuzVyiSJ",
                 "fecha_registro" : "2023-09-09",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 2
             },
             {
                 "id" : 3,
-                "nombre_equipo": "Equipo 3 usuario 1",
-                "jugadores" : "Lista de jugadores 3",
+                "nombre_equipo": "Colegio Julio Alemán",
+                "jugadores" : "https://cdn.filestackcontent.com/ASPGvvkDTMyLgEE4nVet",
                 "fecha_registro" : "2023-09-10",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 2
             },
             {
                 "id" : 4,
-                "nombre_equipo": "Equipo 1 usuario 2",
-                "jugadores" : "Lista de jugadores 1",
+                "nombre_equipo": "Atletas Nacionales",
+                "jugadores" : "https://cdn.filestackcontent.com/zhjFPOpVQuuEQFYe4dyJ",
                 "fecha_registro" : "2023-09-08",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 3
             },
             {
                 "id" : 5,
-                "nombre_equipo": "Equipo 2 usuario 2",
-                "jugadores" : "Lista de jugadores 2",
+                "nombre_equipo": "Club Roy Rojo",
+                "jugadores" : "https://cdn.filestackcontent.com/ro98VivyQHufQhYQof7Z",
                 "fecha_registro" : "2023-09-09",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 3
             },
             {
                 "id" : 6,
-                "nombre_equipo": "Equipo 3 usuario 2",
-                "jugadores" : "Lista de jugadores 3",
+                "nombre_equipo": "Colegio Senda Nueva",
+                "jugadores" : "https://cdn.filestackcontent.com/qMCfLfdWQuewj8m2Lcv4",
                 "fecha_registro" : "2023-09-10",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 3
             },
             {
                 "id" : 7,
-                "nombre_equipo": "Equipo 1 usuario 3",
-                "jugadores" : "Lista de jugadores 1",
+                "nombre_equipo": "Los Triunfadores",
+                "jugadores" : "https://cdn.filestackcontent.com/U8QFgL69TlGoMqyaXi5V",
                 "fecha_registro" : "2023-09-08",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 4
             },
             {
                 "id" : 8,
-                "nombre_equipo": "Equipo 2 usuario 3",
-                "jugadores" : "Lista de jugadores 2",
+                "nombre_equipo": "Club Ricardo Flores",
+                "jugadores" : "https://cdn.filestackcontent.com/lzOcW7tZTtyNkG1mHA4D",
                 "fecha_registro" : "2023-09-09",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 4
             },
             {
                 "id" : 9,
-                "nombre_equipo": "Equipo 3 usuario 3",
-                "jugadores" : "Lista de jugadores 3",
+                "nombre_equipo": "Colegio San Gabriel",
+                "jugadores" : "https://cdn.filestackcontent.com/9K6TplPT0a4BR7YHCMHP",
                 "fecha_registro" : "2023-09-10",
                 "logotipo" : "https://cdn.filestackcontent.com/6wD4LpHHS6ib0OZr176W",
                 "id_user" : 4

@@ -1,6 +1,6 @@
 .cio{
-    width: 500px;
-    height: 350px;
+    max-width: 500px;
+    max-height: 350px;
     margin-top: 120px;
     background-color: black;
     opacity: 0.75;

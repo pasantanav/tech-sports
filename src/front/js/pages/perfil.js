@@ -131,7 +131,7 @@ const Perfil = ()=>{
                 <h5 className="my-3">{profileData.name}</h5>
                 <p className="text-muted mb-4">{profileData.address}</p>
                  <div>
-                 <button type="button" className="btn btn-primary" onClick={handleOpenFilePicker}>
+                 <button type="button" className="btn btn-primary my-2" onClick={handleOpenFilePicker}>
                   Cambiar imagen de perfil
                 </button>
                  </div>
@@ -268,9 +268,9 @@ const Perfil = ()=>{
               </div>
             </div>
             <div className="col-lg-4 w-100">
-              <div className="card mb-4">
+              <div className="card d-flex mb-4">
                 {/*<div className="card-body d-flex justify-content-between align-items-stretch">*/}
-                <div className="card-body d-flex justify-content-between align-items-stretch">
+                <div className="card-body d-flex justify-content-between">
                     <div className="col">
                       <div className="card text-center" style={{maxWidth: "17.5rem"}}>
                         <Link to={"/eventolista/"+profileData.userId}>

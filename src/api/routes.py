@@ -568,7 +568,6 @@ def pagos_paypal():
     payerId= request.json.get("payerID")
     paymentSourceId= request.json.get("paymentSourceID")
     paymentId= request.json.get("paymentID")
-    
     #buscar usuario en la bd, que me traiga el primer resultado
     #registro de pago de paypal
     new_pago= Pagos_Paypal()

@@ -176,9 +176,6 @@ const Registrarse = (props) => {
               </div>
             </div>
           </div>
-        </div>  
-        <div className="contact-containerr">
-        <div className="col-lg-4 contactt" >
           <div className="card mb-4">
             <div className="card-header" style={{ backgroundColor: "#0D6EFD", color: "white" }}>
              Contacto
@@ -203,10 +200,9 @@ const Registrarse = (props) => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>  
           </div>  
       </div>      
+        </div>  
       <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
