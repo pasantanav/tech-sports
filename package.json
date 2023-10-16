@@ -86,6 +86,7 @@
 		"react-dom": "^16.8.4",
 		"react-modal": "^3.16.1",
 		"react-polyfills": "0.0.1",
-		"react-router-dom": "^6.15.0"
+		"react-router-dom": "^6.15.0",
+		"yet-another-react-lightbox": "^3.14.0"
 	}
 }
