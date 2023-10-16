@@ -12,7 +12,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userRegisters: [],
 			registers: [],
 			pagos: [],
-			currentPaypal:Number,
+			currentPaypal:{},
 			modalmsje: [
 				{
 					boton: "Click",
@@ -625,8 +625,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			}
 			,
-			setCurrentPaypal: (total) =>{
-				setStore({currentPaypal: Number(total)})
+			setCurrentPaypal: (total, description, quantity) =>{
+				const store = getStore();
+				let datos = {};
+				datos.description=description??store.currentPaypal.description;
+				console.log("datos1",datos)
+				datos.quantity=quantity??store.currentPaypal.quantity;
+				datos.total=Number(total)??store.currentPaypal.total;
+
+				setStore({currentPaypal:datos})
 			   },
 			savePaymentInfo: async (orderID,payerID,paymentSourceID,paymentID, index) => {
 				try {
