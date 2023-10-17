@@ -446,27 +446,6 @@ def load_allevents():
     #pasando contenido
     return jsonify({"eventos":response}), 200
 
-@api.route('/loadAllUsers', methods=['GET'])
-#@jwt_required()
-def loadAllUser():
-    #recibir datos del cuerpo de la petición
-   # user = get_jwt_identity()
-    #ubicar usuario en la bd, que me traiga todos los resultados
-    lista = User.query.all()
-    #si no se encontró el evento
-    if lista is None:
-        return jsonify({"message": "Users not found"}), 401
-    response=[]
-    for item in lista:
-    #    response.append({item})
-        response.append({
-        "id": item.id,
-        
-        "name": item.name})
-    #después de las validaciones enviar msje de confirmación
-    #pasando contenido
-    return jsonify({"Users":response}), 200
-
 @api.route('/loadusereventsregister', methods=['GET'])
 @jwt_required()
 def load_usereventsregister():
@@ -603,6 +582,40 @@ def load_pagos():
             "paymentSourceId": item.paymentSourceId,
             "paymentId": item.paymentId,
             "event_id": item.event_id,
+            "nombre_evento": item.events.nombre_evento
+        })
+    return jsonify({"pagos":response}), 200
+
+@api.route('/loadallusers', methods=['GET'])
+@jwt_required()
+def load_allusers():
+    lista = User.query.all()
+    #si no se encontró el usuario
+    if lista is None:
+        return jsonify({"message": "No hay usuarios"}), 402
+    response=[]
+    for user in lista:
+        if user.id != 1:
+            response.append({
+            "id": user.id,
+            "email" : user.email,
+            "name" : user.name,
+            "address" : user.address,
+            "phone" : user.phone})
+    return jsonify({"users":response}), 200
+
+@api.route('/loadallpagos', methods=['POST'])
+@jwt_required()
+def load_allpagos():
+    lista_pagos = Pagos.query.all()
+    if lista_pagos is None:
+        return jsonify({"message": "No hay pagos"}), 404
+    response = []
+    for item in lista_pagos:
+        response.append({
+            "cant_equipos": item.cant_equipos,
+            "monto": item.monto,
+            "nombre_usuario": item.user.name,
             "nombre_evento": item.events.nombre_evento
         })
     return jsonify({"pagos":response}), 200

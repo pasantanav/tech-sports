@@ -23,7 +23,7 @@ const Cards = (props) => {
             <p className="ca rd-text">{props.description}</p>
             <p className="card-text"><small className="text-body-secondary">{props.lastUpdated}</small></p>
             <Link to="/nextEvent">
-              <button id="click" className="btn btn-primary btn-lg m-2">REGISTRO</button>
+              <button id="click" className="btn btn-primary m-2">REGISTRO</button>
 
             </Link>
           </div>
