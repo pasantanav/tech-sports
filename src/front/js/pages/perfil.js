@@ -86,7 +86,7 @@ const Perfil = ()=>{
   
 
     
-    if (name.trim() === '') {
+    if (name === '') {
       alert('El campo de nombre no puede estar en blanco');
       return;
     }
@@ -106,17 +106,18 @@ const Perfil = ()=>{
       console.error(error) ;
     });
   };
-  const autoAdvance = () => {
-    nextSlide();
-  };
-
   useEffect(() => {
+    // Función para avanzar automáticamente cada 5 segundos
+    const autoAdvance = () => {
+      nextSlide();
+    };
+  
     // Configura el avance automático cada 5 segundos
     const interval = setInterval(autoAdvance, 5000);
-
+  
     // Limpia el intervalo cuando el componente se desmonta
     return () => clearInterval(interval);
-  }, []);
+  }, [currentSlide]); 
   
 
 
