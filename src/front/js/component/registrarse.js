@@ -7,6 +7,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Context } from "../store/appContext";
 
 const Registrarse = (props) => {
+  const [quantity, setQuantity]=useState(0);
   const [contador, setContador] = useState(1);
   const [total, setTotal] = useState(0);
 
@@ -66,13 +67,15 @@ const Registrarse = (props) => {
     if (temContador < 0) {
       return;
     }
+    //El boton que renderiza la cantidad de per
     setTotal(temContador * subTotal);
-    actions.setCurrentPaypal(temContador * subTotal)
     setContador(temContador);
   };
 
   const handleClick = (e) => {
     e.preventDefault();
+    let description ="Pago del evento " + datosEvento.nombre_evento
+    actions.setCurrentPaypal(total,description,contador)
     if (store.accessToken == null) {
       alert("Para registrar equipos debes iniciar sesión");
       navigate("/cuenta");
@@ -235,7 +238,7 @@ const Registrarse = (props) => {
                   <hr />
                   <div className="row">
                     <div className="col-md-3">
-                      <p>Jam on it</p>
+                      <p>{datosEvento.nombre_evento}</p>
                     </div>
                     <div className="col-md-3">
                       <p>${datosEvento.costo}</p>

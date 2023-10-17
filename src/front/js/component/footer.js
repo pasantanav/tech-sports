@@ -12,7 +12,7 @@ let menu = [
 ];
 
 export const Footer = () => (
-	<footer className="pie m-2 bg-light border-top font-small" style={{paddingLeft:"0px"}}>
+	<footer className="pie  bg-light border-top font-small " style={{paddingLeft:"0px"}}>
 		<div className="d-flex justify-content-end">
 			<ul className="nav col-md-5 text-end">
 				{menu.map((item) => {
@@ -25,7 +25,7 @@ export const Footer = () => (
 			</ul>
 		</div>
 		<Link to="/">
-			<div className="d-flex justify-content-center footer-copyright text-center align-items-center py-3" style={{maxHeight:"30px", background: "#0D6EFD", color:"white"}}>© 2023 TechSports, Inc.</div>
+			<div className="d-flex justify-content-center footer-copyright text-center align-items-center py-1" style={{ background: "#0D6EFD", color:"white"}}>© 2023 TechSports, Inc.</div>
 		</Link>
 	</footer>
 );

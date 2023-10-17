@@ -6,9 +6,13 @@ import teamlist from "../../img/perfil/teamlist.jpg";
 import eventlist from "../../img/perfil/eventlist.jpg";
 import imgLogo from "../../img/LogoTS.jpg";
 import imgRegistros from "../../img/perfil/registros.jpg";
+import img1 from "../../img/carrusel/imagen1.png"
+import img2 from "../../img/carrusel/imagen2.png"
+import img3 from "../../img/carrusel/imagen3.png"
 import imgPagos from "../../img/perfil/pagos.jpg";
 import * as filestack from 'filestack-js';
 import "../../styles/perfil.css";
+import Slider from 'react-slick'
 import { Modal, Button, Form } from 'react-bootstrap';
 
 const Perfil = ()=>{
@@ -26,6 +30,7 @@ const Perfil = ()=>{
   const [password, setPassword] = useState(profileData.password);
   const navigate = useNavigate()
   const filestackClient = filestack.init('ApcaRKG5TSEuvL2v2O2Dnz');
+  const [currentSlide, setCurrentSlide] = useState(0);
  // Manejar la selección de archivos y actualización de imagen de perfil
  useEffect(()=>{
   setProfileImage(profileData.url_perfil)
@@ -56,8 +61,19 @@ const Perfil = ()=>{
   const closeEditModal = () => {
     setIsEditModalOpen(false);
   };
-
+  const images = [
+    img1,
+    img2,
+    img3,
+  ];
   
+  const nextSlide = () => {
+    setCurrentSlide((currentSlide + 1) % images.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((currentSlide - 1 + images.length) % images.length);
+  };
   
   const handleEditProfile = (e) => {
     e.preventDefault();
@@ -72,7 +88,7 @@ const Perfil = ()=>{
   
 
     
-    if (name.trim() === '') {
+    if (name === '') {
       alert('El campo de nombre no puede estar en blanco');
       return;
     }
@@ -92,6 +108,18 @@ const Perfil = ()=>{
       console.error(error) ;
     });
   };
+  useEffect(() => {
+    // Función para avanzar automáticamente cada 5 segundos
+    const autoAdvance = () => {
+      nextSlide();
+    };
+  
+    // Configura el avance automático cada 5 segundos
+    const interval = setInterval(autoAdvance, 5000);
+  
+    // Limpia el intervalo cuando el componente se desmonta
+    return () => clearInterval(interval);
+  }, [currentSlide]); 
   
 
 
@@ -152,30 +180,14 @@ const Perfil = ()=>{
                 
               </div>
             </div>
-            <div className="card mb-4 mb-lg-0">
+            <div className="card mb-4 mb-lg-0" id='carousel-container'>
               <div className="card-body p-0">
-                <ul className="list-group list-group-flush rounded-3">
-                  <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <i className="fas fa-globe fa-lg text-warning"></i>
-                    <p className="mb-0">https://mdbootstrap.com</p>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <i className="fab fa-github fa-lg" style={{ color: '#333333' }}></i>
-                    <p className="mb-0">mdbootstrap</p>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <i className="fab fa-twitter fa-lg" style={{ color: '#55acee' }}></i>
-                    <p className="mb-0">@mdbootstrap</p>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <i className="fab fa-instagram fa-lg" style={{ color: '#ac2bac' }}></i>
-                    <p className="mb-0">mdbootstrap</p>
-                  </li>
-                  <li className="list-group-item d-flex justify-content-between align-items-center p-3">
-                    <i className="fab fa-facebook-f fa-lg" style={{ color: '#3b5998' }}></i>
-                    <p className="mb-0">mdbootstrap</p>
-                  </li>
-                </ul>
+              <div className="carousel-containerr">
+                
+                
+                <img className='carousel' src={images[currentSlide]} alt={`Imagen ${currentSlide + 1}`} />
+                
+              </div>
               </div>
             </div>
           </div>
