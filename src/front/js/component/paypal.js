@@ -14,17 +14,18 @@ export default function PayPal(props) {
 
 
   // Esta función se llamará cuando el usuario haga clic en el botón de PayPal
-  const createOrder = (data, action) => {
+  const createOrder = (data, action, datos) => {
+    console.log("revisando el store 2", datos )
     return action.order.create({
       "purchase_units": [
         {
           "reference_id": 584,
-          "description": "Attempt n.1 for Quote ID 1234",
+          "description":datos?.description,
           "amount": {
             "currency_code": "USD",
-            "value":store.currentPaypal,
+            "value":datos.total,
             "breakdown": {
-              "item_total": { "currency_code":"USD", "value":store.currentPaypal},
+              "item_total": { "currency_code":"USD", "value":datos.total},
               "shipping": { "currency_code":"USD", "value":"0"},
               "tax_total": { "currency_code":"USD", "value":"0"},
               "discount": { "currency_code":"USD", "value":"0"}
@@ -32,16 +33,16 @@ export default function PayPal(props) {
           },
           "items": [
             {
-              "name": "OnePlus 6 T-rex 12\" name for 14\"\" blabla \" more double quotes",
+              "name":datos?.description,
               "unit_amount": {
                 "currency_code": "USD",
-                "value":store.currentPaypal
+                "value":datos.total / datos.quantity
               },
               "tax": {
                 "currency_code": "USD",
                 "value": 0
               },
-              "quantity": 1,
+              "quantity": datos.quantity,
               "sku": "OnePlus61",
               "category": "PHYSICAL_GOODS"
             }
@@ -104,7 +105,7 @@ export default function PayPal(props) {
   <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>}
 <PayPalScriptProvider options={{ "client-id": process.env.PAYPAL_CLIENT_ID }}>
-      <PayPalButtons createOrder={createOrder} onApprove={onApprove} onCancel={onCancel} onError={onError} />
+      <PayPalButtons createOrder={(data, action)=>createOrder(data, action,{"description":store.currentPaypal.description,"total":store.currentPaypal.total,"quantity":store.currentPaypal.quantity})} onApprove={onApprove} onCancel={onCancel} onError={onError} />
       
     </PayPalScriptProvider>
     </>

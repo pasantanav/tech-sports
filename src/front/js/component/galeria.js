@@ -62,11 +62,12 @@ const Galeria = () => {
               id={image.id}
               src={image.src.default}
               alt={image.alt}
+              style={{padding:"1%"}}
               className="ecommerce-gallery-main-img active w-25"
             />
           ))}
 
-
+   
 
           <button className="btn btn-primary" style={{ height: "100%", margin: "-118", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "2rem" }} type="button" onClick={() => setOpen(true)}>
             Ver más
@@ -74,7 +75,7 @@ const Galeria = () => {
         </div>
 
       </div>
-
+                
 
 
       <Lightbox
