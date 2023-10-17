@@ -47,6 +47,7 @@ const Galeria = () => {
   ]
 
   return (
+    
     <div className="contSuperior container">
       <div className="ecommerce-gallery" data-mdb-zoom-effect="true" data-mdb-auto-height="true">
         <div className="row">

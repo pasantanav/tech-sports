@@ -42,6 +42,7 @@ const Layout = () => {
         <div>
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
+                    <div className="d-flex flex-column justify-content-between">
                     <Navbar />
                     <Routes>
                         <Route element={<TeamList />} path="/teams" />
@@ -66,6 +67,8 @@ const Layout = () => {
                         {/*<Route element={<ModalTeams />} path="/modalteams" />*/}
                     </Routes>
                     <Footer />
+
+                    </div>
                 </ScrollToTop>
             </BrowserRouter>
         </div>
