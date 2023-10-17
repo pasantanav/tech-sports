@@ -629,7 +629,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				let datos = {};
 				datos.description=description??store.currentPaypal.description;
-				console.log("datos1",datos)
 				datos.quantity=quantity??store.currentPaypal.quantity;
 				datos.total=Number(total)??store.currentPaypal.total;
 
