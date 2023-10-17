@@ -31,3 +31,27 @@
     transform: translate(-50%, -50%);
     text-align: center;
   }
+
+.carousel{
+  object-fit: contain;
+  width: 300px;
+  height: 275px;
+  margin-left: 12%;
+  background-color: black;
+  border-radius: 2px;
+}
+
+#carousel-container{
+  border: 2px solid ;
+  height: 400px;
+  object-fit: contain;
+  border: none;
+  
+}
+
+.carousel-button{
+justify-content: space-around;
+border: 2px solid ;
+margin-left: 28%;
+border: none;
+}
