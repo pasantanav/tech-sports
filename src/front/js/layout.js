@@ -1,14 +1,11 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
-//import { BackendURL } from "./component/backendURL";
 
 import { Home } from "./pages/home";
 
 import { Servicios } from "./pages/servicios";
 import RecoverPassword from "./pages/recoverPassword.js"
-//import { Single } from "./pages/single";
-//import Payment from "./pages/payment";
 import injectContext from "./store/appContext";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -20,15 +17,13 @@ import AccountPage from "./pages/cuenta";
 import NextEvent from "./component/nextEvent";
 import Registrarse from "./component/registrarse";
 import Organizadores from "./pages/organizadores";
-//import UserProfile from "./pages/perfil";
 import TeamList from "./pages/equiposparticipantes";
-import UserPage from "./pages/perfil";
 import PerfilOrganizador from "./pages/perfilorganizador";
 import EventoLista from "./pages/eventoLista";
 import TeamLista from "./pages/teamlist";
-//import ModalTeams from "./component/modalteams";
 import RegistroEquipos from "./pages/registroEquipos";
 import ConsultaPagos from "./pages/consultaPagos";
+import PerfilAdmin from "./pages/perfilAdmin";
 
 //create your first component
 const Layout = () => {
@@ -63,7 +58,7 @@ const Layout = () => {
                         <Route element={<TeamLista />} path="/teamlist" />
                         <Route element={<RegistroEquipos />} path="/registroEquipos" />
                         <Route element={<ConsultaPagos />} path="/consultapagos" />
-                        {/*<Route element={<ModalTeams />} path="/modalteams" />*/}
+                        <Route element={<PerfilAdmin />} path="/perfilAdmin" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

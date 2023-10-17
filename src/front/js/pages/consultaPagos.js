@@ -14,13 +14,10 @@ const ConsultaPagos = () => {
   const [total, setTotal] = useState(0)
 
   useEffect(()=>{
-    console.log("Selectedevento:", selectedEvento)
     actions.getPagos(selectedEvento).then(respPagos =>{
       if (respPagos == "Ok"){
         setPagos([...store.pagos])
-        console.log("PAGOS1:", store.pagos)
         const suma = store.pagos.reduce((subtotal, valor) => subtotal + valor.monto, 0);
-        console.log(suma);
         setTotal(suma);
       }
     });
@@ -29,12 +26,9 @@ const ConsultaPagos = () => {
 
   useEffect(() => {
     actions.getPagos(selectedEvento).then(respPagos =>{
-      console.log("Respagos:",respPagos)
       if (respPagos == "Ok"){
         setPagos([...store.pagos])
-        console.log("PAGOS2:", store.pagos)
         const suma = store.pagos.reduce((subtotal, valor) => subtotal + valor.monto, 0);
-        console.log(suma);
         setTotal(suma);
       }
     });
@@ -52,11 +46,8 @@ const ConsultaPagos = () => {
   }, []);
 
   const handleChangeEventos = e => {
-    console.log("Valor evento:", e.target.value);
     setSelectedEvento(e.target.value);
-    console.log("PAGOS3:", store.pagos)
-        const suma = store.pagos.reduce((subtotal, valor) => subtotal + valor.monto, 0);
-        console.log(suma);
+    const suma = store.pagos.reduce((subtotal, valor) => subtotal + valor.monto, 0);
     setTotal(suma);
   };
 

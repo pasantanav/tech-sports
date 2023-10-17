@@ -13,6 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			registers: [],
 			pagos: [],
 			currentPaypal:Number,
+			allUsuarios: [],
+			allEventos: [],
+			allPagos: [],
 			modalmsje: [
 				{
 					boton: "Click",
@@ -37,7 +40,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (resp.code === 200) {
 					// Si la solicitud fue exitosa, puedes manejar la respuesta aquí
 					// Por ejemplo, mostrar un mensaje al usuario
-					console.log("Solicitud de recuperación de contraseña exitosa:", resp.data);
+					//console.log("Solicitud de recuperación de contraseña exitosa:", resp.data);
 					const {recoveryToken} = resp.data
 					localStorage.setItem("recoveryToken", recoveryToken)
 						//guardamos el token en el store
@@ -47,11 +50,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return resp;
 				} else if (resp.code === 404) {
 					// Si el correo electrónico no se encuentra en la base de datos, puedes manejarlo aquí
-					console.error("Correo electrónico no encontrado en la base de datos");
+					//console.error("Correo electrónico no encontrado en la base de datos");
 					return "Correo electrónico no encontrado en la base de datos";
 				} else {
 					// Maneja otros posibles errores aquí, por ejemplo, errores del servidor
-					console.error("Error al procesar la solicitud de recuperación de contraseña:", resp);
+					//console.error("Error al procesar la solicitud de recuperación de contraseña:", resp);
 					return "Error al procesar la solicitud de recuperación de contraseña";
 				}
 				} catch (error) {
@@ -109,7 +112,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (resp.code === 200) {
 						// La imagen de perfil se actualizó con éxito en el servidor
 						// Actualiza el estado global con la nueva URL de la imagen
-						console.log('la respuesta es' + resp)
+						//console.log('la respuesta es' + resp)
 						/*setStore((prevStore) => ({
 						  ...prevStore,
 						  userInfo: {
@@ -181,7 +184,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const resp = await fetch(process.env.BACKEND_URL + "/api" + endpoint, params)
 					//obtenemos los datos de la petición
 					const data = await resp.json()
-					console.log("PRUEBA_fetchprotected" + JSON.stringify(data) + resp.status)
+					//console.log("PRUEBA_fetchprotected" + JSON.stringify(data) + resp.status)
 					return { code: resp.status, data }
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
@@ -192,7 +195,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					try {
 					const { apiFetchProtected } = getActions();
 					const resp = await apiFetchProtected("/editprofile", "POST",  newProfileData );
-						console.log(resp)
+						//console.log(resp)
 					if (resp.code === 200) {
 						// Actualiza el estado global con la nueva información del perfil
 						const store = getStore()
@@ -589,7 +592,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						localStorage.removeItem("accessToken")
 						setStore({accessToken:null})
 					}
-					console.log("Prueba_getRegisters", resp)
+					//console.log("Prueba_getRegisters", resp)
 					if (resp.code == 200) {
 						setStore({ registers: resp.data.registros })
 						return "Ok"
@@ -602,14 +605,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			newRegister: async (idEquipo, idEvento, fechaActual) => {
 				try{
 					const { apiFetchProtected } = getActions()
-					console.log("Datos a registrar:", idEquipo, idEvento, fechaActual)
+					//console.log("Datos a registrar:", idEquipo, idEvento, fechaActual)
 					const resp = await apiFetchProtected("/newregister", "POST", { idEquipo, idEvento, fechaActual })
 					if (resp == "No token" || resp.code == 401){
 						//si el token expiró borramos token del almacenamiento local y del store
 						localStorage.removeItem("accessToken")
 						setStore({accessToken:null})
 					}
-					console.log("Prueba newregister:", resp)
+					//console.log("Prueba newregister:", resp)
 					if (resp.code == 200){
 						const store = getStore();
 						store.registers.push(resp.data.registros);
@@ -631,9 +634,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			savePaymentInfo: async (orderID,payerID,paymentSourceID,paymentID, index) => {
 				try {
 					const { apiFetchProtected } = getActions()
-					console.log("PaypalData: ", paypalData, "indice", index )
+					//console.log("PaypalData: ", paypalData, "indice", index )
 					const resp = await apiFetchProtected("/pagos_paypal", "POST", { orderID,payerID,paymentSourceID,paymentID})
-					console.log("PRUEBA_PaypalData", JSON.stringify(resp))
+					//console.log("PRUEBA_PaypalData", JSON.stringify(resp))
 					if (resp.code == 201) {
 
 						const store = getStore();
@@ -671,6 +674,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 					//console.log("PRUEBA_loaduserTeams", resp)
 					if (resp.code==200){
 						setStore({pagos:resp.data.pagos})
+						return "Ok"
+					}
+					return resp
+				}catch(error){
+					console.log("Error al solicitar los datos", error)
+				}
+      		},
+			getAllUsers: async () => {
+				try {
+					const { apiFetchProtected } = getActions()
+					const resp = await apiFetchProtected("/loadallusers")
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
+					if (resp.code==200){
+						setStore({ allUsuarios: resp.data.users })
+						return "Ok"
+					}
+					if (resp.code == 402) {
+						return "No hay usuarios";
+					}
+					return resp
+				}catch(error){
+					console.log("Error al solicitar los datos", error)
+				}
+			},
+			getAllPagos: async () => {
+				try {
+					const { apiFetchProtected } = getActions()
+					const resp = await apiFetchProtected("/loadallpagos", "POST")
+					if (resp == "No token" || resp.code == 401){
+						//si el token expiró borramos token del almacenamiento local y del store
+						localStorage.removeItem("accessToken")
+						setStore({accessToken:null})
+					}
+					//console.log("PRUEBA_loaduserTeams", resp)
+					if (resp.code==200){
+						setStore({allPagos:resp.data.pagos})
 						return "Ok"
 					}
 					return resp

@@ -36,6 +36,8 @@ const Perfil = ()=>{
     if (store.accessToken) {
       actions.getUserInfo().then(data => {
         setUserData(data);
+        if (store.userInfo.email == "admin@techsports.com")
+          navigate("/perfilAdmin");
         // Verificar si el usuario tiene una imagen de perfil y establecerla
         //if (data && data.profileImage) {
          // setProfileImage(data.profileImage);
