@@ -293,7 +293,7 @@ const Perfil = ()=>{
               <div className="card d-flex mb-4">
                 {/*<div className="card-body d-flex justify-content-between align-items-stretch">*/}
                 <div className="card-body d-flex justify-content-between">
-                    <div className="col">
+                    <div className="col-2">
                       <div className="card text-center" style={{maxWidth: "17.5rem"}}>
                         <Link to={"/eventolista/"+profileData.userId}>
                           <div className="contImage">
@@ -312,7 +312,7 @@ const Perfil = ()=>{
                         </div>
                       </div>
                     </div>
-                    <div className="col mx-2">
+                    <div className="col-2">
                       <div className="card text-center" style={{maxWidth: "17.5rem"}}>
                         <Link to="/teamlist">
                           <div className="contImage">
@@ -327,7 +327,7 @@ const Perfil = ()=>{
                         </div>
                       </div>
                     </div>
-                    <div className="col">
+                    <div className="col-2">
                       <div className="card text-center" style={{maxWidth: "17.5rem"}}>
                         <Link to="/nextEvent">
                           <div className="contImage">
@@ -342,7 +342,7 @@ const Perfil = ()=>{
                         </div>
                       </div>
                     </div>
-                    <div className="col mx-2">
+                    <div className="col-2">
                       <div className="card text-center" style={{maxWidth: "17.5rem"}}>
                         <Link to="/registroEquipos">
                             <div className="contImage">
@@ -357,7 +357,7 @@ const Perfil = ()=>{
                           </div>
                       </div>
                     </div>
-                    <div className="col">
+                    <div className="col-2">
                       <div className="card text-center" style={{maxWidth: "17.5rem"}}>
                         <Link to="/consultapagos">
                           <div className="contImage">
