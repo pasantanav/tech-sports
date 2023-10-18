@@ -64,7 +64,7 @@ const Registrarse = (props) => {
   const disminuir = () => {
     let temContador = contador - 1;
     const subTotal = parseInt(datosEvento.costo);
-    if (temContador < 0) {
+    if (temContador < 1) {
       return;
     }
     //El boton que renderiza la cantidad de per
@@ -210,7 +210,7 @@ const Registrarse = (props) => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+              <h5 className="modal-title" id="exampleModalLabel">Registro y pago de equipo</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
@@ -277,7 +277,6 @@ const Registrarse = (props) => {
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary">Save changes</button>
             </div>
           </div>
         </div>

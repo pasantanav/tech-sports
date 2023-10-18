@@ -56,10 +56,10 @@ const ConsultaPagos = () => {
       <div className="container">
         <div className="card mb-2">
           <div className="card-body d-flex justify-content-between align-items-center">
-            <div className="col-3 text-center">
+            <div className="col-4 text-center">
               <img className="rounded" src={imgPagos} style={{ maxWidth: '200px', maxHeight: '200px', border: "solid #0D6EFD" }}></img>
             </div>
-            <div className="col-6">
+            <div className="col-4">
               <form>
                 <div className="form-row">
                   <div className="text-center">
@@ -76,7 +76,7 @@ const ConsultaPagos = () => {
                 </div>
               </form>
             </div>
-            <div className="col-3 text-center">
+            <div className="col-4 text-center">
               <div>
                 <button className="btn btn-primary mx-3" onClick={()=>navigate("/cuenta")} type="button">Volver a Perfil</button>
               </div>
