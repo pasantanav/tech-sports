@@ -95,7 +95,10 @@ const ModalTeams = (props) => {
                 const {newTeam} = actions;
                 resp = await newTeam(teamFormData);
                 oper = "creado";
-              } else {
+              } if(!teamFormData.logotipo){
+                alert("debes subir el logotipo del equipo")
+              }
+              else {
                 //Si estamos editando el equipo
                 const {editTeam} = actions;
                 resp = await editTeam(teamFormData, props.indice);
