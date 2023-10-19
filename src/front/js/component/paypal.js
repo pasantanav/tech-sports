@@ -12,6 +12,7 @@ export default function PayPal(props) {
   const { store, actions } = useContext(Context);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
+  const modalPay = document.getElementById('exampleModal');
 
   // Esta función se llamará cuando el usuario haga clic en el botón de PayPal
   const createOrder = (data, action, datos) => {
@@ -80,6 +81,12 @@ export default function PayPal(props) {
       props.index);
 
     alert("Pago Exitoso");
+    const modal = bootstrap.Modal.getInstance(modalPay);
+    modal.hide();
+    modalPay.addEventListener('hidden.bs.modal', () => {
+      modal.dispose();
+    }, {once:true});
+
     setIsSuccess(true);
   }
 
@@ -97,7 +104,7 @@ export default function PayPal(props) {
   return (
     <>
     {isSuccess&&<div className="alert alert-success alert-dismissible fade show" role="alert">
-      ¡Transacción Completada!
+      
 
   <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>}
