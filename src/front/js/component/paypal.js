@@ -8,10 +8,10 @@ export default function PayPal(props) {
   useEffect(() => {
     console.log("monto", props.costo)
   }, [ ]);
+
   const { store, actions } = useContext(Context);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
-
 
   // Esta función se llamará cuando el usuario haga clic en el botón de PayPal
   const createOrder = (data, action, datos) => {
@@ -65,30 +65,32 @@ export default function PayPal(props) {
 
   const onApprove = async (data) => {
     console.log("DATAL:", data)
+    const monto = store.currentPaypal.total;
+    const cantidad = store.currentPaypal.quantity;
+    const idEvento = store.currentPaypal.idEvento;
+    console.log("DATOS:", monto, cantidad, idEvento);
     const { savePaymentInfo } = actions;
-      const resp = await savePaymentInfo(
-      //  "orderId": data.orderID,
-      //  "payerId": data.payerID,
-      //  "pid": data.paymentSourceID,
-      //  "paymentId": data.paymentID
+    const resp = await savePaymentInfo(
       data.orderID,
       data.payerID,
-      data.paymentSourceID,
-      data.paymentID
-      ,props.index);
+      data.paymentID,
+      monto,
+      cantidad,
+      idEvento,
+      props.index);
 
-  console.log("exitoso")
+    alert("Pago Exitoso");
     setIsSuccess(true);
   }
 
   const onCancel = (data, action) => {
-    alert("onCancelData" + JSON.stringify(data))
-    alert("onCancelActions" + JSON.stringify(action))
+    alert("Pago Cancelado" + JSON.stringify(data))
+    //alert("onCancelActions" + JSON.stringify(action))
   }
 
   const onError = (data, action) => {
-    console.log("onErrorData" + JSON.stringify(data))
-    console.log("onErrorActions" + JSON.stringify(action))
+    console.log("Error en datos" + JSON.stringify(data))
+    //console.log("onErrorActions" + JSON.stringify(action))
     setIsError(true)
   }
 
@@ -100,7 +102,7 @@ export default function PayPal(props) {
   <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>}
 {isError&&<div className="alert alert-danger alert-dismissible fade show" role="alert">
-      There was an error processing your payment
+      Hubo un error al procesar el pago
 
   <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>}

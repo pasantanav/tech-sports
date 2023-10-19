@@ -3,7 +3,6 @@
         "target_class": "User",
         "data": [
             {
-                "id" : 1,
                 "email" : "admin@techsports.com",
                 "password" : "$2b$10$0m/o/IqlpGMxgOPKNOlktuEQNq/WgfBIXNxKdC1BJHmMBzK/YhsYW",
                 "is_active": true,
@@ -13,7 +12,6 @@
                 "url_perfil" : "https://cdn.filestackcontent.com/SFv9u451R8C3VD8onp3b"
             },
             {
-                "id" : 2,
                 "email" : "pedroasantanav@hotmail.com",
                 "password" : "$2b$10$ouJknIUdxz1g.zVk/L8t1eFE2b7ahL3Sr7g40s2SnIg54o1ZuSnIu",
                 "is_active": true,
@@ -23,7 +21,6 @@
                 "url_perfil" : "https://cdn.filestackcontent.com/SFv9u451R8C3VD8onp3b"
             },
             {
-                "id" : 3,
                 "email" : "giuseppetaylor@gmail.com",
                 "password" : "$2b$10$ouJknIUdxz1g.zVk/L8t1eFE2b7ahL3Sr7g40s2SnIg54o1ZuSnIu",
                 "is_active": true,
@@ -33,7 +30,6 @@
                 "url_perfil" : "https://cdn.filestackcontent.com/SFv9u451R8C3VD8onp3b"
             },
             {
-                "id" : 4,
                 "email" : "jacoboospina@gmail.com",
                 "password" : "$2b$10$ouJknIUdxz1g.zVk/L8t1eFE2b7ahL3Sr7g40s2SnIg54o1ZuSnIu",
                 "is_active": true,
@@ -48,7 +44,6 @@
         "target_class": "Events",
         "data": [
             {
-                "id" : 1,
                 "nombre_evento" : "JAM ON IT",
                 "descr_corta" : "Torneo de basketball estatal con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios mvp de la categoría.",
                 "fecha_ini" : "2023-10-06",
@@ -62,11 +57,10 @@
                 "email_contacto" : "pedroasantanav@hotmail.com",
                 "tel_contacto" : "526681737348",
                 "nombre_contacto" : "Pedro Santana",
-                "costo" : "700.00",
+                "costo" : 700.00,
                 "id_user": 2
             },
             {
-                "id" : 2,
                 "nombre_evento" : "THE BIG GAME",
                 "descr_corta" : "Torneo de basketball nacional en Costa Rica con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios a mvp.",
                 "fecha_ini" : "2023-11-09",
@@ -80,11 +74,10 @@
                 "email_contacto" : "giuseppetaylor@gmail.com",
                 "tel_contacto" : "506105875421",
                 "nombre_contacto" : "Giuseppe Taylor",
-                "costo" : "600.00",
+                "costo" : 600.00,
                 "id_user": 3
             },
             {
-                "id" : 3,
                 "nombre_evento" : "MIDNIGHT BASKETBALL EVENT",
                 "descr_corta" : "Torneo de basketball nacional en Colombia con categorías varoniles y femeniles. Se entregarán medallas a los tres primeros lugares y premios a mvp.",
                 "fecha_ini" : "2023-09-21",
@@ -98,11 +91,10 @@
                 "email_contacto" : "jacoboospina@gmail.com",
                 "tel_contacto" : "576041738547",
                 "nombre_contacto" : "Jacobo Ospina",
-                "costo" : "750.00",
+                "costo" : 750.00,
                 "id_user": 4
             },
             {
-                "id" : 4,
                 "nombre_evento" : "CHRISTMAS IN LAS VEGAS",
                 "descr_corta" : "Torneo internacional en Las Vegas con categorías femeniles y varoniles. Se entregarán trofeos a los tres primeros lugares y premios a mvp.",
                 "fecha_ini" : "2023-12-14",
@@ -116,11 +108,10 @@
                 "email_contacto" : "jorgesantana@gmail.com",
                 "tel_contacto" : "017021659874",
                 "nombre_contacto" : "Jorge Santana",
-                "costo" : "500.00",
+                "costo" : 500.00,
                 "id_user": 2
             },
             {
-                "id" : 5,
                 "nombre_evento" : "RECIBIENDO AL AÑO NUEVO 2024",
                 "descr_corta" : "Torneo de basketball internacional con categorías juveniles. Se entregarán medallas a los tres primeros lugares y premios a mvp.",
                 "fecha_ini" : "2024-01-11",
@@ -134,11 +125,10 @@
                 "email_contacto" : "javiersolis@gmail.com",
                 "tel_contacto" : "580212587425",
                 "nombre_contacto" : "Javier Solis",
-                "costo" : "800.00",
+                "costo" : 800.00,
                 "id_user": 3
             },
             {
-                "id" : 6,
                 "nombre_evento" : "BASKETBALL SAN VALENTIN",
                 "descr_corta" : "Torneo de basketball internacional con categorías juveniles. Se entregarán medallas a los tres primeros lugares y premios a mvp.",
                 "fecha_ini" : "2024-02-08",
@@ -152,7 +142,7 @@
                 "email_contacto" : "alejandrocamacho@gmail.com",
                 "tel_contacto" : "540116548751",
                 "nombre_contacto" : "Alejandro Camacho",
-                "costo" : "850.00",
+                "costo" : 850.00,
                 "id_user": 4
             }
         ]
@@ -161,7 +151,6 @@
         "target_class": "Teams",
         "data": [
             {
-                "id" : 1,
                 "nombre_equipo": "Los Vencedores",
                 "jugadores" : "https://cdn.filestackcontent.com/UnbJOVaPSMm2BHQvSLZn",
                 "fecha_registro" : "2023-09-08",
@@ -169,7 +158,6 @@
                 "id_user" : 2
             },
             {
-                "id" : 2,
                 "nombre_equipo": "Club San Vicente",
                 "jugadores" : "https://cdn.filestackcontent.com/RidqzhrRH6ndtuzVyiSJ",
                 "fecha_registro" : "2023-09-09",
@@ -177,7 +165,6 @@
                 "id_user" : 2
             },
             {
-                "id" : 3,
                 "nombre_equipo": "Colegio Julio Alemán",
                 "jugadores" : "https://cdn.filestackcontent.com/ASPGvvkDTMyLgEE4nVet",
                 "fecha_registro" : "2023-09-10",
@@ -185,7 +172,6 @@
                 "id_user" : 2
             },
             {
-                "id" : 4,
                 "nombre_equipo": "Atletas Nacionales",
                 "jugadores" : "https://cdn.filestackcontent.com/zhjFPOpVQuuEQFYe4dyJ",
                 "fecha_registro" : "2023-09-08",
@@ -193,7 +179,6 @@
                 "id_user" : 3
             },
             {
-                "id" : 5,
                 "nombre_equipo": "Club Roy Rojo",
                 "jugadores" : "https://cdn.filestackcontent.com/ro98VivyQHufQhYQof7Z",
                 "fecha_registro" : "2023-09-09",
@@ -201,7 +186,6 @@
                 "id_user" : 3
             },
             {
-                "id" : 6,
                 "nombre_equipo": "Colegio Senda Nueva",
                 "jugadores" : "https://cdn.filestackcontent.com/qMCfLfdWQuewj8m2Lcv4",
                 "fecha_registro" : "2023-09-10",
@@ -209,7 +193,6 @@
                 "id_user" : 3
             },
             {
-                "id" : 7,
                 "nombre_equipo": "Los Triunfadores",
                 "jugadores" : "https://cdn.filestackcontent.com/U8QFgL69TlGoMqyaXi5V",
                 "fecha_registro" : "2023-09-08",
@@ -217,7 +200,6 @@
                 "id_user" : 4
             },
             {
-                "id" : 8,
                 "nombre_equipo": "Club Ricardo Flores",
                 "jugadores" : "https://cdn.filestackcontent.com/lzOcW7tZTtyNkG1mHA4D",
                 "fecha_registro" : "2023-09-09",
@@ -225,7 +207,6 @@
                 "id_user" : 4
             },
             {
-                "id" : 9,
                 "nombre_equipo": "Colegio San Gabriel",
                 "jugadores" : "https://cdn.filestackcontent.com/9K6TplPT0a4BR7YHCMHP",
                 "fecha_registro" : "2023-09-10",
@@ -238,34 +219,28 @@
         "target_class": "Pagos",
         "data": [
             {
-                "id" : 1,
                 "cant_equipos" : 3,
                 "monto" : 1400.00,
                 "orderId" : "O-123456",
                 "payerId" : "pedroasantanav@hotmail.com",
-                "paymentSourceId" : "123456",
                 "paymentId" : "123456",
                 "id_user" : 2,
                 "event_id" : 1
             },
             {
-                "id" : 2,
                 "cant_equipos" : 2,
                 "monto" : 1200.00,
                 "orderId" : "O-123457",
                 "payerId" : "giuseppetaylor@gmail.com",
-                "paymentSourceId" : "123457",
                 "paymentId" : "123457",
                 "id_user" : 3,
                 "event_id" : 2
             },
             {
-                "id" : 3,
                 "cant_equipos" : 1,
                 "monto" : 750.00,
                 "orderId" : "O-123458",
                 "payerId" : "jacoboospina@gmail.com",
-                "paymentSourceId" : "123457",
                 "paymentId" : "123457",
                 "id_user" : 4,
                 "event_id" : 3
@@ -276,21 +251,18 @@
         "target_class" : "RegistrosPagos",
         "data": [
             {
-                "id" : 1,
                 "cant_registrados" : 0,
                 "cant_pagados" : 3,
                 "id_user" : 2,
                 "event_id" : 1
             },
             {
-                "id" : 2,
                 "cant_registrados" : 0,
                 "cant_pagados" : 2,
                 "id_user" : 3,
                 "event_id" : 2
             },
             {
-                "id" : 3,
                 "cant_registrados" : 0,
                 "cant_pagados" : 1,
                 "id_user" : 4,

@@ -150,7 +150,7 @@ const Perfil = ()=>{
       }).catch(error => {
         console.error('Filestack error:', error);
       });
-    };
+  };
   
    
   return (

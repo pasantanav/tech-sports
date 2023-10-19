@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 1c72db89c75c
+Revision ID: 70956675f375
 Revises: 
-Create Date: 2023-10-14 16:26:44.035617
+Create Date: 2023-10-19 00:50:03.184591
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1c72db89c75c'
+revision = '70956675f375'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -38,7 +38,7 @@ def upgrade():
     sa.UniqueConstraint('email')
     )
     op.create_table('events',
-    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('nombre_evento', sa.String(length=50), nullable=False),
     sa.Column('descr_corta', sa.String(length=150), nullable=False),
     sa.Column('fecha_ini', sa.String(length=50), nullable=False),
@@ -84,7 +84,6 @@ def upgrade():
     sa.Column('monto', sa.Float(), nullable=False),
     sa.Column('orderId', sa.String(length=80), nullable=False),
     sa.Column('payerId', sa.String(length=80), nullable=False),
-    sa.Column('paymentSourceId', sa.String(length=80), nullable=False),
     sa.Column('paymentId', sa.String(length=80), nullable=False),
     sa.Column('id_user', sa.Integer(), nullable=False),
     sa.Column('event_id', sa.Integer(), nullable=False),
