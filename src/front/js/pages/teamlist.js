@@ -222,15 +222,15 @@ const TeamLista = () => {
             <div className="container">
                 <div className="card mb-4">
                     <div className="card-body d-flex justify-content-between align-items-center">
-                        <div className="col-2 text-center">
+                        <div className="col-4 text-center">
                             <img className="rounded" src={teamlist} style={{ maxWidth: '100px', maxHeight: '100px', border: "solid #0D6EFD" }}></img>
                         </div>
-                        <div className="col-6 text-center">
+                        <div className="col-4 text-center">
                             <h2>Lista de Equipos</h2>
                             </div>
                         <div className="col-4">
                             <Link to="/cuenta">
-                                <button className="btn btn-primary mx-3" type="button">Volver a Perfil</button>
+                                <button className="btn btn-primary mx-3 m-2" type="button">Volver a Perfil</button>
                             </Link>
                             <button className="btn btn-primary" onClick={() => createEquipo()} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button">Crear Equipo</button>
                         </div>

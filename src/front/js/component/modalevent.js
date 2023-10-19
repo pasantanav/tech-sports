@@ -56,25 +56,31 @@ const ModalEvent = (props) => {
     const handleFileUpload = () => {
       const options = {
         onUploadDone: (response) => {
-          const pdfUrl = response.filesUploaded[0].url;
-          setPdfUrl(pdfUrl);
-          actions.savePdfUrl(pdfUrl);
-         let eventoData = {...eventFormData}
-
-
-         eventoData.reglas = pdfUrl
-         console.log('URL del PDF subido:', pdfUrl);
-          console.log(eventoData.reglas)
-         setEventFormData(eventoData)
-          
-          
+          const uploadedFiles = response.filesUploaded;
+          if (uploadedFiles[0].url.length > 0) {
+            const pdfFile = uploadedFiles[0];
+            if (pdfFile.mimetype === 'application/pdf') {
+              const pdfUrl = pdfFile.url;
+              setPdfUrl(pdfUrl);
+              actions.savePdfUrl(pdfUrl);
+              let eventoData = { ...eventFormData };
+    
+              eventoData.reglas = pdfUrl;
+              console.log('URL del PDF subido:', pdfUrl);
+              console.log(eventoData.reglas);
+              setEventFormData(eventoData);
+            } else {
+              alert('El archivo subido no es un PDF. Por favor, sube un archivo PDF.');
+            }
+          } else {
+            alert('Por favor, sube un archivo PDF antes de continuar.');
+          }
         },
-        accept: ['application/pdf'], // Acepta solo archivos PDF
+        accept: ['application/pdf'],
       };
+    
       filestackClient.picker(options).open();
     };
-    
-    
       
       function cambiarFormatoFecha(fechaAnt){
         let day = fechaAnt.getDate().toString();
@@ -173,60 +179,65 @@ const ModalEvent = (props) => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const data = new FormData(e.target)
-        let eventoSinEsp = { ...eventFormData }
-        eventoSinEsp.nombre_evento=eventoSinEsp.nombre_evento.trim()
-        eventoSinEsp.descr_corta = eventoSinEsp.descr_corta.trim()
-        eventoSinEsp.ubicacion = eventoSinEsp.ubicacion.trim()
-        eventoSinEsp.logotipo = eventoSinEsp.logotipo.trim()
-        eventoSinEsp.descr_larga = eventoSinEsp.descr_larga.trim()
-        eventoSinEsp.email_contacto = eventoSinEsp.email_contacto.trim()
-        eventoSinEsp.reglas = eventoSinEsp.reglas.trim()
-        eventoSinEsp.tel_contacto = eventoSinEsp.tel_contacto.trim()
-        eventoSinEsp.nombre_contacto = eventoSinEsp.nombre_contacto.trim()
-        if (pdfUrl) {
-         
-          eventFormData.reglas = pdfUrl;
+      e.preventDefault();
+      const data = new FormData(e.target);
+      let eventoSinEsp = { ...eventFormData };
+      eventoSinEsp.nombre_evento = eventoSinEsp.nombre_evento.trim();
+      eventoSinEsp.descr_corta = eventoSinEsp.descr_corta.trim();
+      eventoSinEsp.ubicacion = eventoSinEsp.ubicacion.trim();
+      eventoSinEsp.logotipo = eventoSinEsp.logotipo.trim();
+      eventoSinEsp.descr_larga = eventoSinEsp.descr_larga.trim();
+      eventoSinEsp.email_contacto = eventoSinEsp.email_contacto.trim();
+      eventoSinEsp.reglas = eventoSinEsp.reglas.trim();
+      eventoSinEsp.tel_contacto = eventoSinEsp.tel_contacto.trim();
+      eventoSinEsp.nombre_contacto = eventoSinEsp.nombre_contacto.trim();
+    
+      if (!pdfUrl) {
+        alert("Por favor, sube un archivo PDF antes de continuar.");
+      } else if (
+        eventoSinEsp.nombre_evento === "" ||
+        eventoSinEsp.descr_corta === "" ||
+        eventoSinEsp.ubicacion === "" ||
+        eventoSinEsp.logotipo === "" ||
+        eventoSinEsp.descr_larga === "" ||
+        eventoSinEsp.email_contacto === "" ||
+        eventoSinEsp.tel_contacto === "" ||
+        eventoSinEsp.nombre_contacto === ""
+      ) {
+        alert("No debe haber información vacía o espacios en blanco.");
+      } else if (eventoSinEsp.nombre_evento.length < 3) {
+        alert("El nombre debe tener al menos 3 caracteres.");
+      } else {
+        let resp = "";
+        let oper = "";
+        if (props.operacion === "Evento Nuevo") {
+          const { newEvent } = actions;
+          resp = await newEvent(eventoSinEsp);
+          if (resp === "No token") {
+            navigate("/cuenta");
+          }
+          oper = "creado";
+        } else {
+          // Si estamos editando el evento
+          const { editEvent } = actions;
+          resp = await editEvent(eventoSinEsp, props.indice);
+          if (resp === "No token") {
+            navigate("/cuenta");
+          }
+          oper = "actualizado";
+        }
+        if (resp === "Ok") {
+          // MODAL
+          alert("Evento " + oper + " exitosamente");
+          limpiarDataEvento();
+          formulario.reset();
+        } else {
+          alert("Error al registrar Evento");
+        }
+        formulario.reset();
       }
-       
-          if (nombre_evento=="" || descr_corta=="" || ubicacion=="" || logotipo==""
-          || descr_larga=="" || email_contacto=="" || tel_contacto=="" || nombre_contacto==""){
-            alert("No debe haber información vacía o espacios en blanco")
-          } else if (nombre_evento.length <3) {
-            alert("El nombre debe tener al menos 2 caracteres")
-          } else {
-              let resp ="";
-              let oper ="";
-              if (props.operacion=="Evento Nuevo"){
-                const {newEvent} = actions;
-                //resp = await newEvent(eventFormData);
-                resp = await newEvent(eventoSinEsp);
-                if (resp=="No token"){
-                  navigate("/cuenta");
-                }
-                oper = "creado";
-              } else {
-                //Si estamos editando el evento
-                const {editEvent} = actions;
-                //resp = await editEvent(eventFormData, props.indice);
-                resp = await editEvent(eventoSinEsp, props.indice);
-                if (resp=="No token"){
-                  navigate("/cuenta");
-                }
-                oper = "actualizado";
-              }
-              if (resp=="Ok"){
-                //MODAL
-                alert("Evento " + oper + " exitosamente");
-                limpiarDataEvento();
-                formulario.reset();
-              } else {
-                alert("Error al registrar Evento");
-              }
-              formulario.reset();
-            }
-      };
+    };
+    
 
     return(
         <div className="row">
@@ -373,7 +384,7 @@ const ModalEvent = (props) => {
                         <div className="form-outline mb-4">
                          
                         <button type="button" className="btn btn-secondary" onClick={handleFileUpload}>
-                        Subir PDF del reglamento del equipo
+                        Subir reglamento del Evento
                         </button>
                         </div>
                         
