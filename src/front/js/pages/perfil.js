@@ -210,6 +210,7 @@ const Perfil = () => {
                 <div className="col-sm-9">
                   <p className="text-muted mb-0">{profileData.email}</p>
                 </div>
+
               </div>
               <hr />
               <div className="row">
@@ -227,6 +228,67 @@ const Perfil = () => {
                 </div>
                 <div className="col-sm-9">
                   <p className="text-muted mb-0">{profileData.address}</p>
+                <hr />
+                <div className='text-center'>
+                <button type="button" className="btn btn-primary" onClick={openEditModal}>
+                Editar Datos
+              </button>
+        
+
+                  <Modal show={isEditModalOpen} onHide={closeEditModal}>
+                    <Modal.Header closeButton>
+                      <div className='Modal-header-container'>
+                      <Modal.Title>Editar Datos</Modal.Title>
+                      </div>
+                      
+                    </Modal.Header>
+                    <Modal.Body>
+                      <Form onSubmit={handleEditProfile}>
+                        <Form.Group controlId="name">
+                          <Form.Label>Nombre</Form.Label>
+                          <Form.Control
+                            type="text"
+                            defaultValue={profileData.name}
+                            onChange={(e) => setName(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="email">
+                          <Form.Label>Email</Form.Label>
+                          <Form.Control
+                            type="email"
+                            defaultValue={profileData.email}
+                            disabled
+                          />
+                          <p className="text-muted">Para modificar tu correo electrónico, por favor, contáctanos.</p>
+                        </Form.Group>
+                        <Form.Group controlId="phone">
+                          <Form.Label>Télefono</Form.Label>
+                          <Form.Control
+                            type="text"
+                            defaultValue={profileData.phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="address">
+                          <Form.Label>Dirección</Form.Label>
+                          <Form.Control
+                            type="text"
+                            defaultValue={profileData.address}
+                            onChange={(e) => setAddress(e.target.value)}
+                          />
+                        </Form.Group>
+                        <Form.Group controlId="password">
+                          
+                        </Form.Group>
+                        <div className='Modal-button-container'>
+                        <Button variant="primary" type="submit " id='sendButton'>
+                          Guardar Cambios
+                        </Button>
+                        </div>
+                        
+                      </Form>
+                    </Modal.Body>
+                  </Modal>
                 </div>
               </div>
               <hr />

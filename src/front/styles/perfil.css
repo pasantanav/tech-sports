@@ -55,3 +55,22 @@ border: 2px solid ;
 margin-left: 28%;
 border: none;
 }
+
+#sendButton{
+  margin-top: 10px;
+}
+
+.Modal-button-container{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Modal-header-container{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 33%;
+}
