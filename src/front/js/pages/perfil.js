@@ -240,7 +240,10 @@ const Perfil = ()=>{
 
                   <Modal show={isEditModalOpen} onHide={closeEditModal}>
                     <Modal.Header closeButton>
+                      <div className='Modal-header-container'>
                       <Modal.Title>Editar Datos</Modal.Title>
+                      </div>
+                      
                     </Modal.Header>
                     <Modal.Body>
                       <Form onSubmit={handleEditProfile}>
@@ -280,9 +283,12 @@ const Perfil = ()=>{
                         <Form.Group controlId="password">
                           
                         </Form.Group>
-                        <Button variant="primary" type="submit">
+                        <div className='Modal-button-container'>
+                        <Button variant="primary" type="submit " id='sendButton'>
                           Guardar Cambios
                         </Button>
+                        </div>
+                        
                       </Form>
                     </Modal.Body>
                   </Modal>

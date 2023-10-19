@@ -56,25 +56,31 @@ const ModalEvent = (props) => {
     const handleFileUpload = () => {
       const options = {
         onUploadDone: (response) => {
-          const pdfUrl = response.filesUploaded[0].url;
-          setPdfUrl(pdfUrl);
-          actions.savePdfUrl(pdfUrl);
-         let eventoData = {...eventFormData}
-
-
-         eventoData.reglas = pdfUrl
-         console.log('URL del PDF subido:', pdfUrl);
-          console.log(eventoData.reglas)
-         setEventFormData(eventoData)
-          
-          
+          const uploadedFiles = response.filesUploaded;
+          if (uploadedFiles && uploadedFiles.length > 0) {
+            const pdfFile = uploadedFiles[0];
+            if (pdfFile.mimetype === 'application/pdf') {
+              const pdfUrl = pdfFile.url;
+              setPdfUrl(pdfUrl);
+              actions.savePdfUrl(pdfUrl);
+              let eventoData = { ...eventFormData };
+    
+              eventoData.reglas = pdfUrl;
+              console.log('URL del PDF subido:', pdfUrl);
+              console.log(eventoData.reglas);
+              setEventFormData(eventoData);
+            } else {
+              alert('El archivo subido no es un PDF. Por favor, sube un archivo PDF.');
+            }
+          } else {
+            alert('Por favor, sube un archivo PDF antes de continuar.');
+          }
         },
-        accept: ['application/pdf'], // Acepta solo archivos PDF
+        accept: ['application/pdf'],
       };
+    
       filestackClient.picker(options).open();
     };
-    
-    
       
       function cambiarFormatoFecha(fechaAnt){
         let day = fechaAnt.getDate().toString();
@@ -373,7 +379,7 @@ const ModalEvent = (props) => {
                         <div className="form-outline mb-4">
                          
                         <button type="button" className="btn btn-secondary" onClick={handleFileUpload}>
-                        Subir PDF del reglamento del equipo
+                        Subir reglamento del Evento
                         </button>
                         </div>
                         
