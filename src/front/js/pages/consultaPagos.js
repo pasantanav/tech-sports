@@ -25,15 +25,26 @@ const ConsultaPagos = () => {
   }, [selectedEvento]);
 
   useEffect(() => {
-    actions.getPagos(selectedEvento).then(respPagos => {
-      if (respPagos == "Ok") {
+    actions.getPagos(selectedEvento).then(respPagos =>{
+      if (respPagos == "No token"){
+        navigate("/cuenta");
+      }
+      if (respPagos == "Ok"){
         setPagos([...store.pagos])
+        let eventosPagados = [{id: "-", nombre_evento: "Todos los eventos"}];
+        store.pagos.map((item)=>
+          eventosPagados.push({id: item.event_id, nombre_evento: item.nombre_evento})
+        );
+        console.log("Eventos pagados:", eventosPagados);
+        setEventos([...eventosPagados]);
         const suma = store.pagos.reduce((subtotal, valor) => subtotal + valor.monto, 0);
         setTotal(suma);
+      } else {
+        setEventos([{id: "-", nombre_evento: "No tienes eventos"}]);
       }
     });
-    actions.getUserEvent().then(respEvents => {
-      if (respEvents == "No token") {
+    /*actions.getUserEvent().then(respEvents =>{
+      if (respEvents == "No token"){
         //alert("Sesión expirada");
         navigate("/cuenta");
       }
@@ -42,7 +53,7 @@ const ConsultaPagos = () => {
       } else {
         setEventos([{ id: "-", nombre_evento: "No tienes eventos" }]);
       }
-    });
+    });*/
   }, []);
 
   const handleChangeEventos = e => {
@@ -129,7 +140,6 @@ const ConsultaPagos = () => {
         </div>
       </div>
     </div>
-
   );
 }
 

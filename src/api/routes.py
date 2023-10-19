@@ -545,19 +545,40 @@ def pagos_paypal():
     user_id= get_jwt_identity()
     orderId= request.json.get("orderID")
     payerId= request.json.get("payerID")
-    paymentSourceId= request.json.get("paymentSourceID")
     paymentId= request.json.get("paymentID")
+    monto = request.json.get("total")
+    cantidad = request.json.get("cantidad")
+    idEvento = request.json.get("idEvento")
     #buscar usuario en la bd, que me traiga el primer resultado
     #registro de pago de paypal
-    new_pago= Pagos_Paypal()
-    new_pago.user_id=user_id
-    new_pago.orderId=orderId
-    new_pago.payerId=payerId
-    new_pago.paymentSourceId=paymentSourceId
-    new_pago.paymentId=paymentId
+    new_pago= Pagos()
+    new_pago.id_user=user_id
+    new_pago.cant_equipos = cantidad
+    new_pago.monto = monto
+    new_pago.orderId= orderId
+    new_pago.payerId= payerId
+    new_pago.paymentId= paymentId
+    new_pago.event_id = idEvento
     #guardarlo en la bd
     db.session.add(new_pago)
     db.session.commit()
+    registropagos = RegistrosPagos.query.filter_by(id_user = user_id, event_id = idEvento).first()
+    # Como siempre que se hace un pago también se guarda un registropago
+    # entonces se comparan las cantidades
+    if registropagos is None:
+        new_regispago = RegistrosPagos()
+        new_regispago.cant_registrados = 0
+        new_regispago.cant_pagados = cantidad
+        new_regispago.id_user = user_id
+        new_regispago.event_id = idEvento
+        db.session.add(new_regispago)
+        db.session.commit()
+    else:
+        cant = registropagos.cant_pagados
+        cant = cant + 1
+        registropagos.cant_pagados = cant
+        db.session.commit()
+
     return jsonify({"message":"Pago registrado"}), 201
 
 @api.route('/loadpagos', methods=['POST'])
@@ -579,7 +600,6 @@ def load_pagos():
             "monto": item.monto,
             "orderId": item.orderId,
             "payerId": item.payerId,
-            "paymentSourceId": item.paymentSourceId,
             "paymentId": item.paymentId,
             "event_id": item.event_id,
             "nombre_evento": item.events.nombre_evento

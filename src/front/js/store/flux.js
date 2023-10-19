@@ -2,7 +2,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			accessToken: null,
-			userInfo: null,
+			userInfo: [],
 			userEvent: [],
 			userTeam: [],
 			recoveryToken: [],
@@ -272,7 +272,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({ accessToken: null })
 						alert("Sesión expirada")
 					}
-					return "Sesión expirada"
+					return resp
 				} catch (error) {
 					console.log("Error al solicitar los datos", error)
 				}
@@ -628,23 +628,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			}
 			,
-			setCurrentPaypal: (total, description, quantity) =>{
+			setCurrentPaypal: (total, description, quantity, idEvento) =>{
 				const store = getStore();
-				let datos = {};
+				store.currentPaypal = {
+					description: description,
+					quantity: quantity,
+					total : Number(total),
+					idEvento: idEvento
+				}
+				/*let datos = {};
 				datos.description=description??store.currentPaypal.description;
 				datos.quantity=quantity??store.currentPaypal.quantity;
 				datos.total=Number(total)??store.currentPaypal.total;
-
-				setStore({currentPaypal:datos})
+				datos.idEvento=idEvento;*/
+				//setStore({currentPaypal:datos})
+				setStore(store);
 			   },
-			savePaymentInfo: async (orderID,payerID,paymentSourceID,paymentID, index) => {
+			savePaymentInfo: async (orderID,payerID,paymentID, total, cantidad, idEvento, index) => {
 				try {
 					const { apiFetchProtected } = getActions()
 					//console.log("PaypalData: ", paypalData, "indice", index )
-					const resp = await apiFetchProtected("/pagos_paypal", "POST", { orderID,payerID,paymentSourceID,paymentID})
+					const resp = await apiFetchProtected("/pagos_paypal", "POST", { orderID,payerID, paymentID, total, cantidad, idEvento})
 					//console.log("PRUEBA_PaypalData", JSON.stringify(resp))
 					if (resp.code == 201) {
-
 						const store = getStore();
 						store.paymentInformation.splice(index, 1, resp.data);
 						setStore(store);

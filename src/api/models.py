@@ -40,7 +40,7 @@ class User(db.Model):
 
 class Events(db.Model):
     __tablename__ = "events"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nombre_evento= db.Column(db.String(50), unique=False, nullable=False)
     descr_corta = db.Column(db.String(150), unique=False, nullable=False)
     fecha_ini = db.Column(db.String(50), unique=False, nullable=False)
@@ -119,7 +119,6 @@ class Pagos(db.Model):
     monto = db.Column(db.Float, unique=False, nullable=False)
     orderId = db.Column(db.String(80), unique=False, nullable=False)
     payerId = db.Column(db.String(80), unique=False, nullable=False)
-    paymentSourceId = db.Column(db.String(80), unique=False, nullable=False)
     paymentId = db.Column(db.String(80), unique=False, nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship(User)
@@ -136,7 +135,6 @@ class Pagos(db.Model):
             "monto": self.monto,
             "orderId": self.orderId,
             "payerId": self.payerId,
-            "paymentSourceId": self.paymentSourceId,
             "paymentId": self.paymentId,
             "id_user": self.id_user,
             "nombre_evento": self.events.nombre,

@@ -86,8 +86,6 @@ const Perfil = () => {
       address
     };
 
-
-
     if (name === '') {
       alert('El campo de nombre no puede estar en blanco');
       return;
@@ -121,23 +119,18 @@ const Perfil = () => {
     return () => clearInterval(interval);
   }, [currentSlide]);
 
-
-
   const handleOpenFilePicker = () => {
     const options = {
       onUploadDone: (res) => {
         const newImageUrl = res.filesUploaded[0].url;
         //console.log('la URL de la imagen es:', newImageUrl)
         actions.updateProfileImage(newImageUrl).then(() => {
-
           setProfileImage(newImageUrl);
         }).catch(error => {
           console.error(error)
         })
-
       }
     };
-
 
     filestackClient.picker(options).open().then(response => {
       // Verifica si se seleccionó una imagen antes de continuar
@@ -151,7 +144,6 @@ const Perfil = () => {
       console.error('Filestack error:', error);
     });
   };
-
 
   return (
     <div className="contSuperior mx-3">
@@ -184,9 +176,8 @@ const Perfil = () => {
             <div className="card-body p-0">
               <div className="carousel-containerr">
 
-
                 <img className='carousel' src={images[currentSlide]} alt={`Imagen ${currentSlide + 1}`} />
-
+                
               </div>
             </div>
           </div>
@@ -234,7 +225,6 @@ const Perfil = () => {
                 Editar Datos
               </button>
         
-
                   <Modal show={isEditModalOpen} onHide={closeEditModal}>
                     <Modal.Header closeButton>
                       <div className='Modal-header-container'>
@@ -298,7 +288,6 @@ const Perfil = () => {
                 <button type="button" className="btn btn-primary" onClick={openEditModal}>
                   Editar Datos
                 </button>
-
 
                 <Modal show={isEditModalOpen} onHide={closeEditModal}>
                   <Modal.Header closeButton>

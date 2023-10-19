@@ -10,7 +10,7 @@ const Registrarse = (props) => {
   const [quantity, setQuantity]=useState(0);
   const [contador, setContador] = useState(1);
   const [total, setTotal] = useState(0);
-
+  const [description, setDescription] = useState("");
   const { store, actions } = useContext(Context);
   const navigate = useNavigate();
   const [abierto, setAbierto] = useState(null);
@@ -20,24 +20,24 @@ const Registrarse = (props) => {
 
   useEffect(() => {
     actions.getAllEvents();
-    console.log("Parámetro:", params.index);
+    //console.log("Parámetro:", params.index);
     if (params.index) {
       const dataEvent = { ...store.allEvents[params.index] };
       setTotal(dataEvent.costo);
       setDatosEvento(dataEvent);
       setAbierto(false);
       let fechahoy = new Date();
-      console.log("fecha de hoy:", fechahoy);
+      //console.log("fecha de hoy:", fechahoy);
       fechahoy = fechahoy.getTime();
       let fechalimite = dataEvent.fecha_lim + "T" + dataEvent.hora_lim + ":00";
       fechalimite = new Date(fechalimite);
-      console.log("fecha limite:", fechalimite);
+      //console.log("fecha limite:", fechalimite);
       fechalimite = fechalimite.getTime();
-      console.log("hoy es:", fechahoy, "la fecha limite es:", fechalimite);
+      //console.log("hoy es:", fechahoy, "la fecha limite es:", fechalimite);
       // si la fecha actual es mayor a la fecha límite
       setAbierto(false);
       if (fechahoy <= fechalimite) {
-        console.log("Si es menor");
+        //console.log("Si es menor");
         setAbierto(true);
       }
     }
@@ -51,31 +51,48 @@ const Registrarse = (props) => {
     }
   }, [abierto]);
 
+  useEffect(()=>{
+    setContador(1);
+  }, []);
+
   // Funciones del botón Sumar y Restar
   const aumentar = () => {
     let temContador = contador + 1;
-    const subTotal = parseInt(datosEvento.costo);
-    setTotal(temContador * subTotal);
-    actions.setCurrentPaypal(temContador * subTotal)
+    console.log("contador:", contador, "temcontador:", temContador);
+    let subTotal = parseInt(datosEvento.costo);
+    subTotal = temContador * subTotal;
+    //setTotal(temContador * subTotal);
+    setTotal(subTotal);
+    console.log("subtotal:", subTotal, "1EL TOTAL ES:", total);
+    //actions.setCurrentPaypal(temContador * subTotal)
     setContador(temContador);
-    console.log(contador);
+    actions.setCurrentPaypal(subTotal,description,temContador, datosEvento.id)
+    //console.log(contador);
   };
 
   const disminuir = () => {
     let temContador = contador - 1;
-    const subTotal = parseInt(datosEvento.costo);
+    console.log("contador:", contador, "temcontador:", temContador);
+    let subTotal = parseInt(datosEvento.costo);
+    subTotal = temContador * subTotal;
+    console.log("subtotal:", subTotal, "2EL TOTAL ES:", total);
     if (temContador < 1) {
       return;
     }
     //El boton que renderiza la cantidad de per
-    setTotal(temContador * subTotal);
+    //setTotal(temContador * subTotal);
+    setTotal(subTotal);
     setContador(temContador);
+    actions.setCurrentPaypal(subTotal,description,temContador, datosEvento.id)
   };
 
   const handleClick = (e) => {
     e.preventDefault();
-    let description ="Pago del evento " + datosEvento.nombre_evento
-    actions.setCurrentPaypal(total,description,contador)
+    let descripcion ="Pago del evento " + datosEvento.nombre_evento;
+    console.log("descripcion:", descripcion)
+    setDescription(descripcion);
+    console.log("EL TOTAL ES:", total);
+    actions.setCurrentPaypal(total,descripcion,contador, datosEvento.id)
     if (store.accessToken == null) {
       alert("Para registrar equipos debes iniciar sesión");
       navigate("/cuenta");
@@ -210,15 +227,15 @@ const Registrarse = (props) => {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">Registro y pago de equipo</h5>
+              <h5 className="modal-title" id="exampleModalLabel">TechSports</h5>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <div className="modal-body">
                 <div className="container">
                   <div className="row">
-                    <div className="col-md-12">
-                      <h3>Cantidad de equipos a registrar</h3>
+                    <div className="col-md-12 text-center">
+                      <h3>Registro de Equipos</h3>
                     </div>
                   </div>
                   <div className="row">
@@ -245,7 +262,7 @@ const Registrarse = (props) => {
                     </div>
                     <div className="col-md-3">
                       <button className="button" id="disminuir" onClick={disminuir}>-</button>
-                      <span><button id="cantidad" value="0">{contador}</button></span>
+                      <span><button id="cantidad" value="1" min="1">{contador}</button></span>
                       <button className="button" id="aumentar" onClick={aumentar}>+</button>
                     </div>
                     <div className="col-md-3">
@@ -271,8 +288,7 @@ const Registrarse = (props) => {
                     </div>
                   </div>
                 </div>
-              </div>
-              
+              </div> 
               <PayPal index={params.index} costo={total} />
             </div>
             <div className="modal-footer">
@@ -285,6 +301,3 @@ const Registrarse = (props) => {
   );
 };
 export default Registrarse;
-
-
-  

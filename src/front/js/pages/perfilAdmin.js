@@ -35,6 +35,7 @@ const PerfilAdmin = () => {
           }
         });
         setTitulos([...titulosUsu]);
+        setTotal(0);
         break;
       case "2":
         actions.getAllEvents().then(respEvents =>{
@@ -51,8 +52,10 @@ const PerfilAdmin = () => {
           }
         });
         setTitulos([...titulosEve]);
+        setTotal(0);
         break;
       case "3":
+        setTotal(0);
         actions.getAllPagos().then(respPagos => {
           if(respPagos == "Ok"){
             let subtotal = 0;
