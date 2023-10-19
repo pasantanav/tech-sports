@@ -169,15 +169,16 @@ const Perfil = () => {
                   Cerrar Sesión
                 </button>
               </div>
-
             </div>
           </div>
-          <div className="card mb-4 mb-lg-0" id='carousel-container'>
-            <div className="card-body p-0">
-              <div className="carousel-containerr">
-
-                <img className='carousel' src={images[currentSlide]} alt={`Imagen ${currentSlide + 1}`} />
-                
+          <div className="card mb-4">
+            <div className="card-body text-center">
+              <div className="card mb-4 mb-lg-0" id='carousel-container'>
+                <div className="card-body p-0">
+                  <div className="carousel-containerr">
+                    <img className='carousel' src={images[currentSlide]} alt={`Imagen ${currentSlide + 1}`} />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -201,7 +202,6 @@ const Perfil = () => {
                 <div className="col-sm-9">
                   <p className="text-muted mb-0">{profileData.email}</p>
                 </div>
-
               </div>
               <hr />
               <div className="row">
@@ -219,11 +219,12 @@ const Perfil = () => {
                 </div>
                 <div className="col-sm-9">
                   <p className="text-muted mb-0">{profileData.address}</p>
+                </div>
                 <hr />
                 <div className='text-center'>
-                <button type="button" className="btn btn-primary" onClick={openEditModal}>
-                Editar Datos
-              </button>
+                  <button type="button" className="btn btn-primary" onClick={openEditModal}>
+                    Editar Datos
+                  </button>
         
                   <Modal show={isEditModalOpen} onHide={closeEditModal}>
                     <Modal.Header closeButton>
@@ -271,9 +272,9 @@ const Perfil = () => {
                           
                         </Form.Group>
                         <div className='Modal-button-container'>
-                        <Button variant="primary" type="submit " id='sendButton'>
-                          Guardar Cambios
-                        </Button>
+                          <Button variant="primary" type="submit " id='sendButton'>
+                            Guardar Cambios
+                          </Button>
                         </div>
                         
                       </Form>
@@ -281,13 +282,8 @@ const Perfil = () => {
                   </Modal>
                 </div>
               </div>
-              <hr />
 
-              <hr />
               <div className='text-center'>
-                <button type="button" className="btn btn-primary" onClick={openEditModal}>
-                  Editar Datos
-                </button>
 
                 <Modal show={isEditModalOpen} onHide={closeEditModal}>
                   <Modal.Header closeButton>
@@ -331,9 +327,11 @@ const Perfil = () => {
                       <Form.Group controlId="password">
 
                       </Form.Group>
-                      <Button variant="primary" type="submit">
-                        Guardar Cambios
-                      </Button>
+                      <div className="my-3 text-center">
+                        <Button variant="primary" type="submit">
+                          Guardar Cambios
+                        </Button>
+                      </div>
                     </Form>
                   </Modal.Body>
                 </Modal>
@@ -342,14 +340,13 @@ const Perfil = () => {
           </div>
           <div className="col-lg-4 w-100">
             <div className="card d-flex mb-4">
-              {/*<div className="card-body d-flex justify-content-between align-items-stretch">*/}
               <div className="card-body d-flex flex-column flex-lg-row justify-content-between">
                 <div className="col-lg-2 col-sm-8 mx-auto  col-12">
                   <div className="card text-center" style={{ maxWidth: "17.5rem" }}>
                     <Link to={"/eventolista/" + profileData.userId}>
                       <div className="contImage">
                         <img src={tournament} className="d-block w-100 h-auto" alt="Eventos" />
-                        <div className="overlay">
+                        <div className="overlay small">
                           <div className="textOverlay">Crea, modifica o elimina tus eventos.</div>
                         </div>
                       </div>
@@ -357,7 +354,7 @@ const Perfil = () => {
                     <div className="card-body">
                       <div>
                         <Link to={"/eventolista/" + profileData.userId}>
-                          <button className="btn btn-outline-primary w-100">Administrar Eventos</button>
+                          <button className="btn btn-outline-primary w-100">Administra Eventos</button>
                         </Link>
                       </div>
                     </div>
@@ -368,13 +365,13 @@ const Perfil = () => {
                     <Link to="/teamlist">
                       <div className="contImage">
                         <img src={teamlist} className="d-block w-100 h-auto" alt="Equipos" />
-                        <div className="overlay">
+                        <div className="overlay small">
                           <div className="textOverlay">Crea, modifica o elimina tus equipos.</div>
                         </div>
                       </div>
                     </Link>
                     <div className="card-body">
-                      <Link to="/teamlist" className="btn btn-outline-primary w-100">Administrar Equipos</Link>
+                      <Link to="/teamlist" className="btn btn-outline-primary w-100">Administra Equipos</Link>
                     </div>
                   </div>
                 </div>
@@ -383,13 +380,13 @@ const Perfil = () => {
                     <Link to="/nextEvent">
                       <div className="contImage">
                         <img src={eventlist} className="d-block w-100 h-auto" alt="Registrar" />
-                        <div className="overlay">
+                        <div className="overlay small">
                           <div className="textOverlay">Consulta los eventos y paga.</div>
                         </div>
                       </div>
                     </Link>
                     <div className="card-body">
-                      <Link to="/nextEvent" className="btn btn-outline-primary w-100">Registrar Equipos</Link>
+                      <Link to="/nextEvent" className="btn btn-outline-primary w-100">Registra Equipos</Link>
                     </div>
                   </div>
                 </div>
@@ -398,13 +395,13 @@ const Perfil = () => {
                     <Link to="/registroEquipos">
                       <div className="contImage">
                         <img src={imgRegistros} className="d-block w-100 h-auto" alt="Registros" />
-                        <div className="overlay">
+                        <div className="overlay small">
                           <div className="textOverlay">Registra equipos a eventos.</div>
                         </div>
                       </div>
                     </Link>
                     <div className="card-body">
-                      <Link to="/registroEquipos" className="btn btn-outline-primary w-100">Administrar Registros</Link>
+                      <Link to="/registroEquipos" className="btn btn-outline-primary w-100">Administra Registros</Link>
                     </div>
                   </div>
                 </div>
@@ -413,13 +410,13 @@ const Perfil = () => {
                     <Link to="/consultapagos">
                       <div className="contImage">
                         <img src={imgPagos} className="d-block w-100 h-auto" alt="Pagos" />
-                        <div className="overlay">
+                        <div className="overlay small">
                           <div className="textOverlay">Consulta los pagos realizados.</div>
                         </div>
                       </div>
                     </Link>
                     <div className="card-body">
-                      <Link to="/consultapagos" className="btn btn-outline-primary w-100">Consultar Pagos</Link>
+                      <Link to="/consultapagos" className="btn btn-outline-primary w-100">Consulta Pagos</Link>
                     </div>
                   </div>
                 </div>
