@@ -58,12 +58,10 @@ const Registrarse = (props) => {
   // Funciones del botón Sumar y Restar
   const aumentar = () => {
     let temContador = contador + 1;
-    console.log("contador:", contador, "temcontador:", temContador);
     let subTotal = parseInt(datosEvento.costo);
     subTotal = temContador * subTotal;
     //setTotal(temContador * subTotal);
     setTotal(subTotal);
-    console.log("subtotal:", subTotal, "1EL TOTAL ES:", total);
     //actions.setCurrentPaypal(temContador * subTotal)
     setContador(temContador);
     actions.setCurrentPaypal(subTotal,description,temContador, datosEvento.id)
@@ -72,10 +70,8 @@ const Registrarse = (props) => {
 
   const disminuir = () => {
     let temContador = contador - 1;
-    console.log("contador:", contador, "temcontador:", temContador);
     let subTotal = parseInt(datosEvento.costo);
     subTotal = temContador * subTotal;
-    console.log("subtotal:", subTotal, "2EL TOTAL ES:", total);
     if (temContador < 1) {
       return;
     }
@@ -89,9 +85,7 @@ const Registrarse = (props) => {
   const handleClick = (e) => {
     e.preventDefault();
     let descripcion ="Pago del evento " + datosEvento.nombre_evento;
-    console.log("descripcion:", descripcion)
     setDescription(descripcion);
-    console.log("EL TOTAL ES:", total);
     actions.setCurrentPaypal(total,descripcion,contador, datosEvento.id)
     if (store.accessToken == null) {
       alert("Para registrar equipos debes iniciar sesión");
