@@ -34,34 +34,34 @@ const Layout = () => {
     //if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
 
     return (
-        <div>
+        <div className="h-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <div className="d-flex flex-column justify-content-between">
-                    <Navbar />
-                    <Routes>
-                        <Route element={<TeamList />} path="/teams" />
-                        <Route element={<RecoverPassword/>} path="/changepassword" />
-                        <Route element={<Home />} path="/" />
-                        <Route element={<Servicios />} path="/servicios" />
-                        <Route element={<h1>Not found!</h1>} />
-                        <Route element={<Eventos />} path="/eventos" />
-                        <Route element={<Galeria />} path="/galeria" />
-                        <Route element={<Perfil />} path="/perfil" />
-                        <Route element={<ContactPage />} path="/contacto" />
-                        <Route element={<AccountPage />} path="/cuenta" />
-                        <Route element={<NextEvent />} path="/nextEvent" />
-                        <Route element={<Registrarse />} path="/registrarse/:index" />
-                        <Route element={<Organizadores />} path="/organizadores" />
-                        <Route element={<PerfilOrganizador />} path="/perfilorganizador" />
-                        <Route element={<Perfil />} path="/perfil" />
-                        <Route element={<EventoLista />} path="/eventolista/:id" />
-                        <Route element={<TeamLista />} path="/teamlist" />
-                        <Route element={<RegistroEquipos />} path="/registroEquipos" />
-                        <Route element={<ConsultaPagos />} path="/consultapagos" />
-                        <Route element={<PerfilAdmin />} path="/perfilAdmin" />
-                    </Routes>
-                    <Footer />
+                    <div className="d-flex flex-column justify-content-between h-100">
+                        <Navbar />
+                        <Routes>
+                            <Route element={<TeamList />} path="/teams" />
+                            <Route element={<RecoverPassword />} path="/changepassword" />
+                            <Route element={<Home />} path="/" />
+                            <Route element={<Servicios />} path="/servicios" />
+                            <Route element={<h1>Not found!</h1>} />
+                            <Route element={<Eventos />} path="/eventos" />
+                            <Route element={<Galeria />} path="/galeria" />
+                            <Route element={<Perfil />} path="/perfil" />
+                            <Route element={<ContactPage />} path="/contacto" />
+                            <Route element={<AccountPage />} path="/cuenta" />
+                            <Route element={<NextEvent />} path="/nextEvent" />
+                            <Route element={<Registrarse />} path="/registrarse/:index" />
+                            <Route element={<Organizadores />} path="/organizadores" />
+                            <Route element={<PerfilOrganizador />} path="/perfilorganizador" />
+                            <Route element={<Perfil />} path="/perfil" />
+                            <Route element={<EventoLista />} path="/eventolista/:id" />
+                            <Route element={<TeamLista />} path="/teamlist" />
+                            <Route element={<RegistroEquipos />} path="/registroEquipos" />
+                            <Route element={<ConsultaPagos />} path="/consultapagos" />
+                            <Route element={<PerfilAdmin />} path="/perfilAdmin" />
+                        </Routes>
+                        <Footer />
 
                     </div>
                 </ScrollToTop>
