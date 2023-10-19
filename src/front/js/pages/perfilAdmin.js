@@ -87,11 +87,11 @@ const PerfilAdmin = () => {
     <div className="contSuperior" style={{ minHeight: "400px" }}>
       <div className="container">
         <div className="card mb-2">
-          <div className="card-body d-flex justify-content-between align-items-center">
-            <div className="col-3 text-center">
+          <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div className="col-md-4 col-12 text-center">
               <img className="rounded" src={imgAdmin} style={{ maxWidth: '200px', maxHeight: '200px', border: "solid #0D6EFD" }}></img>
             </div>
-            <div className="col-6">
+            <div className="col-md-4 col-12">
               <form>
                 <div className="form-row">
                   <div className="text-center">
@@ -108,7 +108,7 @@ const PerfilAdmin = () => {
                 </div>
               </form>
             </div>
-            <div className="col-3 text-center">
+            <div className="col-4 text-center m-2">
               <div>
                 <Link to={"/"}>
                   <button className="btn btn-primary mx-3" onClick={() => actions.logout()} type="button">Cerrar Sesión</button>
