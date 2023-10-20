@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import imgLogo from "../../img/LogoTS.jpg";
 import teamlist from "../../img/perfil/teamlist.jpg";
 import * as filestack from 'filestack-js';
+import imgFondo from "../../img/perfil/fondok.png";
+import "../../styles/eventoLista.css";
 
 const TeamLista = () => {
 
@@ -221,18 +223,21 @@ const TeamLista = () => {
         <div className="contSuperior fatherBody" style={{minHeight:"500px"}}>
             <div className="container">
                 <div className="card mb-4">
-                    <div className="card-body d-flex justify-content-between align-items-center">
-                        <div className="col-4 text-center">
-                            <img className="rounded" src={teamlist} style={{ maxWidth: '100px', maxHeight: '100px', border: "solid #0D6EFD" }}></img>
-                        </div>
-                        <div className="col-4 text-center">
-                            <h2>Lista de Equipos</h2>
+                    <img className="card-img-top img-fluid mw-100 object-fit-fill" style={{width: "100%", height: "10rem"}} src={imgFondo} alt="Card image"/>
+                    <div className="card-img-overlay">
+                        <div className="card-body d-flex justify-content-between align-items-center">
+                            <div className="col-4 text-center">
+                                <img className="rounded" src={teamlist} style={{ maxWidth: '150px', maxHeight: '150px', border: "solid #0D6EFD" }}></img>
                             </div>
-                        <div className="col-4">
-                            <Link to="/cuenta">
-                                <button className="btn btn-primary mx-3 m-2" type="button">Volver a Perfil</button>
-                            </Link>
-                            <button className="btn btn-primary" onClick={() => createEquipo()} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button">Crear Equipo</button>
+                            <div className="col-4 text-center text-white">
+                                <h2 className="black-text-shadow">Lista de Equipos</h2>
+                            </div>
+                            <div className="col-4">
+                                <Link to="/cuenta">
+                                    <button className="btn btn-primary mx-3 m-2" type="button">Volver a Perfil</button>
+                                </Link>
+                                <button className="btn btn-primary" onClick={() => createEquipo()} data-bs-toggle="modal" data-bs-target="#staticBackdrop" type="button">Crear Equipo</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -281,7 +286,7 @@ const TeamLista = () => {
                                 <button id={theTeam.id} onClick={(e) => handleEdit(e, theTeam.id, index)} className="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                                     <i className="fa-solid fa-pen-to-square"></i>
                                 </button>
-                                <button className="btn btn-outline-primary btn-sm m-2"
+                                <button className="btn btn-outline-secondary btn-sm m-2"
                                     onClick={(e) => handleDelete(e, theTeam.id, theTeam.nombre_equipo, index)}
                                     data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
                                     <i className="fa-solid fa-trash"></i>

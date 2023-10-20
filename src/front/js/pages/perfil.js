@@ -176,7 +176,7 @@ const Perfil = () => {
               <div className="card mb-4 mb-lg-0" id='carousel-container'>
                 <div className="card-body p-0">
                   <div className="carousel-containerr">
-                    <img className='carousel' src={images[currentSlide]} alt={`Imagen ${currentSlide + 1}`} />
+                    <img className='carousel img-fluid' src={images[currentSlide]} alt={`Imagen ${currentSlide + 1}`} />
                   </div>
                 </div>
               </div>
@@ -220,7 +220,9 @@ const Perfil = () => {
                 <div className="col-sm-9">
                   <p className="text-muted mb-0">{profileData.address}</p>
                 </div>
+              </div>
                 <hr />
+              <div>
                 <div className='text-center'>
                   <button type="button" className="btn btn-primary" onClick={openEditModal}>
                     Editar Datos
@@ -345,7 +347,7 @@ const Perfil = () => {
                   <div className="card text-center" style={{ maxWidth: "17.5rem" }}>
                     <Link to={"/eventolista/" + profileData.userId}>
                       <div className="contImage">
-                        <img src={tournament} className="d-block w-100 h-auto" alt="Eventos" />
+                        <img src={tournament} className="d-block w-100 h-auto rounded-top" alt="Eventos" />
                         <div className="overlay small">
                           <div className="textOverlay">Crea, modifica o elimina tus eventos.</div>
                         </div>
@@ -364,7 +366,7 @@ const Perfil = () => {
                   <div className="card text-center" style={{ maxWidth: "17.5rem" }}>
                     <Link to="/teamlist">
                       <div className="contImage">
-                        <img src={teamlist} className="d-block w-100 h-auto" alt="Equipos" />
+                        <img src={teamlist} className="d-block w-100 h-auto rounded-top" alt="Equipos" />
                         <div className="overlay small">
                           <div className="textOverlay">Crea, modifica o elimina tus equipos.</div>
                         </div>
@@ -379,7 +381,7 @@ const Perfil = () => {
                   <div className="card text-center" style={{ maxWidth: "17.5rem" }}>
                     <Link to="/nextEvent">
                       <div className="contImage">
-                        <img src={eventlist} className="d-block w-100 h-auto" alt="Registrar" />
+                        <img src={eventlist} className="d-block w-100 h-auto rounded-top" alt="Registrar" />
                         <div className="overlay small">
                           <div className="textOverlay">Consulta los eventos y paga.</div>
                         </div>
@@ -394,7 +396,7 @@ const Perfil = () => {
                   <div className="card text-center" style={{ maxWidth: "17.5rem" }}>
                     <Link to="/registroEquipos">
                       <div className="contImage">
-                        <img src={imgRegistros} className="d-block w-100 h-auto" alt="Registros" />
+                        <img src={imgRegistros} className="d-block w-100 h-auto rounded-top" alt="Registros" />
                         <div className="overlay small">
                           <div className="textOverlay">Registra equipos a eventos.</div>
                         </div>
@@ -409,7 +411,7 @@ const Perfil = () => {
                   <div className="card text-center" style={{ maxWidth: "17.5rem" }}>
                     <Link to="/consultapagos">
                       <div className="contImage">
-                        <img src={imgPagos} className="d-block w-100 h-auto" alt="Pagos" />
+                        <img src={imgPagos} className="d-block w-100 h-auto rounded-top" alt="Pagos" />
                         <div className="overlay small">
                           <div className="textOverlay">Consulta los pagos realizados.</div>
                         </div>

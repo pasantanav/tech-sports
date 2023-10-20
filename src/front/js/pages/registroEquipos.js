@@ -3,6 +3,8 @@ import '../../styles/nextEvent.css'
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import eventlist from "../../img/perfil/eventlist.jpg";
+import imgFondo from "../../img/perfil/fondok.png";
+import "../../styles/eventoLista.css";
 
 const RegistroEquipos = () => {
 
@@ -95,58 +97,52 @@ const RegistroEquipos = () => {
         setExitoso(true);
         setSelectedEventos("Elige un evento");
         setSelectedEquipos("Elige un equipo");
-        /*//Si se graba el registro hay que mostrar de nuevo los eventos
-        //por si en alguno ya están completos los registros no mostrarlo
-        actions.getUserEventsRegister().then(respEventsReg =>{
-          if (respEventsReg=="Ok"){
-            setEventos([{id: "-", nombre_evento: "Elige un evento"}, ...store.userEventsRegister]);
-          } else {
-            setEventos([{id: "-", nombre_evento: "No tienes eventos pagados"}]);
-          }
-        });*/
       }
     }
   }
 
   return (
     <div className="contSuperior" >
-      <div className="">
+      <div className="container">
         <div className="card mb-2">
-          <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center ">
-            <div className="col-md-4 col-12 text-center">
-              <img className="rounded" src={eventlist} style={{ maxWidth: '200px', maxHeight: '200px', border: "solid #0D6EFD" }}></img>
-            </div>
-            <div className="col-md-4 col-12">
-              <form onSubmit={handleSubmit}>
-                <div className="form-row">
-                  <div className="text-center">
-                    <h2>Registro de Equipos</h2>
+          <img className="card-img img-fluid mw-100 object-fit-fill" style={{width: "100%", height: "17rem"}} src={imgFondo} alt="Card image"/>
+          <div className="card-img-overlay">
+            <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center ">
+              <div className="col-md-4 col-12 text-center">
+                <img className="rounded" src={eventlist} style={{ maxWidth: '200px', maxHeight: '200px', border: "solid #0D6EFD" }}></img>
+              </div>
+              <div className="col-md-4 col-12">
+                <form onSubmit={handleSubmit}>
+                  <div className="form-row">
+                    <div className="black-text-shadow text-center text-white">
+                      <h2>Registro de Equipos</h2>
+                    </div>
                   </div>
+                  <div className="form-row text-white fw-bold">
+                    <label htmlFor="inputEvento">Evento</label>
+                    <select id="inputEvento" className="form-control" name="eventoElegido" value={selectedEventos} onChange={handleChangeEventos} required>
+                      {eventos.map(option => (
+                        <option key={option.id} value={option.id}>{option.nombre_evento}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-row text-white fw-bold">
+                    <label htmlFor="inputEquipo">Equipo</label>
+                    <select id="inputEquipo" className="form-control" name="equipoElegido" value={selectedEquipos} onChange={handleChangeEquipos} required>
+                      {equipos.map(option => (
+                        <option key={option.id} value={option.id}>{option.nombre_equipo}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-row text-center mt-2">
+                    <button type="submit" className="btn btn-primary">Registrar</button>
+                  </div>
+                </form>
+              </div>
+              <div className="col-4 text-center">
+                <div>
+                  <button className="btn btn-primary mx-3 m-3" onClick={() => navigate("/cuenta")} type="button">Volver a Perfil</button>
                 </div>
-                <div className="form-row">
-                  <label htmlFor="inputEvento">Evento</label>
-                  <select id="inputEvento" className="form-control" name="eventoElegido" value={selectedEventos} onChange={handleChangeEventos} required>
-                    {eventos.map(option => (
-                      <option key={option.id} value={option.id}>{option.nombre_evento}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-row">
-                  <label htmlFor="inputEquipo">Equipo</label>
-                  <select id="inputEquipo" className="form-control" name="equipoElegido" value={selectedEquipos} onChange={handleChangeEquipos} required>
-                    {equipos.map(option => (
-                      <option key={option.id} value={option.id}>{option.nombre_equipo}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-row text-center mt-2">
-                  <button type="submit" className="btn btn-primary">Registrar</button>
-                </div>
-              </form>
-            </div>
-            <div className="col-4 text-center">
-              <div>
-                <button className="btn btn-primary mx-3 m-3" onClick={() => navigate("/cuenta")} type="button">Volver a Perfil</button>
               </div>
             </div>
           </div>

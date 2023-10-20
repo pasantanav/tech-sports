@@ -3,6 +3,8 @@ import '../../styles/nextEvent.css'
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import imgPagos from "../../img/perfil/pagos.jpg";
+import "../../styles/eventoLista.css";
+import imgFondo from "../../img/perfil/fondok.png";
 
 const ConsultaPagos = () => {
 
@@ -43,17 +45,6 @@ const ConsultaPagos = () => {
         setEventos([{id: "-", nombre_evento: "No tienes eventos"}]);
       }
     });
-    /*actions.getUserEvent().then(respEvents =>{
-      if (respEvents == "No token"){
-        //alert("Sesión expirada");
-        navigate("/cuenta");
-      }
-      if (respEvents == "Ok" && store.userEvent.length != 0) {
-        setEventos([{ id: "-", nombre_evento: "Todos los eventos" }, ...store.userEvent]);
-      } else {
-        setEventos([{ id: "-", nombre_evento: "No tienes eventos" }]);
-      }
-    });*/
   }, []);
 
   const handleChangeEventos = e => {
@@ -66,30 +57,33 @@ const ConsultaPagos = () => {
     <div className="contSuperior" style={{ minHeight: "400px" }}>
       <div className="container">
         <div className="card mb-2">
-          <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <div className="col-md-4 col-12 text-center">
-              <img className="rounded" src={imgPagos} style={{ maxWidth: '200px', maxHeight: '200px', border: "solid #0D6EFD" }}></img>
-            </div>
-            <div className="col-md-4 col-12">
-              <form>
-                <div className="form-row">
-                  <div className="text-center">
-                    <h2>Lista de Pagos</h2>
+          <img className="card-img img-fluid mw-100 object-fit-fill" style={{width: "100%", height: "12rem"}} src={imgFondo} alt="Card image"/>
+          <div className="card-img-overlay">
+            <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center">
+              <div className="col-md-4 col-12 text-center">
+                <img className="rounded" src={imgPagos} style={{ maxWidth: '200px', maxHeight: '200px', border: "solid #0D6EFD" }}></img>
+              </div>
+              <div className="col-md-4 col-12">
+                <form>
+                  <div className="form-row">
+                    <div className="text-center text-white">
+                      <h2 className="black-text-shadow">Lista de Pagos</h2>
+                    </div>
                   </div>
+                  <div className="form-row text-white fw-bold">
+                    <label htmlFor="inputEvento">Evento</label>
+                    <select id="inputEvento" className="form-control" name="eventoElegido" value={selectedEvento} onChange={handleChangeEventos} required>
+                      {eventos.map(option => (
+                        <option key={option.id} value={option.id}>{option.nombre_evento}</option>
+                      ))}
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div className="col-4 text-center m-2">
+                <div>
+                  <button className="btn btn-primary mx-3" onClick={() => navigate("/cuenta")} type="button">Volver a Perfil</button>
                 </div>
-                <div className="form-row">
-                  <label htmlFor="inputEvento">Evento</label>
-                  <select id="inputEvento" className="form-control" name="eventoElegido" value={selectedEvento} onChange={handleChangeEventos} required>
-                    {eventos.map(option => (
-                      <option key={option.id} value={option.id}>{option.nombre_evento}</option>
-                    ))}
-                  </select>
-                </div>
-              </form>
-            </div>
-            <div className="col-4 text-center m-2">
-              <div>
-                <button className="btn btn-primary mx-3" onClick={() => navigate("/cuenta")} type="button">Volver a Perfil</button>
               </div>
             </div>
           </div>
