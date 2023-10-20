@@ -83,45 +83,35 @@ const TeamLista = () => {
       id: ""
     }:store.userTeam[indice]);
       
-    const handleTeamLogoChange =  (e) => {
-        // Configura las opciones de carga de Filestack
-        const options = {
-          onUploadDone: (response) => {
-            // Extrae la URL de la imagen cargada
-            let teamData = {...teamFormData};
-            const imageUrl = response.filesUploaded[0].url;
-            console.log('la URL de la imagen es:', imageUrl)       
-              teamData.logotipo = imageUrl;
-              console.log(teamData.logotipo)
-              setTeamFormData(teamData)
-            // Actualiza el estado 'teamLogo' con la URL de la imagen
-          },
-          accept: ['image/*'], // Acepta solo archivos de imagen
-        };
-        // Abre el picker de Filestack para seleccionar y cargar la imagen
-        filestackClient.picker(options).open();
-    
+    const handleTeamLogoChange = (e) => {
+  const options = {
+    onUploadDone: (response) => {
+      const imageUrl = response.filesUploaded[0].url;
+      let teamData = { ...teamFormData };
+      teamData.logotipo = imageUrl;
+      setTeamFormData(teamData);
+      console.log('La URL de la imagen es:', imageUrl);
+    },
+    accept: ['image/*'],
   };
+  filestackClient.picker(options).open();
+};
 
-  const handleFileUpload = () => {
+
+const handleFileUpload = () => {
     const options = {
       onUploadDone: (response) => {
         const pdfUrl = response.filesUploaded[0].url;
-        actions.savePdfUrl(pdfUrl);
-       let teamData = {...teamFormData}
-
-
-       teamData.jugadores = pdfUrl
-       console.log('URL del PDF subido:', pdfUrl);
-        console.log(teamData.jugadores)
-       setTeamFormData(teamData)
-        
-        
+        let teamData = { ...teamFormData };
+        teamData.jugadores = pdfUrl;
+        setTeamFormData(teamData);
+        console.log('URL del PDF subido:', pdfUrl);
       },
-      accept: ['application/pdf'], // Acepta solo archivos PDF
+      accept: ['application/pdf'],
     };
     filestackClient.picker(options).open();
   };
+  
       useEffect(()=>{
         console.log("ESTA ES LA OPERACION:", operation);
         if (operation=="Editar Equipo"){
@@ -171,14 +161,25 @@ const TeamLista = () => {
         e.preventDefault();
         const data = new FormData(e.target);
         const nombre_equipo=data.get("nombre_equipo").trim();
-        const jugadores=data.get("jugadores").trim();
-        const logotipo = data.get("logotipo").trim();
+       // const jugadores=data.get("jugadores");
+       // const logotipo = data.get("logotipo");
         //console.log("Equipo a editar:", teamFormData)
         let teamDataSinEsp = { ...teamFormData };
         teamDataSinEsp.nombre_equipo = nombre_equipo;
-        teamDataSinEsp.jugadores = jugadores;
-        teamDataSinEsp.logotipo = logotipo;
-        if (nombre_equipo=="" || jugadores=="" || logotipo == ""){
+      
+        if (!teamFormData.logotipo) {
+            alert("Por favor, sube el logotipo del equipo antes de continuar.");
+            return;
+          }
+        
+          if (!teamFormData.jugadores) {
+            alert("Por favor, sube el listado de jugadores antes de continuar.");
+            return;
+          }
+        
+       // teamDataSinEsp.jugadores = jugadores;
+        //teamDataSinEsp.logotipo = logotipo;
+        if (nombre_equipo==""){
             alert("No debe haber datos vacíos o espacios en blanco")
         /*} else if (operation=="Editar Equipo" && editar==false){
           //console.log("no es necesario editar");

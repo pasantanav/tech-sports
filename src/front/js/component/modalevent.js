@@ -191,6 +191,7 @@ const ModalEvent = (props) => {
       eventoSinEsp.reglas = eventoSinEsp.reglas.trim();
       eventoSinEsp.tel_contacto = eventoSinEsp.tel_contacto.trim();
       eventoSinEsp.nombre_contacto = eventoSinEsp.nombre_contacto.trim();
+
     
       if (!pdfUrl) {
         alert("Por favor, sube un archivo PDF antes de continuar.");
@@ -236,6 +237,7 @@ const ModalEvent = (props) => {
         }
         formulario.reset();
       }
+
     };
     
 
@@ -339,7 +341,7 @@ const ModalEvent = (props) => {
                       
                       <div className="form-outline mb-4">
                         <label className="form-label" htmlFor="logotipo">
-                          Logotipo del equipo
+                          Logotipo del evento
                         </label>
                         <div className="form-outline mb-4">
                           <input
@@ -356,7 +358,7 @@ const ModalEvent = (props) => {
                           <p>o</p>
                           </div>
                           <button type="button" className="btn btn-secondary" onClick={handleTeamLogoChange}>
-                            Subir logotipo del equipo
+                            Subir logotipo del evento
                           </button>
                       </div>
                       <div className="form-outline mb-4">
