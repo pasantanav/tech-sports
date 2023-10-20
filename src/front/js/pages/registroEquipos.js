@@ -109,7 +109,7 @@ const RegistroEquipos = () => {
   }
 
   return (
-    <div className="contSuperior" >
+    <div className="contSuperiorh-100 fatherBody "  style={{minHeight:"500px"}} >
       <div className="">
         <div className="card mb-2">
           <div className="card-body d-flex flex-column flex-md-row justify-content-between align-items-center ">
