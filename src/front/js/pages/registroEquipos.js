@@ -102,7 +102,7 @@ const RegistroEquipos = () => {
   }
 
   return (
-    <div className="contSuperiorh-100 fatherBody "  style={{minHeight:"500px"}} >
+    <div className="contSuperior h-100 fatherBody "  style={{minHeight:"500px"}} >
       <div className="container">
         <div className="card mb-2">
           <img className="card-img img-fluid mw-100 object-fit-fill" style={{width: "100%", height: "17rem"}} src={imgFondo} alt="Card image"/>

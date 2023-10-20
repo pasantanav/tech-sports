@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, StrictMode } from "react";
 import { Context } from "../store/appContext";
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/navbar.css";
-import logoTS from "../../img/LogoTS.jpg";
+import logoTS from "../../img/LogoTS.png";
 
 export const Navbar = () => {
 
