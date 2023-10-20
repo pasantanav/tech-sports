@@ -4,7 +4,7 @@ import { Context } from "../store/appContext";
 import tournament from "../../img/perfil/tournament.jpg";
 import teamlist from "../../img/perfil/teamlist.jpg";
 import eventlist from "../../img/perfil/eventlist.jpg";
-import imgLogo from "../../img/LogoTS.jpg";
+import imgLogo from "../../img/LogoTS.png";
 import imgRegistros from "../../img/perfil/registros.jpg";
 import img1 from "../../img/carrusel/imagen1.png"
 import img2 from "../../img/carrusel/imagen2.png"

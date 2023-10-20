@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 //import ModalTeam from "../component/modalteams";
 import { Link, useNavigate } from "react-router-dom";
-import imgLogo from "../../img/LogoTS.jpg";
+import imgLogo from "../../img/LogoTS.png";
 import teamlist from "../../img/perfil/teamlist.jpg";
 import * as filestack from 'filestack-js';
 import imgFondo from "../../img/perfil/fondok.png";
