@@ -70,8 +70,8 @@ const Galeria = () => {
 
    
 
-          <button className="btn btn-primary" style={{ height: "100%", margin: "-118", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "2rem" }} type="button" onClick={() => setOpen(true)}>
-            Ver más
+          <button className="btn btn-outline-primary" style={{ height: "100%", margin: "-118", display: "flex", justifyContent: "center", alignItems: "center", marginTop: "2rem" }} type="button" onClick={() => setOpen(true)}>
+            VER MÁS
           </button>
         </div>
 

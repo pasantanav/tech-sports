@@ -15,7 +15,7 @@ function ContactPage(){
                     <p >Manhattan, New York, NY, United States</p>
                     <p className="ubii">999-7777-000</p>
                     
-                    <p>mon-fri 8:00-19:00</p>
+                    <p>Lunes-Viernes 8:00-19:00</p>
                 </div>
                 <div>
                     <ContactForm />
