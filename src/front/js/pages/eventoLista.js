@@ -50,7 +50,7 @@ const EventoLista = () => {
     }
 
     return (
-        <div className="contSuperior h-100 fatherBody" style={{minHeight:"500px"}}>
+        <div className="contSuperior h-100 fatherBody " style={{ minHeight: "400px", paddingBottom:"1%"}}>
             <div className="container">
                 <div className="card mb-4">
                     <div className="card-body d-flex justify-content-between align-items-center">
