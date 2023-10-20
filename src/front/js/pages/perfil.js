@@ -258,6 +258,7 @@ const Perfil = () => {
                             type="text"
                             defaultValue={profileData.phone}
                             onChange={(e) => setPhone(e.target.value)}
+                            pattern="^\S.*" 
                           />
                         </Form.Group>
                         <Form.Group controlId="address">
@@ -266,6 +267,7 @@ const Perfil = () => {
                             type="text"
                             defaultValue={profileData.address}
                             onChange={(e) => setAddress(e.target.value)}
+                            pattern="^\S.*" 
                           />
                         </Form.Group>
                         <Form.Group controlId="password">
