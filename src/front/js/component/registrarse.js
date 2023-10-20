@@ -285,9 +285,6 @@ const Registrarse = (props) => {
               </div> 
               <PayPal index={params.index} costo={total} />
             </div>
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
           </div>
         </div>
       </div>

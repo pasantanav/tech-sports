@@ -51,7 +51,7 @@ const EventoLista = () => {
     }
 
     return (
-        <div className="contSuperior h-100 fatherBody" style={{minHeight:"500px"}}>
+        <div className="contSuperior h-100 fatherBody " style={{ minHeight: "400px", paddingBottom:"1%"}}>
             <div className="container">
                 <div className="card mb-4">
                     <img className="card-img img-fluid mw-100 object-fit-fill" style={{width: "100%", height: "10rem"}} src={imgFondo} alt="Card image"/>
