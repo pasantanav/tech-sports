@@ -80,7 +80,11 @@ const EventoLista = () => {
                     </div>
                     <p className="text-primary">Cargando...</p>
                 </div>
-            <div className="table-responsive">
+            <div className="table-responsive"  style={{
+        height: '500px',
+        overflowX: 'auto',
+        overflowY: 'auto',
+      }}>
             <table className="table align-middle mb-0 bg-white" id='theEventstable'>
                 <thead className="bg-light">
                     <tr>

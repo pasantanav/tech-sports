@@ -37,7 +37,7 @@ const Layout = () => {
         <div className="h-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
-                    <div className="d-flex flex-column justify-content-between h-80">
+                    <div className="d-flex flex-column justify-content-between h-100">
                         <Navbar />
                         <Routes>
                             <Route element={<TeamList />} path="/teams" />

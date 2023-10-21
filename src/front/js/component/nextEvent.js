@@ -26,7 +26,11 @@ const nextEvent = () => {
             </div>
             <p className="text-primary">Cargando...</p>
           </div>
-        <div className="table-responsive">
+        <div className="table-responsive"   style={{
+        height: '400px',
+        overflowX: 'auto',
+        overflowY: 'auto',
+      }}>
           <table className="table align-middle table-striped table-hover table-bordered">
           <thead className="table-primary">
             <tr>
