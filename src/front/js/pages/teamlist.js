@@ -227,7 +227,7 @@ const handleFileUpload = () => {
                     <img className="card-img-top img-fluid mw-100 object-fit-fill" style={{width: "100%", height: "10rem"}} src={imgFondo} alt="Card image"/>
                     <div className="card-img-overlay">
                         <div className="card-body d-flex justify-content-between align-items-center">
-                            <div className="col-4 text-center">
+                            <div className="col- text-center">
                                 <img className="rounded" src={teamlist} style={{ maxWidth: '150px', maxHeight: '150px', border: "solid #0D6EFD" }}></img>
                             </div>
                             <div className="col-4 text-center text-white">
@@ -250,7 +250,7 @@ const handleFileUpload = () => {
                     </div>
                     <p className="text-primary">Cargando...</p>
                 </div>
-            <div className="table-responsive">
+            <div className="table-responsive ">
             <table className="table align-middle mb-0 bg-white" id='theTeamstable'>
                 <thead className="bg-light">
                     <tr>
