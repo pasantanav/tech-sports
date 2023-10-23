@@ -123,7 +123,7 @@ const ModalEvent = (props) => {
           setFechaInicio(store.userEvent[props.indice].fecha_ini);
           setFechaFinal(store.userEvent[props.indice].fecha_fin);
           setFechaLimite(store.userEvent[props.indice].fecha_lim);
-
+          setPdfUrl(store.userEvent[props.indice].reglas);
         } else {
           limpiarDataEvento();
           let currentDate = new Date();
