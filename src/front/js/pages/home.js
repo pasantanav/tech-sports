@@ -1,26 +1,36 @@
-import React, { useContext } from "react";
+import React, { startTransition, useContext } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import { Link } from "react-router-dom";
+import homeImageUrl from "../../img/home.jpg";
 import "../../styles/home.css";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
-		<div className="text-center mt-5">
-			<h1>Hello Rigo!!</h1>
-			<p>
-				<img src={rigoImageUrl} />
-			</p>
-			<div className="alert alert-info">
-				{store.message || "Loading message from the backend (make sure your python backend is running)..."}
+		<div className="container-fluid mt-4 w-100">
+			<div className="card text-white">
+				<div className="row m-1">
+					<div className="col">
+						<img src={homeImageUrl} className="card-img img-fluid mw-100" alt="Regístrate ahora"></img>
+						<div className="cio card-img-overlay d-flex flex-column mx-5 align-items-center">
+							<div className="heading-group">
+								<h1>Administra tus Eventos Deportivos</h1>
+								<p className="heading-3 text-light">Organiza tus torneos en un solo click</p>
+							</div>
+							<div className="divider divider-default"></div>
+							<p className="heading-5 m-1">Utiliza nuestra tecnología a tu favor. Estamos listos para dar a tus eventos una ventaja competitiva en la organización.</p>
+							<div className="group-md button-group">
+								<Link to="/organizadores">
+									<span className="btn btn-primary btn-lg mt-4" href="#" role="button">
+										VER MÁS
+									</span>
+								</Link>
+							</div>
+						</div>
+						</div>
+				</div>
 			</div>
-			<p>
-				This boilerplate comes with lots of documentation:{" "}
-				<a href="https://start.4geeksacademy.com/starters/react-flask">
-					Read documentation
-				</a>
-			</p>
 		</div>
 	);
 };
